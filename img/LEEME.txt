@@ -1,3 +1,0 @@
-Coloca aquí las imágenes de los modelos (JPG):
-hero-speake.jpg, court.jpg, pulse.jpg, high.jpg, retro.jpg, street.jpg, aero.jpg
-Mientras no existan, la web muestra un marcador con el nombre del modelo.
