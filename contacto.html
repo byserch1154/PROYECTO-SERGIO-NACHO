@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contacta con SPEAKE o solicita un presupuesto personalizado.">
+  <title>Contacto | SPEAKE</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <!-- CABECERA (idéntica en todas las páginas) -->
+  <header class="cabecera">
+    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
+      <span class="logo-simbolo">S</span>
+      <span>SPEAKE<span class="punto">.</span></span>
+    </a>
+
+    <nav class="navegacion" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="personaliza.html">Personaliza</a>
+      <a href="index.html#empresa">Empresa</a>
+      <a href="contacto.html" aria-current="page">Contacto</a>
+    </nav>
+
+    <a href="catalogo.html" class="boton boton-cabecera">
+      Explorar modelos <span>↗</span>
+    </a>
+  </header>
+
+  <main id="contenido">
+    <section class="contacto">
+      <div class="contacto-intro">
+        <p class="etiqueta">HABLEMOS DE TU IDEA</p>
+        <h1>VAMOS A<br>CREAR ALGO<br><span class="destacado-azul">ÚNICO.</span></h1>
+        <p>¿Tienes una idea para tus zapatillas o quieres pedir un diseño para tu equipo? Cuéntanos qué necesitas.</p>
+        <div class="contacto-dato"><span>PERSONALIZACIÓN</span><strong>Modelos Court y Pulse</strong></div>
+        <div class="contacto-dato"><span>PROYECTOS DE EQUIPO</span><strong>Solicitudes para clubes y grupos</strong></div>
+        <div class="contacto-dato"><span>RESPUESTA</span><strong>Solicitud de presupuesto</strong></div>
+      </div>
+
+      <form class="formulario" id="form-contacto">
+        <p class="etiqueta">FORMULARIO SPEAKE</p>
+        <div class="grupo"><label for="nombre">Nombre y apellidos</label><input id="nombre" name="nombre" type="text" autocomplete="name" required></div>
+        <div class="grupo"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+        <div class="grupo"><label for="tipo">¿Qué necesitas?</label>
+          <select id="tipo" name="tipo" required>
+            <option value="">Selecciona una opción</option>
+            <option>Información sobre un modelo</option>
+            <option>Personalización individual</option>
+            <option>Pedido para un club o equipo</option>
+            <option>Otra consulta</option>
+          </select>
+        </div>
+        <div class="grupo"><label for="modelo">Modelo de interés</label>
+          <select id="modelo" name="modelo">
+            <option value="">Todavía no lo sé</option><option>SPEAKE Court Custom</option><option>SPEAKE Pulse Custom</option><option>SPEAKE High</option><option>SPEAKE Retro</option><option>SPEAKE Street</option><option>SPEAKE Aero</option>
+          </select>
+        </div>
+        <div class="grupo"><label for="equipo">Club o equipo (si procede)</label><input id="equipo" name="equipo" type="text" maxlength="60" autocomplete="organization"></div>
+        <div class="grupo"><label for="cantidad">Cantidad aproximada de pares (si procede)</label><input id="cantidad" name="cantidad" type="number" min="1" max="500" placeholder="Ej.: 40"></div>
+        <div class="grupo"><label for="fecha">Fecha objetivo (opcional)</label><input id="fecha" name="fecha" type="date"></div>
+        <div class="grupo"><label for="mensaje">Cuéntanos tu idea</label><textarea id="mensaje" name="mensaje" placeholder="Modelo, tallas, colores, escudo del equipo..."></textarea></div>
+        <button class="boton boton-azul" type="submit">Preparar solicitud <span>→</span></button>
+        <p class="aviso">Demostración académica: este formulario no envía datos a un servidor. No introduzcas información real.</p>
+        <div class="mensaje-confirmacion" id="confirmacion" role="status"></div>
+      </form>
+    </section>
+  </main>
+
+  <!-- PIE DE PÁGINA (idéntico en todas las páginas) -->
+  <footer class="pie">
+    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
+      <span class="logo-simbolo">S</span>
+      <span>SPEAKE<span class="punto">.</span></span>
+    </a>
+
+    <p>Tu estilo. Tus reglas.</p>
+
+    <a href="#top">Volver arriba ↑</a>
+
+    <small>© 2026 SPEAKE · Proyecto académico</small>
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const nombresModelo = {
+      court: "SPEAKE Court Custom", pulse: "SPEAKE Pulse Custom",
+      high: "SPEAKE High", retro: "SPEAKE Retro", street: "SPEAKE Street", aero: "SPEAKE Aero"
+    };
+    const campo = id => document.getElementById(id);
+    const clave = params.get("modelo");
+    const color = params.get("color");
+    const cordones = params.get("cordones");
+    const detalle = params.get("detalle");
+    const tallasTexto = params.get("tallas");
+    const tallas = {};
+    if (tallasTexto) {
+      tallasTexto.split(",").forEach(par => {
+        const [t, n] = par.split(":");
+        if (t && n) tallas[t] = parseInt(n, 10);
+      });
+    }
+
+    if (clave && nombresModelo[clave]) campo("modelo").value = nombresModelo[clave];
+    if (params.get("equipo")) campo("equipo").value = params.get("equipo");
+    if (params.get("fecha")) campo("fecha").value = params.get("fecha");
+    if (params.get("cantidad")) campo("cantidad").value = params.get("cantidad");
+
+    const esCustom = color || cordones || tallasTexto;
+    if (esCustom) {
+      campo("tipo").value = params.get("equipo") ? "Pedido para un club o equipo" : "Personalización individual";
+    } else if (clave) {
+      campo("tipo").value = "Información sobre un modelo";
+    }
+
+    const piezas = [];
+    if (campo("modelo").value) piezas.push("Modelo: " + campo("modelo").value);
+    if (color) piezas.push("Color: " + color);
+    if (cordones) piezas.push("Cordones: " + cordones);
+    if (tallasTexto) {
+      piezas.push("Tallas: " + Object.keys(tallas).map(t => t + " (" + tallas[t] + ")").join(", "));
+    }
+    if (detalle) piezas.push("Detalles: " + detalle);
+    campo("mensaje").value = piezas.join("\n");
+
+    campo("fecha").min = new Date().toISOString().slice(0, 10);
+
+    campo("form-contacto").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const ahora = new Date();
+      const referencia = "SOL-" + ahora.toISOString().slice(0, 10).replace(/-/g, "") + "-" +
+        String(Math.floor(Math.random() * 9000) + 1000);
+      const solicitud = {
+        referencia: referencia,
+        fecha_solicitud: ahora.toISOString(),
+        cliente: campo("nombre").value.trim(),
+        email: campo("email").value.trim(),
+        tipo: campo("tipo").value,
+        equipo: campo("equipo").value.trim(),
+        modelo: campo("modelo").value,
+        cantidad: parseInt(campo("cantidad").value, 10) || null,
+        fecha_objetivo: campo("fecha").value || null,
+        personalizacion: { color: color, cordones: cordones, detalle: detalle, tallas: tallas },
+        mensaje: campo("mensaje").value.trim()
+      };
+
+      const aviso = campo("confirmacion");
+      aviso.textContent = "";
+      const texto = document.createElement("p");
+      texto.textContent = "Solicitud " + referencia + " preparada para la demostración. " +
+        "En una versión conectada, estos datos se enviarían al sistema de gestión.";
+      const descarga = document.createElement("a");
+      descarga.className = "boton boton-transparente";
+      descarga.textContent = "Descargar solicitud (JSON)";
+      descarga.download = referencia + ".json";
+      descarga.href = URL.createObjectURL(new Blob([JSON.stringify(solicitud, null, 2)], { type: "application/json" }));
+      aviso.append(texto, descarga);
+      aviso.classList.add("visible");
+    });
+  </script>
+</body>
+</html>

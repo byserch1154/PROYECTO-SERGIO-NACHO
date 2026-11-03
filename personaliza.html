@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Configura tu zapatilla SPEAKE Court o Pulse: color, cordones, tallas y detalles, para ti o para tu equipo.">
+  <title>Personaliza tu modelo | SPEAKE</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <!-- CABECERA (idéntica en todas las páginas) -->
+  <header class="cabecera">
+    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
+      <span class="logo-simbolo">S</span>
+      <span>SPEAKE<span class="punto">.</span></span>
+    </a>
+
+    <nav class="navegacion" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="personaliza.html" aria-current="page">Personaliza</a>
+      <a href="index.html#empresa">Empresa</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+
+    <a href="catalogo.html" class="boton boton-cabecera">
+      Explorar modelos <span>↗</span>
+    </a>
+  </header>
+
+  <main id="contenido">
+    <section class="configurador">
+      <div class="preview" id="preview">
+        <img id="preview-img" src="img/court.jpg" alt="Vista del modelo seleccionado" onerror="this.style.display='none'">
+        <span class="preview-silueta" id="preview-silueta">SPEAKE</span>
+        <span class="preview-nombre" id="preview-nombre">COURT CUSTOM</span>
+      </div>
+
+      <div class="campos">
+        <p class="etiqueta">SPEAKE CUSTOM LAB</p>
+        <h1>DISEÑA TU<br><span class="destacado-azul">PROPIO ESTILO.</span></h1>
+        <p>Selecciona uno de los dos modelos personalizables y configura una propuesta, para ti o para todo tu equipo. La vista previa es orientativa; el formulario enviará una solicitud, no una compra automática.</p>
+
+        <form id="form-custom" action="contacto.html" method="get">
+          <div class="grupo">
+            <label for="modelo">1. Elige el modelo</label>
+            <select id="modelo" name="modelo">
+              <option value="court">SPEAKE Court Custom</option>
+              <option value="pulse">SPEAKE Pulse Custom</option>
+            </select>
+          </div>
+
+          <fieldset class="grupo">
+            <legend>2. Color principal</legend>
+            <div class="colores">
+              <label class="color-opcion"><input type="radio" name="color" value="Negro" data-color="#171a20" checked> Negro</label>
+              <label class="color-opcion"><input type="radio" name="color" value="Azul eléctrico" data-color="#1683ff"> Azul eléctrico</label>
+              <label class="color-opcion"><input type="radio" name="color" value="Blanco" data-color="#f5f7fa"> Blanco</label>
+              <label class="color-opcion"><input type="radio" name="color" value="Rojo" data-color="#e23a48"> Rojo</label>
+            </div>
+          </fieldset>
+
+          <div class="grupo">
+            <label for="cordones">3. Color de cordones</label>
+            <select id="cordones" name="cordones">
+              <option>Blancos</option><option>Negros</option><option>Azules</option><option>Rojos</option>
+            </select>
+          </div>
+
+          <fieldset class="grupo">
+            <legend>4. Pares por talla</legend>
+            <div class="tallas-grid">
+            <label class="talla-campo"><span>38</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="38" aria-label="Pares talla 38"></label>
+            <label class="talla-campo"><span>39</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="39" aria-label="Pares talla 39"></label>
+            <label class="talla-campo"><span>40</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="40" aria-label="Pares talla 40"></label>
+            <label class="talla-campo"><span>41</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="41" aria-label="Pares talla 41"></label>
+            <label class="talla-campo"><span>42</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="42" aria-label="Pares talla 42"></label>
+            <label class="talla-campo"><span>43</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="43" aria-label="Pares talla 43"></label>
+            <label class="talla-campo"><span>44</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="44" aria-label="Pares talla 44"></label>
+            <label class="talla-campo"><span>45</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="45" aria-label="Pares talla 45"></label>
+            <label class="talla-campo"><span>46</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="46" aria-label="Pares talla 46"></label>
+            </div>
+            <p class="total-pares">Total: <strong id="total">0</strong> pares</p>
+            <p class="error" id="error" role="alert"></p>
+          </fieldset>
+
+          <div class="grupo">
+            <label for="equipo">5. Club o equipo (si procede)</label>
+            <input id="equipo" name="equipo" type="text" maxlength="60" autocomplete="organization" placeholder="Ej.: Club Deportivo Halcones">
+          </div>
+
+          <div class="grupo">
+            <label for="fecha">6. Fecha objetivo de entrega (opcional)</label>
+            <input id="fecha" name="fecha" type="date">
+          </div>
+
+          <div class="grupo">
+            <label for="detalle">7. Iniciales o detalles (opcional)</label>
+            <input id="detalle" name="detalle" type="text" maxlength="30" placeholder="Ej.: iniciales, escudo lateral...">
+          </div>
+
+          <button class="boton boton-azul" type="submit">Continuar solicitud <span>→</span></button>
+          <p class="aviso">Proyecto académico: el formulario prepara los datos de la solicitud. No procesa pagos ni envía información a un servidor.</p>
+          <div class="resultado" id="resumen" aria-live="polite">Tu diseño: SPEAKE Court · Negro · Cordones blancos.</div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- PIE DE PÁGINA (idéntico en todas las páginas) -->
+  <footer class="pie">
+    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
+      <span class="logo-simbolo">S</span>
+      <span>SPEAKE<span class="punto">.</span></span>
+    </a>
+
+    <p>Tu estilo. Tus reglas.</p>
+
+    <a href="#top">Volver arriba ↑</a>
+
+    <small>© 2026 SPEAKE · Proyecto académico</small>
+  </footer>
+
+  <script>
+    const modelo = document.getElementById("modelo");
+    const img = document.getElementById("preview-img");
+    const silueta = document.getElementById("preview-silueta");
+    const nombre = document.getElementById("preview-nombre");
+    const resumen = document.getElementById("resumen");
+    const formulario = document.getElementById("form-custom");
+    const campos = Array.from(document.querySelectorAll(".talla-campo input"));
+    const error = document.getElementById("error");
+
+    function pares(campo) {
+      return Math.max(0, parseInt(campo.value, 10) || 0);
+    }
+    function totalPares() {
+      return campos.reduce((suma, c) => suma + pares(c), 0);
+    }
+    function repartoTallas() {
+      return campos.filter(c => pares(c) > 0).map(c => c.dataset.talla + ":" + pares(c)).join(",");
+    }
+
+    function actualizar() {
+      const m = modelo.value;
+      const color = document.querySelector('input[name="color"]:checked');
+      const cordones = document.getElementById("cordones").value;
+      const equipo = document.getElementById("equipo").value.trim();
+      const detalle = document.getElementById("detalle").value.trim();
+      const total = totalPares();
+      const nombreModelo = m === "pulse" ? "SPEAKE PULSE" : "SPEAKE COURT";
+
+      img.style.display = "";
+      img.src = m === "pulse" ? "img/pulse.jpg" : "img/court.jpg";
+      nombre.textContent = nombreModelo + " CUSTOM";
+      silueta.textContent = nombreModelo;
+      document.getElementById("preview").style.setProperty("--color-zapatilla", color.dataset.color);
+      document.getElementById("total").textContent = total;
+      if (total > 0) error.textContent = "";
+
+      resumen.textContent = "Tu diseño: " + nombreModelo + " · " + color.value +
+        " · Cordones " + cordones.toLowerCase() +
+        " · " + total + (total === 1 ? " par" : " pares") +
+        (equipo ? " · Equipo: " + equipo : "") +
+        (detalle ? " · Detalles: " + detalle : "") + ".";
+    }
+
+    formulario.addEventListener("input", actualizar);
+    formulario.addEventListener("change", actualizar);
+    formulario.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const total = totalPares();
+      if (total < 1) {
+        error.textContent = "Indica al menos un par en alguna talla.";
+        campos[0].focus();
+        return;
+      }
+      const datos = new URLSearchParams(new FormData(formulario));
+      datos.set("tallas", repartoTallas());
+      datos.set("cantidad", total);
+      location.href = "contacto.html?" + datos.toString();
+    });
+
+    document.getElementById("fecha").min = new Date().toISOString().slice(0, 10);
+    const params = new URLSearchParams(location.search);
+    if (params.get("modelo") === "pulse") modelo.value = "pulse";
+    actualizar();
+  </script>
+</body>
+</html>
