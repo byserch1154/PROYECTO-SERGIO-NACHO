@@ -3,191 +3,348 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Configura tu zapatilla SPEAKE Court o Pulse: color, cordones, tallas y detalles, para ti o para tu equipo.">
+  <meta name="description" content="Elige un modelo del catálogo SPEAKE y personaliza el color de cada parte.">
   <title>Personaliza tu modelo | SPEAKE</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/sf-layout.css">
+  <script src="js/sf-config.js"></script>
+  <script src="js/sf-layout.js" defer></script>
+  <script src="js/zapatillas.js"></script>
+  <style>
+    .configurador{padding:65px 7%;display:grid;grid-template-columns:1.1fr .9fr;gap:45px}
+    .preview{position:sticky;top:110px;align-self:start;display:flex;flex-direction:column;background:radial-gradient(circle at 50% 38%,#183456,#11151c 72%);border:1px solid var(--borde);overflow:hidden}
+    .preview-zona{padding:34px 24px 10px}
+    .preview svg{display:block;width:100%;height:auto;filter:drop-shadow(0 18px 22px rgba(0,0,0,.55))}
+    .preview svg path,.preview svg line{transition:fill .25s,stroke .25s}
+    .preview-info{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;padding:14px 22px 20px;border-top:1px solid var(--borde);background:rgba(8,10,14,.45)}
+    .preview-nombre{font-weight:800;letter-spacing:2px}
+    .preview-cat{display:block;font-size:.7rem;color:var(--gris);letter-spacing:1.5px;font-weight:400}
+    .preview-precio{font-size:1.4rem;font-weight:800}
+    .preview-precio small{display:block;font-size:.68rem;color:var(--gris);font-weight:400;text-align:right}
+    .vista-tabs{display:flex;gap:8px;padding:0 22px 14px}
+    .vista-tab{background:#11151c;color:var(--gris);border:1px solid var(--borde);border-radius:4px;cursor:pointer;font:inherit;font-size:.74rem;font-weight:700;letter-spacing:1px;padding:9px 14px}
+    .vista-tab:hover{border-color:var(--azul-claro)}
+    .vista-tab[aria-pressed="true"]{color:var(--blanco);border-color:var(--azul);background:rgba(22,131,255,.14)}
+    .vista-tab:focus-visible{outline:2px solid var(--azul-claro);outline-offset:2px}
+    .foto-modelo[hidden]{display:none}
+    .foto-modelo{display:block;width:100%;height:auto;border-radius:3px}
+    .campos h1{font-size:clamp(2.5rem,4vw,4rem);line-height:1;letter-spacing:-2px;margin-bottom:20px}
+    .campos>p{color:var(--gris);margin-bottom:25px}
+    .grupo{padding:20px 0;border-top:1px solid var(--borde);border-left:0;border-right:0;border-bottom:0;min-width:0}
+    .grupo label,.grupo legend{display:block;font-size:.85rem;font-weight:700;margin-bottom:12px;padding:0}
+    .grupo select,.grupo input[type="text"],.grupo input[type="number"]{width:100%;padding:13px;background:#11151c;color:var(--blanco);border:1px solid var(--borde);font:inherit;border-radius:3px}
+    .grupo select:focus,.grupo input:focus{outline:2px solid var(--azul);outline-offset:1px}
+    .fila{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .modelos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .modelo-op{position:relative;display:block;margin:0!important}
+    .modelo-op input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer;margin:0}
+    .modelo-op span{display:block;padding:12px 10px;border:1px solid var(--borde);border-radius:4px;background:#11151c;font-size:.78rem;font-weight:800;letter-spacing:.5px;text-align:center;transition:border-color .2s,background .2s}
+    .modelo-op small{display:block;margin-top:3px;font-size:.62rem;font-weight:400;color:var(--gris);letter-spacing:1px}
+    .modelo-op:hover span{border-color:var(--azul-claro)}
+    .modelo-op input:checked + span{border-color:var(--azul);background:rgba(22,131,255,.14)}
+    .modelo-op input:focus-visible + span{outline:2px solid var(--azul-claro);outline-offset:2px}
+    .muestras{display:flex;flex-wrap:wrap;gap:10px}
+    .muestra{position:relative;display:block;margin:0!important;width:34px;height:34px}
+    .muestra input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer;margin:0}
+    .muestra span{display:block;width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.25);transition:transform .15s}
+    .muestra:hover span{transform:scale(1.12)}
+    .muestra input:checked + span{border-color:#fff;outline:2px solid var(--azul);outline-offset:3px}
+    .muestra input:focus-visible + span{outline:2px dashed #fff;outline-offset:3px}
+    .parte-actual{font-weight:400;color:var(--gris);margin-left:6px}
+    .acciones{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:8px}
+    .boton-reset{background:none;color:var(--blanco);border:1px solid var(--borde);border-radius:4px;cursor:pointer;font:inherit;font-size:.85rem;font-weight:700;min-height:48px;padding:0 20px}
+    .boton-reset:hover{border-color:var(--azul)}
+    button.boton{border:0;cursor:pointer;font-family:inherit}
+    .aviso{font-size:.78rem;color:var(--gris);margin-top:12px}
+    .resultado{margin-top:20px;padding:15px;border:1px solid var(--borde);background:#11151c;font-size:.85rem;line-height:1.6}
+    @media(max-width:760px){
+      .configurador{grid-template-columns:1fr;padding:45px 6%;gap:25px}
+      .preview{position:relative;top:auto}
+      .modelos-grid{grid-template-columns:repeat(2,1fr)}
+      .fila{grid-template-columns:1fr}
+    }
+    @media(prefers-reduced-motion:reduce){.preview svg path,.muestra span,.modelo-op span{transition:none}}
+  </style>
 </head>
-<body id="top">
-
-  <a class="saltar" href="#contenido">Saltar al contenido</a>
-
-  <!-- CABECERA (idéntica en todas las páginas) -->
-  <header class="cabecera">
-    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
-      <span class="logo-simbolo">S</span>
-      <span>SPEAKE<span class="punto">.</span></span>
-    </a>
-
-    <nav class="navegacion" aria-label="Navegación principal">
-      <a href="index.html">Inicio</a>
-      <a href="catalogo.html">Catálogo</a>
-      <a href="personaliza.html" aria-current="page">Personaliza</a>
-      <a href="index.html#empresa">Empresa</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
-
-    <a href="catalogo.html" class="boton boton-cabecera">
-      Explorar modelos <span>↗</span>
-    </a>
-  </header>
-
-  <main id="contenido">
+<body class="sf-body">
+  <div id="sf-header"></div>
+  <main>
     <section class="configurador">
+
       <div class="preview" id="preview">
-        <img id="preview-img" src="img/court.jpg" alt="Vista del modelo seleccionado" onerror="this.style.display='none'">
-        <span class="preview-silueta" id="preview-silueta">SPEAKE</span>
-        <span class="preview-nombre" id="preview-nombre">COURT CUSTOM</span>
+        <div class="preview-zona">
+          <svg id="zapa" viewBox="0 0 620 290" role="img" aria-labelledby="zapa-titulo" aria-describedby="resumen">
+            <title id="zapa-titulo">Vista lateral de la zapatilla con tu diseño</title>
+            <ellipse cx="310" cy="268" rx="270" ry="13" fill="rgba(0,0,0,.35)"/>
+            <g id="capas"></g>
+            <text id="t-detalle" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="20" letter-spacing="3"></text>
+          </svg>
+          <img id="foto-modelo" class="foto-modelo" src="img/court.jpg" alt="" hidden>
+        </div>
+        <div class="vista-tabs" role="group" aria-label="Tipo de vista">
+          <button type="button" class="vista-tab" id="tab-diseno" aria-pressed="true">Tu diseño</button>
+          <button type="button" class="vista-tab" id="tab-foto" aria-pressed="false">Foto del catálogo</button>
+        </div>
+        <div class="preview-info">
+          <div class="preview-nombre"><span id="preview-nombre">SPEAKE COURT</span><span class="preview-cat" id="preview-cat">URBANO</span></div>
+          <div class="preview-precio"><span id="precio-total">—</span><small id="precio-nota">Precio orientativo</small></div>
+        </div>
       </div>
 
       <div class="campos">
         <p class="etiqueta">SPEAKE CUSTOM LAB</p>
-        <h1>DISEÑA TU<br><span class="destacado-azul">PROPIO ESTILO.</span></h1>
-        <p>Selecciona uno de los dos modelos personalizables y configura una propuesta, para ti o para todo tu equipo. La vista previa es orientativa; el formulario enviará una solicitud, no una compra automática.</p>
+        <h1>DISEÑA TU<br><span style="color:var(--azul)">PROPIO ESTILO.</span></h1>
+        <p>Elige una zapatilla de nuestro catálogo y cambia el color de cada parte. La vista previa es orientativa; el formulario enviará una solicitud, no una compra automática.</p>
 
         <form id="form-custom" action="contacto.html" method="get">
-          <div class="grupo">
-            <label for="modelo">1. Elige el modelo</label>
-            <select id="modelo" name="modelo">
-              <option value="court">SPEAKE Court Custom</option>
-              <option value="pulse">SPEAKE Pulse Custom</option>
-            </select>
-          </div>
-
           <fieldset class="grupo">
-            <legend>2. Color principal</legend>
-            <div class="colores">
-              <label class="color-opcion"><input type="radio" name="color" value="Negro" data-color="#171a20" checked> Negro</label>
-              <label class="color-opcion"><input type="radio" name="color" value="Azul eléctrico" data-color="#1683ff"> Azul eléctrico</label>
-              <label class="color-opcion"><input type="radio" name="color" value="Blanco" data-color="#f5f7fa"> Blanco</label>
-              <label class="color-opcion"><input type="radio" name="color" value="Rojo" data-color="#e23a48"> Rojo</label>
-            </div>
+            <legend>1. Elige el modelo del catálogo</legend>
+            <div class="modelos-grid" id="modelos"></div>
           </fieldset>
 
-          <div class="grupo">
-            <label for="cordones">3. Color de cordones</label>
-            <select id="cordones" name="cordones">
-              <option>Blancos</option><option>Negros</option><option>Azules</option><option>Rojos</option>
-            </select>
-          </div>
+          <div id="partes"></div>
 
-          <fieldset class="grupo">
-            <legend>4. Pares por talla</legend>
-            <div class="tallas-grid">
-            <label class="talla-campo"><span>38</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="38" aria-label="Pares talla 38"></label>
-            <label class="talla-campo"><span>39</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="39" aria-label="Pares talla 39"></label>
-            <label class="talla-campo"><span>40</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="40" aria-label="Pares talla 40"></label>
-            <label class="talla-campo"><span>41</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="41" aria-label="Pares talla 41"></label>
-            <label class="talla-campo"><span>42</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="42" aria-label="Pares talla 42"></label>
-            <label class="talla-campo"><span>43</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="43" aria-label="Pares talla 43"></label>
-            <label class="talla-campo"><span>44</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="44" aria-label="Pares talla 44"></label>
-            <label class="talla-campo"><span>45</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="45" aria-label="Pares talla 45"></label>
-            <label class="talla-campo"><span>46</span><input type="number" min="0" max="500" value="0" inputmode="numeric" data-talla="46" aria-label="Pares talla 46"></label>
+          <div class="grupo">
+            <div class="fila">
+              <div>
+                <label for="talla">Talla</label>
+                <select id="talla" name="talla" required>
+                  <option value="">Selecciona</option>
+                  <option>38</option><option>39</option><option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option><option>46</option>
+                </select>
+              </div>
+              <div>
+                <label for="cantidad">Cantidad (pares)</label>
+                <input id="cantidad" name="cantidad" type="number" min="1" max="500" value="1" required>
+              </div>
             </div>
-            <p class="total-pares">Total: <strong id="total">0</strong> pares</p>
-            <p class="error" id="error" role="alert"></p>
-          </fieldset>
-
-          <div class="grupo">
-            <label for="equipo">5. Club o equipo (si procede)</label>
-            <input id="equipo" name="equipo" type="text" maxlength="60" autocomplete="organization" placeholder="Ej.: Club Deportivo Halcones">
           </div>
 
           <div class="grupo">
-            <label for="fecha">6. Fecha objetivo de entrega (opcional)</label>
-            <input id="fecha" name="fecha" type="date">
+            <label for="detalle">Texto grabado en la suela (opcional, máx. 12)</label>
+            <input id="detalle" name="detalle" type="text" maxlength="12" placeholder="Ej.: iniciales o dorsal" autocomplete="off">
           </div>
 
-          <div class="grupo">
-            <label for="detalle">7. Iniciales o detalles (opcional)</label>
-            <input id="detalle" name="detalle" type="text" maxlength="30" placeholder="Ej.: iniciales, escudo lateral...">
-          </div>
+          <input type="hidden" id="estimado" name="estimado" value="">
 
-          <button class="boton boton-azul" type="submit">Continuar solicitud <span>→</span></button>
-          <p class="aviso">Proyecto académico: el formulario prepara los datos de la solicitud. No procesa pagos ni envía información a un servidor.</p>
-          <div class="resultado" id="resumen" aria-live="polite">Tu diseño: SPEAKE Court · Negro · Cordones blancos.</div>
+          <div class="acciones">
+            <button class="boton boton-azul" type="submit">Continuar solicitud <span>→</span></button>
+            <button class="boton-reset" type="button" id="reset">Restablecer diseño</button>
+          </div>
+          <p class="aviso">Proyecto académico: el formulario prepara los datos de la solicitud. No procesa pagos ni envía información a un servidor. Precio ilustrativo: base del modelo + 15 € por personalización (+5 € si lleva texto).</p>
+          <div class="resultado" id="resumen" aria-live="polite"></div>
         </form>
       </div>
     </section>
   </main>
-
-  <!-- PIE DE PÁGINA (idéntico en todas las páginas) -->
-  <footer class="pie">
-    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
-      <span class="logo-simbolo">S</span>
-      <span>SPEAKE<span class="punto">.</span></span>
-    </a>
-
-    <p>Tu estilo. Tus reglas.</p>
-
-    <a href="#top">Volver arriba ↑</a>
-
-    <small>© 2026 SPEAKE · Proyecto académico</small>
-  </footer>
+  <div id="sf-footer"></div>
 
   <script>
-    const modelo = document.getElementById("modelo");
-    const img = document.getElementById("preview-img");
-    const silueta = document.getElementById("preview-silueta");
-    const nombre = document.getElementById("preview-nombre");
-    const resumen = document.getElementById("resumen");
-    const formulario = document.getElementById("form-custom");
-    const campos = Array.from(document.querySelectorAll(".talla-campo input"));
-    const error = document.getElementById("error");
+    /* ---------- Datos del catálogo ---------- */
+    const COLORES = [
+      { n: "Negro", h: "#171a20" }, { n: "Blanco", h: "#f5f7fa" },
+      { n: "Azul eléctrico", h: "#1683ff" }, { n: "Rojo", h: "#e23a48" },
+      { n: "Verde", h: "#1fb36b" }, { n: "Amarillo", h: "#f5c542" },
+      { n: "Naranja", h: "#f2813b" }, { n: "Gris", h: "#8d94a3" }
+    ];
+    const PARTES = [
+      { id: "cuerpo", t: "Cuerpo" }, { id: "franja", t: "Franja lateral" },
+      { id: "puntera", t: "Puntera" }, { id: "talon", t: "Talón" },
+      { id: "suela", t: "Suela" }, { id: "cordones", t: "Cordones" },
+      { id: "acento", t: "Acentos y detalles" }
+    ];
+    const EXTRA_PERSONALIZACION = 15, EXTRA_TEXTO = 5;
 
-    function pares(campo) {
-      return Math.max(0, parseInt(campo.value, 10) || 0);
+    /* Las siluetas de cada modelo están en js/zapatillas.js (window.SPEAKE_FORMAS) */
+    const FORMAS = window.SPEAKE_FORMAS;
+
+    const MODELOS = {
+      court:  { nombre: "SPEAKE Court",  cat: "URBANO",     precio: 89,  base: { cuerpo: "Blanco", franja: "Blanco", puntera: "Blanco", talon: "Blanco", suela: "Blanco", cordones: "Blanco", acento: "Azul eléctrico" } },
+      pulse:  { nombre: "SPEAKE Pulse",  cat: "DEPORTIVO",  precio: 109, base: { cuerpo: "Negro", franja: "Negro", puntera: "Negro", talon: "Negro", suela: "Negro", cordones: "Negro", acento: "Azul eléctrico" } },
+      high:   { nombre: "SPEAKE High",   cat: "BALONCESTO", precio: 99,  base: { cuerpo: "Blanco", franja: "Negro", puntera: "Blanco", talon: "Negro", suela: "Blanco", cordones: "Negro", acento: "Azul eléctrico" } },
+      retro:  { nombre: "SPEAKE Retro",  cat: "RETRO",      precio: 95,  base: { cuerpo: "Gris", franja: "Negro", puntera: "Negro", talon: "Gris", suela: "Blanco", cordones: "Blanco", acento: "Azul eléctrico" } },
+      street: { nombre: "SPEAKE Street", cat: "STREET",     precio: 92,  base: { cuerpo: "Negro", franja: "Negro", puntera: "Negro", talon: "Negro", suela: "Blanco", cordones: "Negro", acento: "Azul eléctrico" } },
+      aero:   { nombre: "SPEAKE Aero",   cat: "RUNNING",    precio: 105, base: { cuerpo: "Negro", franja: "Azul eléctrico", puntera: "Negro", talon: "Negro", suela: "Blanco", cordones: "Negro", acento: "Azul eléctrico" } }
+    };
+
+    /* ---------- Utilidades ---------- */
+    const $ = (id) => document.getElementById(id);
+    const hexDe = (nombre) => (COLORES.find((c) => c.n === nombre) || COLORES[0]).h;
+    const contraste = (hex) => {
+      const n = parseInt(hex.slice(1), 16);
+      const l = (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+      return l > 0.55 ? "#171a20" : "#f5f7fa";
+    };
+    const NS = "http://www.w3.org/2000/svg";
+    const euros = (n) => n.toLocaleString("es-ES") + " €";
+    const form = $("form-custom");
+
+    /* ---------- Construcción del formulario ---------- */
+    function construirModelos() {
+      const cont = $("modelos");
+      Object.keys(MODELOS).forEach((k) => {
+        const m = MODELOS[k];
+        const l = document.createElement("label");
+        l.className = "modelo-op";
+        const i = document.createElement("input");
+        i.type = "radio"; i.name = "modelo"; i.value = k;
+        const s = document.createElement("span");
+        s.textContent = m.nombre.replace("SPEAKE ", "").toUpperCase();
+        const sm = document.createElement("small");
+        sm.textContent = m.cat;
+        s.appendChild(sm);
+        l.append(i, s);
+        cont.appendChild(l);
+      });
     }
-    function totalPares() {
-      return campos.reduce((suma, c) => suma + pares(c), 0);
+
+    function construirPartes() {
+      const cont = $("partes");
+      PARTES.forEach((p, idx) => {
+        const fs = document.createElement("fieldset");
+        fs.className = "grupo";
+        const lg = document.createElement("legend");
+        lg.textContent = (idx + 2) + ". " + p.t;
+        const actual = document.createElement("span");
+        actual.className = "parte-actual";
+        actual.id = "actual-" + p.id;
+        lg.appendChild(actual);
+        const wrap = document.createElement("div");
+        wrap.className = "muestras";
+        COLORES.forEach((c) => {
+          const l = document.createElement("label");
+          l.className = "muestra";
+          l.title = c.n;
+          const i = document.createElement("input");
+          i.type = "radio"; i.name = p.id; i.value = c.n;
+          i.setAttribute("aria-label", p.t + ": " + c.n);
+          const s = document.createElement("span");
+          s.style.background = c.h;
+          l.append(i, s);
+          wrap.appendChild(l);
+        });
+        fs.append(lg, wrap);
+        cont.appendChild(fs);
+      });
     }
-    function repartoTallas() {
-      return campos.filter(c => pares(c) > 0).map(c => c.dataset.talla + ":" + pares(c)).join(",");
+
+    /* ---------- Dibujo ---------- */
+    function dibujarForma(clave) {
+      const f = FORMAS[clave];
+      const cont = $("capas");
+      cont.replaceChildren();
+      f.capas.forEach((c) => {
+        if (c.p === "cordones") {
+          const g = document.createElementNS(NS, "g");
+          g.setAttribute("id", "g-cordones");
+          g.setAttribute("fill", "none"); g.setAttribute("stroke-width", "7"); g.setAttribute("stroke-linecap", "round");
+          f.lazos.forEach((s) => {
+            for (let i = 0; i < s.n; i++) {
+              const x = s.x0 + s.dx * i, y = s.y0 + s.dy * i;
+              const ln = document.createElementNS(NS, "line");
+              ln.setAttribute("x1", x + s.a[0]); ln.setAttribute("y1", y + s.a[1]);
+              ln.setAttribute("x2", x + s.b[0]); ln.setAttribute("y2", y + s.b[1]);
+              g.appendChild(ln);
+            }
+          });
+          cont.appendChild(g);
+          return;
+        }
+        const el = document.createElementNS(NS, "path");
+        el.setAttribute("d", c.d);
+        if (c.p === "linea") {
+          el.setAttribute("fill", "none"); el.setAttribute("stroke", "rgba(130,150,180,.45)");
+          el.setAttribute("stroke-width", "1.5"); el.setAttribute("stroke-linecap", "round");
+        } else if (c.p === "fijo") {
+          el.setAttribute("fill", c.fill);
+        } else {
+          el.dataset.parte = c.p;
+          el.setAttribute("stroke", "rgba(130,150,180,.5)"); el.setAttribute("stroke-width", "1.5");
+          el.setAttribute("stroke-linejoin", "round");
+        }
+        cont.appendChild(el);
+      });
+      $("t-detalle").setAttribute("x", 310);
+      $("t-detalle").setAttribute("y", f.textoY);
+    }
+
+    function valor(parte) {
+      const sel = form.querySelector('input[name="' + parte + '"]:checked');
+      return sel ? sel.value : COLORES[0].n;
     }
 
     function actualizar() {
-      const m = modelo.value;
-      const color = document.querySelector('input[name="color"]:checked');
-      const cordones = document.getElementById("cordones").value;
-      const equipo = document.getElementById("equipo").value.trim();
-      const detalle = document.getElementById("detalle").value.trim();
-      const total = totalPares();
-      const nombreModelo = m === "pulse" ? "SPEAKE PULSE" : "SPEAKE COURT";
+      const clave = valor("modelo");
+      const m = MODELOS[clave] || MODELOS.court;
+      const colores = {};
+      PARTES.forEach((p) => {
+        colores[p.id] = valor(p.id);
+        $("actual-" + p.id).textContent = "· " + colores[p.id];
+      });
+      document.querySelectorAll("#capas [data-parte]").forEach((el) => el.setAttribute("fill", hexDe(colores[el.dataset.parte])));
+      const gl = $("g-cordones");
+      if (gl) gl.setAttribute("stroke", hexDe(colores.cordones));
 
-      img.style.display = "";
-      img.src = m === "pulse" ? "img/pulse.jpg" : "img/court.jpg";
-      nombre.textContent = nombreModelo + " CUSTOM";
-      silueta.textContent = nombreModelo;
-      document.getElementById("preview").style.setProperty("--color-zapatilla", color.dataset.color);
-      document.getElementById("total").textContent = total;
-      if (total > 0) error.textContent = "";
+      const texto = $("detalle").value.trim();
+      const t = $("t-detalle");
+      t.textContent = texto.toUpperCase();
+      t.setAttribute("fill", contraste(hexDe(colores.suela)));
+      actualizarFoto(clave, m);
 
-      resumen.textContent = "Tu diseño: " + nombreModelo + " · " + color.value +
-        " · Cordones " + cordones.toLowerCase() +
-        " · " + total + (total === 1 ? " par" : " pares") +
-        (equipo ? " · Equipo: " + equipo : "") +
-        (detalle ? " · Detalles: " + detalle : "") + ".";
+      const cant = Math.min(500, Math.max(1, parseInt($("cantidad").value, 10) || 1));
+      const unidad = m.precio + EXTRA_PERSONALIZACION + (texto ? EXTRA_TEXTO : 0);
+      const total = unidad * cant;
+      $("preview-nombre").textContent = m.nombre.toUpperCase();
+      $("preview-cat").textContent = m.cat + " · PERSONALIZADO";
+      $("precio-total").textContent = euros(total);
+      $("precio-nota").textContent = cant > 1 ? euros(unidad) + " / par · orientativo" : "Precio orientativo";
+      $("estimado").value = total + " €";
+
+      const talla = $("talla").value || "sin seleccionar";
+      $("resumen").textContent =
+        "Tu diseño: " + m.nombre + " · " + PARTES.map((p) => p.t + " " + colores[p.id].toLowerCase()).join(" · ") +
+        " · Talla " + talla + " · " + cant + (cant === 1 ? " par" : " pares") +
+        (texto ? " · Texto: " + texto : "") + " · Estimado " + euros(total) + ".";
     }
 
-    formulario.addEventListener("input", actualizar);
-    formulario.addEventListener("change", actualizar);
-    formulario.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const total = totalPares();
-      if (total < 1) {
-        error.textContent = "Indica al menos un par en alguna talla.";
-        campos[0].focus();
-        return;
-      }
-      const datos = new URLSearchParams(new FormData(formulario));
-      datos.set("tallas", repartoTallas());
-      datos.set("cantidad", total);
-      location.href = "contacto.html?" + datos.toString();
-    });
+    function aplicarModelo(clave) {
+      const m = MODELOS[clave];
+      form.querySelector('input[name="modelo"][value="' + clave + '"]').checked = true;
+      PARTES.forEach((p) => {
+        form.querySelector('input[name="' + p.id + '"][value="' + m.base[p.id] + '"]').checked = true;
+      });
+      dibujarForma(clave);
+      actualizar();
+    }
 
-    document.getElementById("fecha").min = new Date().toISOString().slice(0, 10);
-    const params = new URLSearchParams(location.search);
-    if (params.get("modelo") === "pulse") modelo.value = "pulse";
-    actualizar();
+    function actualizarFoto(clave, m) {
+      const img = $("foto-modelo");
+      img.src = "img/" + clave + ".jpg";
+      img.alt = "Foto del catálogo: " + m.nombre;
+    }
+    function verFoto(si) {
+      $("zapa").style.display = si ? "none" : "";
+      $("foto-modelo").hidden = !si;
+      $("tab-foto").setAttribute("aria-pressed", si);
+      $("tab-diseno").setAttribute("aria-pressed", !si);
+    }
+    $("tab-diseno").addEventListener("click", () => verFoto(false));
+    $("tab-foto").addEventListener("click", () => verFoto(true));
+
+    /* ---------- Arranque ---------- */
+    construirModelos();
+    construirPartes();
+
+    const pedido = new URLSearchParams(location.search).get("modelo");
+    let actual = MODELOS[pedido] ? pedido : "court";
+    aplicarModelo(actual);
+
+    form.addEventListener("change", (e) => {
+      if (e.target.name === "modelo") { actual = e.target.value; aplicarModelo(actual); }
+      else actualizar();
+    });
+    form.addEventListener("input", actualizar);
+    $("reset").addEventListener("click", () => aplicarModelo(actual));
   </script>
 </body>
 </html>

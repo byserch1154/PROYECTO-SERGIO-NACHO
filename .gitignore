@@ -1,0 +1,18 @@
+# Node
+node_modules/
+backend-express/.env
+backend-express/logs/*.txt
+backend-express/data/usuarios_sneaker.json
+backend-express/data/export/*.csv
+# Java
+java/psp/out/
+java/psp/salida/
+java/psp/pruebas_salida/
+# Python
+__pycache__/
+.pytest_cache/
+.venv/
+python/sneaker-data-lab/logs/
+python/sneaker-data-lab/outputs/
+# Odoo
+odoo/exportaciones/

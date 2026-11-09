@@ -1,0 +1,21 @@
+{
+  "name": "speake-backend-express",
+  "version": "1.0.0",
+  "description": "SPEAKE · Sneaker Factory · Backend Express que conecta la web con PostgreSQL (Acceso a Datos)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test --test-concurrency=1 test/api.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "16.4.5",
+    "express": "4.21.2",
+    "pg": "8.13.1"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}

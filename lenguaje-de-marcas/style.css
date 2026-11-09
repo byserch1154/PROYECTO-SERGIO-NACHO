@@ -1,3 +1,4 @@
+
 /* =========================
    CONFIGURACIÓN GENERAL
 ========================= */
@@ -10,7 +11,6 @@
     --blanco: #f5f7fa;
     --gris: #9299a7;
     --borde: rgba(255, 255, 255, 0.10);
-    color-scheme: dark;
 }
 
 * {
@@ -245,7 +245,7 @@ a {
 
 .hero-datos span {
     color: var(--gris);
-    font-size: 0.7rem;
+    font-size: 0.62rem;
     letter-spacing: 1px;
 }
 
@@ -366,7 +366,6 @@ a {
 
 .enlace-flecha {
     padding-bottom: 8px;
-    display: inline-block;
     color: var(--azul-claro);
     font-size: 0.85rem;
 }
@@ -415,7 +414,6 @@ a {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    position: relative;
     transition: transform 0.4s;
 }
 
@@ -431,7 +429,7 @@ a {
     padding: 6px 9px;
     background: rgba(8, 10, 14, 0.8);
     border: 1px solid var(--borde);
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 1px;
 }
@@ -455,7 +453,6 @@ a {
     padding-top: 18px;
 }
 
-.producto-info h2,
 .producto-info h3 {
     font-size: 1rem;
     letter-spacing: 0.5px;
@@ -763,12 +760,12 @@ a {
     }
 
     .hero-datos span {
-        font-size: 0.65rem;
+        font-size: 0.52rem;
     }
 
     .franja {
         justify-content: center;
-        font-size: 0.68rem;
+        font-size: 0.58rem;
     }
 
     .franja span:nth-of-type(2),
@@ -834,516 +831,4 @@ a {
     .pie small {
         margin-top: 5px;
     }
-}
-
-/* =========================
-   ACCESIBILIDAD Y COMUNES
-========================= */
-
-.saltar {
-    position: absolute;
-    left: -9999px;
-    top: 0;
-    z-index: 100;
-    padding: 10px 16px;
-    background: var(--azul);
-    color: white;
-    font-size: 0.85rem;
-    font-weight: 700;
-}
-
-.saltar:focus {
-    left: 10px;
-    top: 10px;
-}
-
-:focus-visible {
-    outline: 2px solid var(--azul-claro);
-    outline-offset: 3px;
-}
-
-.navegacion a[aria-current="page"] {
-    color: var(--azul-claro);
-    font-weight: 700;
-}
-
-.destacado-azul {
-    color: var(--azul);
-}
-
-.titulo-pagina {
-    font-size: clamp(2.4rem, 4vw, 4rem);
-    line-height: 1.06;
-    letter-spacing: -2px;
-}
-
-.titulo-pagina span {
-    color: var(--azul);
-}
-
-.aviso {
-    margin-top: 12px;
-    color: var(--gris);
-    font-size: 0.78rem;
-}
-
-.nota-precios {
-    margin-top: 28px;
-    color: var(--gris);
-    font-size: 0.78rem;
-}
-
-/* =========================
-   TARJETAS DE PRODUCTO (extras)
-========================= */
-
-.producto-placeholder {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    color: rgba(255, 255, 255, 0.1);
-    font-size: 3.5rem;
-    font-weight: 900;
-    letter-spacing: -3px;
-}
-
-.producto-info .producto-precio {
-    margin-top: 8px;
-    color: var(--blanco);
-    font-size: 0.95rem;
-    font-weight: 800;
-}
-
-.producto-info .producto-tallas {
-    margin-top: 2px;
-    font-size: 0.75rem;
-}
-
-/* =========================
-   SOBRE NOSOTROS
-========================= */
-
-.empresa-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-}
-
-.empresa-item {
-    padding: 24px;
-    background: var(--superficie);
-    border: 1px solid var(--borde);
-}
-
-.empresa-item h3 {
-    margin-top: 10px;
-    font-size: 1.2rem;
-}
-
-.empresa-item p {
-    margin-top: 8px;
-    color: var(--gris);
-    font-size: 0.9rem;
-}
-
-.empresa-item .enlace-flecha {
-    padding-bottom: 0;
-}
-
-/* =========================
-   FICHA DE PRODUCTO
-========================= */
-
-.detalle-producto {
-    padding: 75px 7%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 55px;
-    align-items: center;
-}
-
-.detalle-visual {
-    min-height: 440px;
-    position: relative;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    background: radial-gradient(circle at 50% 40%, #1b3556, #11151c 72%);
-    border: 1px solid var(--borde);
-}
-
-.detalle-visual img {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    inset: 0;
-    object-fit: cover;
-}
-
-.detalle-visual .placeholder {
-    color: rgba(255, 255, 255, 0.12);
-    font-size: 5rem;
-    font-weight: 900;
-    letter-spacing: -5px;
-}
-
-.detalle-texto h1 {
-    font-size: clamp(2.7rem, 5vw, 4.6rem);
-    line-height: 1;
-    letter-spacing: -3px;
-}
-
-.detalle-texto .precio {
-    margin: 22px 0;
-    font-size: 1.5rem;
-    font-weight: 800;
-}
-
-.detalle-texto p {
-    margin: 18px 0;
-    color: var(--gris);
-}
-
-.detalle-texto .etiqueta {
-    margin-bottom: 18px;
-}
-
-.tallas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 9px;
-    margin: 15px 0 25px;
-    list-style: none;
-}
-
-.tallas li {
-    padding: 8px 13px;
-    border: 1px solid var(--borde);
-    font-size: 0.85rem;
-}
-
-.detalle-nota {
-    color: var(--gris);
-    font-size: 0.78rem;
-}
-
-/* =========================
-   CONFIGURADOR (PERSONALIZA)
-========================= */
-
-.configurador {
-    padding: 65px 7%;
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 45px;
-}
-
-.preview {
-    min-height: 430px;
-    position: sticky;
-    top: 110px;
-    align-self: start;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    background: radial-gradient(circle at 50% 40%, #183456, #11151c 72%);
-    border: 1px solid var(--borde);
-}
-
-.preview img {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    inset: 0;
-    object-fit: cover;
-}
-
-.preview-silueta {
-    color: var(--color-zapatilla, #1683ff);
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 900;
-    font-style: italic;
-    letter-spacing: -5px;
-    text-shadow: 0 10px 35px #000;
-}
-
-.preview-nombre {
-    position: absolute;
-    left: 22px;
-    bottom: 18px;
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-.campos h1 {
-    margin-bottom: 20px;
-    font-size: clamp(2.5rem, 4vw, 4rem);
-    line-height: 1;
-    letter-spacing: -2px;
-}
-
-.campos > p {
-    margin-bottom: 25px;
-    color: var(--gris);
-}
-
-.campos .aviso {
-    margin-bottom: 0;
-}
-
-.configurador .grupo {
-    min-width: 0;
-    padding: 20px 0;
-    border: 0;
-    border-top: 1px solid var(--borde);
-}
-
-.configurador .grupo label,
-.configurador .grupo legend {
-    display: block;
-    margin-bottom: 12px;
-    font-size: 0.85rem;
-    font-weight: 700;
-}
-
-.colores {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.configurador .grupo .color-opcion {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    margin-bottom: 0;
-    color: #d7dce5;
-    font-size: 0.8rem;
-    font-weight: 400;
-}
-
-.color-opcion input {
-    accent-color: var(--azul);
-}
-
-.tallas-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-    gap: 10px;
-}
-
-.configurador .grupo .talla-campo {
-    margin-bottom: 0;
-    text-align: center;
-    font-weight: 400;
-}
-
-.talla-campo span {
-    display: block;
-    margin-bottom: 4px;
-    color: var(--azul-claro);
-    font-size: 0.8rem;
-    font-weight: 800;
-}
-
-.total-pares {
-    margin-top: 14px;
-    font-size: 0.9rem;
-}
-
-.error {
-    min-height: 1.2em;
-    margin-top: 6px;
-    color: #ff6b78;
-    font-size: 0.82rem;
-}
-
-.resultado {
-    margin-top: 20px;
-    padding: 15px;
-    background: var(--superficie);
-    border: 1px solid var(--borde);
-    font-size: 0.85rem;
-}
-
-/* =========================
-   CONTROLES DE FORMULARIO
-========================= */
-
-.configurador .grupo select,
-.configurador .grupo input[type="text"],
-.configurador .grupo input[type="date"],
-.configurador .grupo input[type="number"],
-.formulario input,
-.formulario select,
-.formulario textarea {
-    width: 100%;
-    padding: 13px;
-    background: var(--superficie);
-    color: var(--blanco);
-    border: 1px solid var(--borde);
-    border-radius: 3px;
-    font: inherit;
-}
-
-.formulario input:focus,
-.formulario select:focus,
-.formulario textarea:focus,
-.configurador .grupo input:focus,
-.configurador .grupo select:focus {
-    outline: 2px solid var(--azul);
-    outline-offset: 0;
-}
-
-/* =========================
-   CONTACTO
-========================= */
-
-.contacto {
-    padding: 70px 7%;
-    display: grid;
-    grid-template-columns: 0.8fr 1.2fr;
-    gap: 65px;
-}
-
-.contacto h1 {
-    font-size: clamp(2.8rem, 5vw, 4.8rem);
-    line-height: 1;
-    letter-spacing: -3px;
-}
-
-.contacto-intro p:not(.etiqueta) {
-    max-width: 390px;
-    margin-top: 22px;
-    color: var(--gris);
-}
-
-.contacto-dato {
-    margin-top: 35px;
-    padding-top: 18px;
-    border-top: 1px solid var(--borde);
-}
-
-.contacto-dato span {
-    display: block;
-    color: var(--gris);
-    font-size: 0.72rem;
-    letter-spacing: 1px;
-}
-
-.contacto-dato strong {
-    display: block;
-    margin-top: 5px;
-}
-
-.formulario {
-    padding: 28px;
-    background: var(--superficie);
-    border: 1px solid var(--borde);
-}
-
-.formulario .grupo {
-    margin-bottom: 20px;
-}
-
-.formulario label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 0.82rem;
-    font-weight: 700;
-}
-
-.formulario input,
-.formulario select,
-.formulario textarea {
-    background: var(--fondo);
-}
-
-.formulario textarea {
-    min-height: 130px;
-    resize: vertical;
-}
-
-.mensaje-confirmacion {
-    display: none;
-    margin-top: 18px;
-    padding: 14px;
-    border: 1px solid var(--azul);
-    color: #cde4ff;
-    font-size: 0.85rem;
-}
-
-.mensaje-confirmacion.visible {
-    display: block;
-}
-
-.mensaje-confirmacion .boton {
-    margin-top: 12px;
-}
-
-/* =========================
-   RESPONSIVE (PÁGINAS INTERNAS)
-========================= */
-
-@media (max-width: 950px) {
-    .detalle-producto,
-    .configurador {
-        padding-left: 5%;
-        padding-right: 5%;
-    }
-}
-
-@media (max-width: 760px) {
-    .configurador {
-        grid-template-columns: 1fr;
-        padding: 45px 6%;
-        gap: 25px;
-    }
-
-    .preview {
-        min-height: 300px;
-        position: relative;
-        top: auto;
-    }
-}
-
-@media (max-width: 700px) {
-    .detalle-producto {
-        grid-template-columns: 1fr;
-        padding: 45px 6%;
-        gap: 30px;
-    }
-
-    .detalle-visual {
-        min-height: 310px;
-    }
-
-    .contacto {
-        grid-template-columns: 1fr;
-        padding: 45px 6%;
-        gap: 35px;
-    }
-
-    .formulario {
-        padding: 20px;
-    }
-
-    .empresa-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
-
-    * {
-        transition: none !important;
-    }
-}
-
-.empresa {
-    background: #080a0e;
 }

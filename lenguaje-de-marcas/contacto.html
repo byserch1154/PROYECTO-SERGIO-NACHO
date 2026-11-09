@@ -6,160 +6,181 @@
   <meta name="description" content="Contacta con SPEAKE o solicita un presupuesto personalizado.">
   <title>Contacto | SPEAKE</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/sf-layout.css">
+  <script src="js/sf-config.js"></script>
+  <script src="js/sf-layout.js" defer></script>
+  <style>
+    .contacto{padding:70px 7%;display:grid;grid-template-columns:.8fr 1.2fr;gap:65px}
+    .contacto h1{font-size:clamp(2.8rem,5vw,4.8rem);line-height:1;letter-spacing:-3px}
+    .contacto-intro p:not(.etiqueta){color:var(--gris);margin-top:22px;max-width:390px}
+    .contacto-dato{margin-top:35px;padding-top:18px;border-top:1px solid var(--borde)}
+    .contacto-dato span{display:block;color:var(--gris);font-size:.72rem;letter-spacing:1px}
+    .contacto-dato strong{display:block;margin-top:5px}
+    .formulario{padding:28px;background:#11151c;border:1px solid var(--borde)}
+    .formulario .grupo{border:0;padding:0;margin-bottom:20px}
+    .formulario label{display:block;font-size:.82rem;font-weight:700;margin-bottom:8px}
+    .formulario input,.formulario select,.formulario textarea{width:100%;padding:13px;background:#080a0e;color:var(--blanco);border:1px solid var(--borde);font:inherit;border-radius:3px}
+    .formulario textarea{min-height:130px;resize:vertical}
+    .formulario input:focus,.formulario select:focus,.formulario textarea:focus{outline:1px solid var(--azul)}
+    .mensaje{display:none;margin-top:18px;padding:14px;border:1px solid var(--azul);color:#cde4ff;font-size:.85rem}
+    .mensaje.error{border-color:#e23a48;color:#ffc9ce}
+    .fila-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .tallas-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+    .tallas-grid label{text-align:center;font-size:.72rem;margin-bottom:4px}
+    .tallas-grid input{padding:9px 4px;text-align:center}
+    .formulario fieldset.grupo legend{font-size:.82rem;font-weight:700;margin-bottom:8px}
+    .total-pares{color:var(--gris);font-size:.78rem;margin-top:8px}
+    @media(max-width:750px){.tallas-grid{grid-template-columns:repeat(5,1fr)}.fila-2{grid-template-columns:1fr}}
+    @media(max-width:750px){.contacto{grid-template-columns:1fr;padding:45px 6%;gap:35px}.formulario{padding:20px}}
+  </style>
 </head>
-<body id="top">
-
-  <a class="saltar" href="#contenido">Saltar al contenido</a>
-
-  <!-- CABECERA (idéntica en todas las páginas) -->
-  <header class="cabecera">
-    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
-      <span class="logo-simbolo">S</span>
-      <span>SPEAKE<span class="punto">.</span></span>
-    </a>
-
-    <nav class="navegacion" aria-label="Navegación principal">
-      <a href="index.html">Inicio</a>
-      <a href="catalogo.html">Catálogo</a>
-      <a href="personaliza.html">Personaliza</a>
-      <a href="index.html#empresa">Empresa</a>
-      <a href="contacto.html" aria-current="page">Contacto</a>
-    </nav>
-
-    <a href="catalogo.html" class="boton boton-cabecera">
-      Explorar modelos <span>↗</span>
-    </a>
-  </header>
-
-  <main id="contenido">
+<body class="sf-body">
+  <div id="sf-header"></div>
+  <main>
     <section class="contacto">
       <div class="contacto-intro">
         <p class="etiqueta">HABLEMOS DE TU IDEA</p>
-        <h1>VAMOS A<br>CREAR ALGO<br><span class="destacado-azul">ÚNICO.</span></h1>
+        <h1>VAMOS A<br>CREAR ALGO<br><span style="color:var(--azul)">ÚNICO.</span></h1>
         <p>¿Tienes una idea para tus zapatillas o quieres pedir un diseño para tu equipo? Cuéntanos qué necesitas.</p>
-        <div class="contacto-dato"><span>PERSONALIZACIÓN</span><strong>Modelos Court y Pulse</strong></div>
+        <div class="contacto-dato"><span>PERSONALIZACIÓN</span><strong>Todos los modelos del catálogo</strong></div>
         <div class="contacto-dato"><span>PROYECTOS DE EQUIPO</span><strong>Solicitudes para clubes y grupos</strong></div>
         <div class="contacto-dato"><span>RESPUESTA</span><strong>Solicitud de presupuesto</strong></div>
       </div>
 
-      <form class="formulario" id="form-contacto">
+      <form class="formulario" id="form-contacto" novalidate>
         <p class="etiqueta">FORMULARIO SPEAKE</p>
-        <div class="grupo"><label for="nombre">Nombre y apellidos</label><input id="nombre" name="nombre" type="text" autocomplete="name" required></div>
-        <div class="grupo"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" autocomplete="email" required></div>
-        <div class="grupo"><label for="tipo">¿Qué necesitas?</label>
-          <select id="tipo" name="tipo" required>
-            <option value="">Selecciona una opción</option>
-            <option>Información sobre un modelo</option>
-            <option>Personalización individual</option>
-            <option>Pedido para un club o equipo</option>
-            <option>Otra consulta</option>
-          </select>
+        <div class="grupo"><label for="nombre">Nombre y apellidos / club</label><input id="nombre" name="nombre" type="text" autocomplete="name" required></div>
+        <div class="fila-2">
+          <div class="grupo"><label for="email">Correo electrónico</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+          <div class="grupo"><label for="telefono">Teléfono (opcional)</label><input id="telefono" name="telefono" type="tel" autocomplete="tel"></div>
+        </div>
+        <div class="fila-2">
+          <div class="grupo"><label for="tipo">¿Qué necesitas?</label>
+            <select id="tipo" name="tipo" required>
+              <option value="">Selecciona una opción</option>
+              <option value="info">Información sobre un modelo</option>
+              <option value="individual">Personalización individual</option>
+              <option value="equipo">Pedido para un club o equipo</option>
+              <option value="otra">Otra consulta</option>
+            </select>
+          </div>
+          <div class="grupo"><label for="tipo_cliente">Soy</label>
+            <select id="tipo_cliente" name="tipo_cliente">
+              <option value="particular">Particular</option><option value="club">Club</option><option value="equipo">Equipo / grupo</option>
+            </select>
+          </div>
         </div>
         <div class="grupo"><label for="modelo">Modelo de interés</label>
           <select id="modelo" name="modelo">
-            <option value="">Todavía no lo sé</option><option>SPEAKE Court Custom</option><option>SPEAKE Pulse Custom</option><option>SPEAKE High</option><option>SPEAKE Retro</option><option>SPEAKE Street</option><option>SPEAKE Aero</option>
+            <option value="">Todavía no lo sé</option><option value="court">SPEAKE Court</option><option value="pulse">SPEAKE Pulse</option><option value="high">SPEAKE High</option><option value="retro">SPEAKE Retro</option><option value="street">SPEAKE Street</option><option value="aero">SPEAKE Aero</option>
           </select>
         </div>
-        <div class="grupo"><label for="equipo">Club o equipo (si procede)</label><input id="equipo" name="equipo" type="text" maxlength="60" autocomplete="organization"></div>
-        <div class="grupo"><label for="cantidad">Cantidad aproximada de pares (si procede)</label><input id="cantidad" name="cantidad" type="number" min="1" max="500" placeholder="Ej.: 40"></div>
-        <div class="grupo"><label for="fecha">Fecha objetivo (opcional)</label><input id="fecha" name="fecha" type="date"></div>
-        <div class="grupo"><label for="mensaje">Cuéntanos tu idea</label><textarea id="mensaje" name="mensaje" placeholder="Modelo, tallas, colores, escudo del equipo..."></textarea></div>
-        <button class="boton boton-azul" type="submit">Preparar solicitud <span>→</span></button>
-        <p class="aviso">Demostración académica: este formulario no envía datos a un servidor. No introduzcas información real.</p>
-        <div class="mensaje-confirmacion" id="confirmacion" role="status"></div>
+        <fieldset class="grupo" id="bloque-tallas">
+          <legend>Reparto por tallas (pares)</legend>
+          <div class="tallas-grid" id="tallas"></div>
+          <p class="total-pares" id="total-pares">Total: 0 pares</p>
+        </fieldset>
+        <div class="grupo"><label for="mensaje">Cuéntanos tu idea</label><textarea id="mensaje" name="mensaje" placeholder="Colores, escudo del equipo, fecha objetivo..."></textarea></div>
+        <button class="boton boton-azul" type="submit" id="btn-enviar">Enviar solicitud <span>→</span></button>
+        <p class="aviso">Demostración académica: con el servidor de la empresa en marcha (backend Express) la solicitud se guarda como pedido pendiente en la base de datos. Usa solo datos ficticios.</p>
+        <div class="mensaje" id="confirmacion" role="status" aria-live="polite"></div>
       </form>
     </section>
   </main>
-
-  <!-- PIE DE PÁGINA (idéntico en todas las páginas) -->
-  <footer class="pie">
-    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
-      <span class="logo-simbolo">S</span>
-      <span>SPEAKE<span class="punto">.</span></span>
-    </a>
-
-    <p>Tu estilo. Tus reglas.</p>
-
-    <a href="#top">Volver arriba ↑</a>
-
-    <small>© 2026 SPEAKE · Proyecto académico</small>
-  </footer>
+  <div id="sf-footer"></div>
 
   <script>
+    /* ---------- Solicitud Custom conectada al backend Express ----------
+       Si la página se abre desde el servidor (http://localhost:3000) la
+       solicitud se envía a POST /api/solicitudes y se crea un pedido
+       PENDIENTE en PostgreSQL. Si se abre con doble clic (file://) solo se
+       prepara el resumen, como en la versión estática. */
+    const $ = (id) => document.getElementById(id);
+    const TALLAS = [38, 39, 40, 41, 42, 43, 44, 45, 46];
+    const PARTES = [["cuerpo","Cuerpo"],["franja","Franja lateral"],["puntera","Puntera"],["talon","Talón"],["suela","Suela"],["cordones","Cordones"],["acento","Acentos y detalles"]];
     const params = new URLSearchParams(location.search);
-    const nombresModelo = {
-      court: "SPEAKE Court Custom", pulse: "SPEAKE Pulse Custom",
-      high: "SPEAKE High", retro: "SPEAKE Retro", street: "SPEAKE Street", aero: "SPEAKE Aero"
-    };
-    const campo = id => document.getElementById(id);
-    const clave = params.get("modelo");
-    const color = params.get("color");
-    const cordones = params.get("cordones");
-    const detalle = params.get("detalle");
-    const tallasTexto = params.get("tallas");
-    const tallas = {};
-    if (tallasTexto) {
-      tallasTexto.split(",").forEach(par => {
-        const [t, n] = par.split(":");
-        if (t && n) tallas[t] = parseInt(n, 10);
-      });
+    const conServidor = location.protocol.startsWith("http");
+
+    TALLAS.forEach((t) => {
+      const d = document.createElement("div");
+      const l = document.createElement("label"); l.htmlFor = "t" + t; l.textContent = t;
+      const i = document.createElement("input"); i.type = "number"; i.min = "0"; i.max = "500"; i.id = "t" + t; i.dataset.talla = t; i.placeholder = "0";
+      i.setAttribute("aria-label", "Pares de la talla " + t);
+      d.append(l, i); $("tallas").appendChild(d);
+    });
+    const leerTallas = () => [...document.querySelectorAll("#tallas input")]
+      .map((i) => ({ talla: Number(i.dataset.talla), cantidad: parseInt(i.value, 10) || 0 }))
+      .filter((t) => t.cantidad > 0);
+    const totalPares = () => leerTallas().reduce((s, t) => s + t.cantidad, 0);
+    $("tallas").addEventListener("input", () => { $("total-pares").textContent = "Total: " + totalPares() + " pares"; });
+
+    // Datos que llegan desde personaliza.html (método GET)
+    let colores = null;
+    const modelo = params.get("modelo");
+    if (modelo) {
+      $("modelo").value = modelo;
+      const piezas = [];
+      if (params.get("cuerpo")) {
+        colores = {};
+        PARTES.forEach(([k]) => { if (k !== "acento") colores[k] = params.get(k); });
+      }
+      piezas.push("Modelo: " + ($("modelo").selectedOptions[0] || {}).text + (colores ? " (personalizado)" : ""));
+      PARTES.forEach(([k, t]) => { if (params.get(k)) piezas.push(t + ": " + params.get(k)); });
+      if (params.get("detalle")) piezas.push("Texto en la suela: " + params.get("detalle"));
+      if (params.get("estimado")) piezas.push("Precio estimado: " + params.get("estimado"));
+      $("mensaje").value = piezas.join("\n");
+      $("tipo").value = "individual";
+      const t = params.get("talla"), c = params.get("cantidad");
+      if (t && $("t" + t)) { $("t" + t).value = c || 1; $("total-pares").textContent = "Total: " + totalPares() + " pares"; }
     }
 
-    if (clave && nombresModelo[clave]) campo("modelo").value = nombresModelo[clave];
-    if (params.get("equipo")) campo("equipo").value = params.get("equipo");
-    if (params.get("fecha")) campo("fecha").value = params.get("fecha");
-    if (params.get("cantidad")) campo("cantidad").value = params.get("cantidad");
-
-    const esCustom = color || cordones || tallasTexto;
-    if (esCustom) {
-      campo("tipo").value = params.get("equipo") ? "Pedido para un club o equipo" : "Personalización individual";
-    } else if (clave) {
-      campo("tipo").value = "Información sobre un modelo";
+    function aviso(texto, error) {
+      const a = $("confirmacion");
+      a.style.display = "block";
+      a.className = "mensaje" + (error ? " error" : "");
+      a.textContent = texto;
     }
 
-    const piezas = [];
-    if (campo("modelo").value) piezas.push("Modelo: " + campo("modelo").value);
-    if (color) piezas.push("Color: " + color);
-    if (cordones) piezas.push("Cordones: " + cordones);
-    if (tallasTexto) {
-      piezas.push("Tallas: " + Object.keys(tallas).map(t => t + " (" + tallas[t] + ")").join(", "));
+    function validar() {
+      const errores = [];
+      if ($("nombre").value.trim().length < 2) errores.push("escribe tu nombre");
+      if (!$("email").checkValidity() || !$("email").value) errores.push("revisa el correo electrónico");
+      if (!$("tipo").value) errores.push("indica qué necesitas");
+      const pedido = $("tipo").value === "individual" || $("tipo").value === "equipo";
+      if (pedido && !$("modelo").value) errores.push("elige un modelo");
+      if (pedido && !leerTallas().length) errores.push("indica al menos una talla con pares");
+      return { errores, pedido };
     }
-    if (detalle) piezas.push("Detalles: " + detalle);
-    campo("mensaje").value = piezas.join("\n");
 
-    campo("fecha").min = new Date().toISOString().slice(0, 10);
-
-    campo("form-contacto").addEventListener("submit", function (e) {
+    $("form-contacto").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const ahora = new Date();
-      const referencia = "SOL-" + ahora.toISOString().slice(0, 10).replace(/-/g, "") + "-" +
-        String(Math.floor(Math.random() * 9000) + 1000);
-      const solicitud = {
-        referencia: referencia,
-        fecha_solicitud: ahora.toISOString(),
-        cliente: campo("nombre").value.trim(),
-        email: campo("email").value.trim(),
-        tipo: campo("tipo").value,
-        equipo: campo("equipo").value.trim(),
-        modelo: campo("modelo").value,
-        cantidad: parseInt(campo("cantidad").value, 10) || null,
-        fecha_objetivo: campo("fecha").value || null,
-        personalizacion: { color: color, cordones: cordones, detalle: detalle, tallas: tallas },
-        mensaje: campo("mensaje").value.trim()
-      };
+      const { errores, pedido } = validar();
+      if (errores.length) return aviso("Para enviar la solicitud: " + errores.join(", ") + ".", true);
 
-      const aviso = campo("confirmacion");
-      aviso.textContent = "";
-      const texto = document.createElement("p");
-      texto.textContent = "Solicitud " + referencia + " preparada para la demostración. " +
-        "En una versión conectada, estos datos se enviarían al sistema de gestión.";
-      const descarga = document.createElement("a");
-      descarga.className = "boton boton-transparente";
-      descarga.textContent = "Descargar solicitud (JSON)";
-      descarga.download = referencia + ".json";
-      descarga.href = URL.createObjectURL(new Blob([JSON.stringify(solicitud, null, 2)], { type: "application/json" }));
-      aviso.append(texto, descarga);
-      aviso.classList.add("visible");
+      if (!pedido) return aviso("Consulta preparada. Te responderemos por correo electrónico (demostración: las consultas generales no crean pedidos).");
+      if (!conServidor) return aviso("Solicitud preparada correctamente. Abre la web desde el servidor (npm start → http://localhost:3000) para guardarla en la base de datos.");
+
+      const cuerpo = {
+        nombre: $("nombre").value, email: $("email").value, telefono: $("telefono").value,
+        tipo_cliente: $("tipo").value === "equipo" && $("tipo_cliente").value === "particular" ? "club" : $("tipo_cliente").value,
+        modelo: $("modelo").value, tallas: leerTallas(), colores,
+        texto_suela: colores ? (params.get("detalle") || "") : ""
+      };
+      $("btn-enviar").disabled = true;
+      try {
+        const r = await fetch("/api/solicitudes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || "No se pudo registrar la solicitud.");
+        aviso("¡Solicitud registrada! Referencia " + d.referencia + " · " + d.pares + " pares · importe orientativo " +
+              Number(d.total).toLocaleString("es-ES", { style: "currency", currency: "EUR" }) +
+              ". Un comercial la revisará y confirmará el pedido.");
+        this.reset();
+        $("total-pares").textContent = "Total: 0 pares";
+      } catch (err) {
+        aviso(err.message === "Failed to fetch" ? "No hay conexión con el servidor de SPEAKE." : err.message, true);
+      } finally {
+        $("btn-enviar").disabled = false;
+      }
     });
   </script>
 </body>

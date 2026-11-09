@@ -1,0 +1,169 @@
+/* =============================================================
+   SPEAKE · HEADER Y FOOTER COMPARTIDOS  (sf-layout.css)
+   -------------------------------------------------------------
+   Autocontenido: define sus propias variables (--sf-*) y no
+   depende del CSS de cada asignatura. Se copia IDÉNTICO a todas
+   las asignaturas junto con sf-layout.js. No editar por módulo.
+============================================================= */
+
+:root {
+  --sf-bg: #080a0e;
+  --sf-surface: #11151c;
+  --sf-accent: #1683ff;
+  --sf-accent-hover: #006be0;
+  --sf-accent-light: #59a8ff;
+  --sf-text: #f5f7fa;
+  --sf-nav: #c3c8d1;
+  --sf-muted: #9299a7;
+  --sf-faint: #737b89;
+  --sf-border: rgba(255, 255, 255, 0.10);
+  --sf-header-h: 82px;
+  --sf-pad-x: 7%;
+  --sf-font: Arial, Helvetica, sans-serif;
+  --sf-bp: 860px; /* solo informativo: el JS usa 860 */
+}
+
+/* ---------- Estructura de página: footer siempre abajo ---------- */
+body.sf-body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--sf-bg);
+  color: var(--sf-text);
+  font-family: var(--sf-font);
+}
+body.sf-body > main { flex: 1 0 auto; width: 100%; }
+
+/* ---------- Saltar al contenido ---------- */
+.sf-skip {
+  position: absolute; left: 16px; top: -80px; z-index: 1100;
+  padding: 10px 16px; background: var(--sf-accent); color: #fff;
+  font-weight: 700; font-size: 0.85rem; border-radius: 4px; text-decoration: none;
+}
+.sf-skip:focus { top: 12px; }
+
+/* =============================================================
+   LOGO (compartido por header y footer)
+============================================================= */
+.sf-logo {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 1.5rem; font-weight: 900; letter-spacing: -1px;
+  color: var(--sf-text); text-decoration: none; white-space: nowrap;
+}
+.sf-logo__symbol {
+  display: grid; place-items: center; width: 36px; height: 36px;
+  background: var(--sf-accent); color: #fff;
+  border-radius: 9px 2px 9px 2px; font-style: italic; transform: skew(-5deg);
+}
+.sf-logo__dot { color: var(--sf-accent); }
+
+/* =============================================================
+   HEADER
+============================================================= */
+.sf-header {
+  position: sticky; top: 0; z-index: 1000; flex: 0 0 auto;
+  background: rgba(8, 10, 14, 0.96);
+  border-bottom: 1px solid var(--sf-border);
+  backdrop-filter: blur(14px);
+}
+.sf-header__inner {
+  position: relative; min-height: var(--sf-header-h);
+  padding: 0 var(--sf-pad-x);
+  display: flex; align-items: center; justify-content: space-between; gap: 30px;
+}
+
+.sf-nav { display: flex; align-items: center; gap: 30px; }
+.sf-nav__link {
+  position: relative; padding: 6px 0;
+  color: var(--sf-nav); font-size: 0.85rem; text-decoration: none;
+  transition: color 0.2s;
+}
+.sf-nav__link:hover { color: var(--sf-accent-light); }
+.sf-nav__link[aria-current="page"] { color: var(--sf-text); }
+.sf-nav__link[aria-current="page"]::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 2px; background: var(--sf-accent);
+}
+.sf-nav__cta-mobile { display: none; }
+
+.sf-cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 14px;
+  min-height: 48px; padding: 0 23px;
+  border: 1px solid var(--sf-border); border-radius: 4px;
+  color: var(--sf-text); font-size: 0.85rem; font-weight: 700; text-decoration: none;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.sf-cta:hover { transform: translateY(-3px); border-color: var(--sf-accent); }
+
+/* ---------- Botón hamburguesa (solo móvil) ---------- */
+.sf-menu-btn {
+  display: none; width: 44px; height: 44px; padding: 0;
+  background: none; border: 1px solid var(--sf-border); border-radius: 4px;
+  color: var(--sf-text); cursor: pointer;
+  align-items: center; justify-content: center; flex-direction: column; gap: 5px;
+}
+.sf-menu-btn:hover { border-color: var(--sf-accent); }
+.sf-menu-btn__bar {
+  display: block; width: 20px; height: 2px; background: currentColor; border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.sf-menu-btn[aria-expanded="true"] .sf-menu-btn__bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.sf-menu-btn[aria-expanded="true"] .sf-menu-btn__bar:nth-child(2) { opacity: 0; }
+.sf-menu-btn[aria-expanded="true"] .sf-menu-btn__bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 860px) {
+  .sf-header__inner { --sf-pad-x: 5%; min-height: 70px; gap: 16px; }
+  .sf-logo { font-size: 1.25rem; }
+  .sf-logo__symbol { width: 32px; height: 32px; }
+  .sf-header__inner > .sf-cta { display: none; }
+  .sf-menu-btn { display: inline-flex; }
+
+  .sf-nav {
+    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--sf-surface); border-bottom: 1px solid var(--sf-border);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.5);
+  }
+  .sf-nav--open { display: flex; }
+  .sf-nav__link {
+    padding: 16px 5%; font-size: 0.95rem;
+    border-bottom: 1px solid var(--sf-border);
+  }
+  .sf-nav__link[aria-current="page"]::after { display: none; }
+  .sf-nav__link[aria-current="page"] { box-shadow: inset 3px 0 0 var(--sf-accent); }
+  .sf-nav__cta-mobile { display: block; color: var(--sf-accent-light); font-weight: 700; }
+}
+
+/* =============================================================
+   FOOTER
+============================================================= */
+.sf-footer {
+  flex: 0 0 auto; padding: 30px var(--sf-pad-x);
+  border-top: 1px solid var(--sf-border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 20px;
+  color: var(--sf-muted); font-size: 0.8rem;
+}
+.sf-footer__tagline { margin: 0; }
+.sf-footer__nav { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.sf-footer a:not(.sf-logo) { color: var(--sf-muted); text-decoration: none; transition: color 0.2s; }
+.sf-footer a:not(.sf-logo):hover { color: var(--sf-accent-light); }
+.sf-footer__legal {
+  width: 100%; margin: 0; padding-top: 20px;
+  border-top: 1px solid var(--sf-border);
+  color: var(--sf-faint); font-size: 0.72rem;
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px;
+}
+@media (max-width: 860px) {
+  .sf-footer { padding: 28px 5%; flex-direction: column; align-items: flex-start; }
+}
+
+/* ---------- Foco visible y movimiento reducido ---------- */
+.sf-header a:focus-visible, .sf-header button:focus-visible, .sf-footer a:focus-visible {
+  outline: 2px solid var(--sf-accent-light); outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sf-nav__link, .sf-cta, .sf-menu-btn__bar { transition: none; }
+  .sf-cta:hover { transform: none; }
+}

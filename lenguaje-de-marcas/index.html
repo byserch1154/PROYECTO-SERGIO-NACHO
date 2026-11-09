@@ -1,37 +1,23 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SPEAKE: zapatillas deportivas con identidad propia y modelos personalizables.">
-  <title>SPEAKE | Tu estilo, tus zapatillas</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SPEAKE: zapatillas deportivas con identidad propia y modelos personalizables.">
+    <title>SPEAKE | Tu estilo, tus zapatillas</title>
+    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/sf-layout.css">
+  <script src="js/sf-config.js"></script>
+  <script src="js/sf-layout.js" defer></script>
 </head>
-<body id="top">
 
-  <a class="saltar" href="#contenido">Saltar al contenido</a>
+<body class="sf-body">
 
-  <!-- CABECERA (idéntica en todas las páginas) -->
-  <header class="cabecera">
-    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
-      <span class="logo-simbolo">S</span>
-      <span>SPEAKE<span class="punto">.</span></span>
-    </a>
+    <div id="sf-header"></div>
 
-    <nav class="navegacion" aria-label="Navegación principal">
-      <a href="index.html" aria-current="page">Inicio</a>
-      <a href="catalogo.html">Catálogo</a>
-      <a href="personaliza.html">Personaliza</a>
-      <a href="index.html#empresa">Empresa</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
+    <main>
 
-    <a href="catalogo.html" class="boton boton-cabecera">
-      Explorar modelos <span>↗</span>
-    </a>
-  </header>
-
-  <main id="contenido">
         <!-- PORTADA PRINCIPAL -->
         <section class="hero" id="inicio">
             <div class="hero-contenido">
@@ -92,6 +78,7 @@
                 </div>
 
                 <div class="hero-numero">SP—001</div>
+                <div class="hero-circulo"></div>
             </div>
 
             <div class="hero-fondo-numero">S</div>
@@ -134,7 +121,6 @@
                         <div>
                             <h3>SPEAKE COURT</h3>
                             <p>Urbano · Clásico renovado</p>
-                            <p class="producto-precio">89 €*</p>
                         </div>
                         <span class="producto-numero">01</span>
                     </div>
@@ -153,7 +139,6 @@
                         <div>
                             <h3>SPEAKE PULSE</h3>
                             <p>Deportivo · Futurista</p>
-                            <p class="producto-precio">109 €*</p>
                         </div>
                         <span class="producto-numero">02</span>
                     </div>
@@ -172,15 +157,12 @@
                         <div>
                             <h3>SPEAKE HIGH</h3>
                             <p>Baloncesto · Streetwear</p>
-                            <p class="producto-precio">99 €*</p>
                         </div>
                         <span class="producto-numero">03</span>
                     </div>
                 </article>
 
             </div>
-
-            <p class="nota-precios">*Precios orientativos para la maqueta académica.</p>
         </section>
 
         <!-- PERSONALIZACIÓN -->
@@ -200,16 +182,16 @@
                 <h2>NO TIENES QUE<br>ADAPTARTE AL<br><span>ESTILO.</span></h2>
 
                 <p>
-                    Elige uno de nuestros dos modelos personalizables
+                    Elige cualquier modelo de nuestro catálogo
                     y crea una combinación que hable de ti.
-                    Cambia los colores y los detalles para conseguir
-                    un diseño a tu medida.
+                    Cambia el color de cada parte y añade tus
+                    detalles para conseguir un diseño a tu medida.
                 </p>
 
                 <ul class="lista-personalizacion">
-                    <li><span>✓</span> SPEAKE Court — estilo urbano</li>
-                    <li><span>✓</span> SPEAKE Pulse — estilo deportivo</li>
-                    <li><span>✓</span> Colores y detalles personalizados</li>
+                    <li><span>✓</span> Los 6 modelos del catálogo, personalizables</li>
+                    <li><span>✓</span> Color de cuerpo, franja, puntera, talón, suela y cordones</li>
+                    <li><span>✓</span> Vista previa en directo y precio orientativo</li>
                 </ul>
 
                 <a href="personaliza.html" class="boton boton-azul">
@@ -251,63 +233,19 @@
             </div>
         </section>
 
-        <!-- SOBRE NOSOTROS -->
-        <section class="seccion empresa" id="empresa">
-            <div class="encabezado-seccion">
-                <div>
-                    <p class="etiqueta">SOBRE NOSOTROS</p>
-                    <h2>DISEÑAMOS, FABRICAMOS<br>Y <span>VENDEMOS.</span></h2>
-                </div>
-                <p class="catalogo-descripcion">
-                    Una empresa de zapatillas con catálogo propio y servicio de personalización para clubes y equipos.
-                </p>
-            </div>
-
-            <div class="empresa-grid">
-                <article class="empresa-item">
-                    <span class="producto-numero">01</span>
-                    <h3>Diseño propio</h3>
-                    <p>Cada modelo del catálogo se diseña en casa, con una identidad deportiva y urbana reconocible.</p>
-                </article>
-                <article class="empresa-item">
-                    <span class="producto-numero">02</span>
-                    <h3>Fabricación</h3>
-                    <p>Fabricamos nuestros modelos y preparamos series bajo pedido para las solicitudes personalizadas.</p>
-                </article>
-                <article class="empresa-item">
-                    <span class="producto-numero">03</span>
-                    <h3>Custom para equipos</h3>
-                    <p>Clubes, grupos y equipos pueden pedir colores, detalles y reparto de tallas a su medida.
-                       <a class="enlace-flecha" href="contacto.html">Escríbenos ↗</a></p>
-                </article>
-            </div>
-        </section>
-
         <!-- LLAMADA FINAL -->
-        <section class="llamada">
+        <section class="llamada" id="contacto">
             <p class="etiqueta">ESTE ES TU MOMENTO</p>
             <h2>HAZLO <span>A TU MANERA.</span></h2>
             <p>Descubre la colección SPEAKE y encuentra tu estilo.</p>
-            <a href="catalogo.html" class="boton boton-azul">
+            <a href="index.html#destacados" class="boton boton-azul">
                 Explorar modelos <span>→</span>
             </a>
         </section>
 
-    
-  </main>
+    </main>
 
-  <!-- PIE DE PÁGINA (idéntico en todas las páginas) -->
-  <footer class="pie">
-    <a href="index.html" class="logo" aria-label="SPEAKE, inicio">
-      <span class="logo-simbolo">S</span>
-      <span>SPEAKE<span class="punto">.</span></span>
-    </a>
+    <div id="sf-footer"></div>
 
-    <p>Tu estilo. Tus reglas.</p>
-
-    <a href="#top">Volver arriba ↑</a>
-
-    <small>© 2026 SPEAKE · Proyecto académico</small>
-  </footer>
 </body>
 </html>
