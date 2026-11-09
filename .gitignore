@@ -1,3 +1,11 @@
+# Carpetas de herramientas locales
+.freebuff/
+.vscode/
+.idea/
+
+# Scripts auxiliares de mantenimiento local (no forman parte de la entrega)
+backend-express/sql/00_*.sql
+
 # Node
 node_modules/
 backend-express/.env
@@ -14,5 +22,3 @@ __pycache__/
 .venv/
 python/sneaker-data-lab/logs/
 python/sneaker-data-lab/outputs/
-# Odoo
-odoo/exportaciones/
