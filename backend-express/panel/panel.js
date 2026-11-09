@@ -17,6 +17,7 @@
   try { token = sessionStorage.getItem("speake_token"); } catch (_) { /* sin storage */ }
   let permisos = {};
   let pedidoAbierto = null;
+  let odooActivo = false;
 
   // -------------------------------------------------- utilidades
   function mensaje(texto, tipo) {
@@ -102,8 +103,23 @@
     aplicarPermisos();
     cambiarTab("pedidos");
     await cargarCatalogo();
+    comprobarOdoo();
     if (permisos.consultar_pedidos) buscar(false);
     else mensaje("Tu rol no tiene permiso para consultar pedidos.", "err");
+  }
+
+  async function comprobarOdoo() {
+    try {
+      const o = await api("/odoo/estado");
+      odooActivo = o.activo;
+      $("info-odoo").textContent = !o.activo
+        ? "Odoo: integración no configurada (los pedidos solo se guardan en SPEAKE)."
+        : o.conectado
+          ? "Odoo: conectado a " + o.db + ". Al confirmar un pedido se crea en Odoo."
+          : "Odoo: sin conexión (" + o.error + "). Los pedidos confirmados se podrán reenviar después.";
+    } catch (err) {
+      $("info-odoo").textContent = "";
+    }
   }
 
   // -------------------------------------------------- pestañas
@@ -136,12 +152,12 @@
 
   async function buscar(limpiar) {
     const tbody = $("tabla-pedidos").querySelector("tbody");
-    vaciar(tbody, 7, "Consultando…"); // nunca se muestran datos antiguos
+    vaciar(tbody, 8, "Consultando…"); // nunca se muestran datos antiguos
     $("info-pedidos").textContent = "";
     try {
       const f = filtros();
       const r = await api("/pedidos?" + qs({ ...f, limpiar: limpiar ? "1" : "" }));
-      vaciar(tbody, 7, r.filas.length ? "" : "No hay pedidos que coincidan con los filtros.");
+      vaciar(tbody, 8, r.filas.length ? "" : "No hay pedidos que coincidan con los filtros.");
       r.filas.forEach((p) => {
         const tr = document.createElement("tr");
         celda(tr, p.referencia);
@@ -155,15 +171,22 @@
         celda(tr, p.tipo);
         celda(tr, p.pares, "num");
         celda(tr, euros(p.total), "num");
+        celda(tr, textoOdoo(p.odoo), p.odoo && p.odoo.estado === "error" ? "odoo-error" : "");
         tr.addEventListener("click", () => abrirPedido(p.referencia));
         tbody.appendChild(tr);
       });
       const n = r.filas.length;
       $("info-pedidos").textContent = n + (n === 1 ? " pedido" : " pedidos") + " · consultado " + new Date(r.consultado).toLocaleTimeString("es-ES");
     } catch (err) {
-      vaciar(tbody, 7, "");
+      vaciar(tbody, 8, "");
       mensaje(err.message, "err");
     }
+  }
+
+  // Odoo: "S00012", "error" o "—" si aún no se ha enviado
+  function textoOdoo(o) {
+    if (!o) return "—";
+    return o.estado === "enviado" ? o.pedido_odoo : "error";
   }
 
   async function abrirPedido(ref) {
@@ -181,6 +204,11 @@
         celda(tr, euros(l.precio_unitario), "num"); celda(tr, l.personalizacion || "—"); celda(tr, l.texto_suela || "");
         tb.appendChild(tr);
       });
+      const o = p.odoo;
+      $("d-odoo").textContent = !o ? "Odoo: todavía no enviado (se envía al confirmar)."
+        : o.estado === "enviado" ? "Odoo: pedido de venta " + o.pedido_odoo + " (" + o.mensaje + ")."
+        : "Odoo: no se pudo enviar · " + o.mensaje;
+      $("d-odoo-btn").hidden = !(odooActivo && ["confirmado", "entregado"].includes(p.estado) && !(o && o.estado === "enviado"));
       // Solo se ofrecen las transiciones válidas (la BD también las valida)
       const validas = { pendiente: ["confirmado", "cancelado"], confirmado: ["entregado", "cancelado"] }[p.estado] || [];
       document.querySelectorAll("#detalle [data-estado]").forEach((b) => { b.disabled = !validas.includes(b.dataset.estado); });
@@ -193,10 +221,25 @@
     if (!pedidoAbierto) return;
     try {
       const r = await api("/pedidos/" + pedidoAbierto.referencia + "/estado", { method: "PATCH", body: { estado } });
-      mensaje(r.referencia + " ahora está " + r.estado + ". El stock y la auditoría los ha actualizado PostgreSQL.", "ok");
+      let texto = r.referencia + " ahora está " + r.estado + ". El stock y la auditoría los ha actualizado PostgreSQL.";
+      if (r.odoo) {
+        texto += r.odoo.estado === "enviado" ? " Enviado a Odoo como " + r.odoo.pedido_odoo + "."
+          : " No se pudo enviar a Odoo: " + r.odoo.mensaje;
+      }
+      mensaje(texto, r.odoo && r.odoo.estado === "error" ? "err" : "ok");
       await abrirPedido(r.referencia);
       buscar(false);
     } catch (err) { mensaje(err.message, "err"); }
+  }
+
+  async function reenviarOdoo() {
+    if (!pedidoAbierto) return;
+    try {
+      const r = await api("/pedidos/" + pedidoAbierto.referencia + "/odoo", { method: "POST" });
+      mensaje(pedidoAbierto.referencia + " enviado a Odoo como " + r.pedido_odoo + ".", "ok");
+    } catch (err) { mensaje(err.message, "err"); }
+    await abrirPedido(pedidoAbierto.referencia);
+    buscar(false);
   }
 
   async function descargarCsv() {
@@ -389,6 +432,7 @@
   $("d-cerrar").addEventListener("click", () => { $("detalle").hidden = true; pedidoAbierto = null; });
   document.querySelectorAll("#detalle [data-estado]").forEach((b) => b.addEventListener("click", () => cambiarEstado(b.dataset.estado)));
   $("form-nuevo").addEventListener("submit", crearPedido);
+  $("d-odoo-btn").addEventListener("click", reenviarOdoo);
   $("btn-indicadores").addEventListener("click", cargarIndicadores);
   $("form-stock").addEventListener("submit", cargarStock);
   $("btn-auditoria").addEventListener("click", cargarAuditoria);

@@ -18,11 +18,13 @@ Navegador ── panel /gestion (login) ───► /api/pedidos, ...  ──�
 Requisitos: Node.js 18+ y PostgreSQL 14+.
 ```bat
 :: 1. Base de datos (desde la carpeta base-de-datos\base-de-datos\bd)
-createdb sneaker_factory
-psql -d sneaker_factory -v ON_ERROR_STOP=1 -f 01_esquema.sql
-psql -d sneaker_factory -v ON_ERROR_STOP=1 -f 02_datos.sql
+createdb SPEAKE
+psql -d SPEAKE -v ON_ERROR_STOP=1 -f 01_esquema.sql
+psql -d SPEAKE -v ON_ERROR_STOP=1 -f 02_datos.sql
 :: 2. Ampliación para el backend (desde backend-express\sql)
-psql -d sneaker_factory -v ON_ERROR_STOP=1 -f 07_web_backend.sql
+psql -d SPEAKE -v ON_ERROR_STOP=1 -f 07_web_backend.sql
+psql -d SPEAKE -v ON_ERROR_STOP=1 -f 10_integracion_odoo.sql
+psql -d SPEAKE -v ON_ERROR_STOP=1 -f 11_colores_catalogo.sql
 :: 3. Servidor
 cd backend-express
 copy .env.example .env          (y poner la contraseña de PostgreSQL en .env)
@@ -47,15 +49,21 @@ Usuarios ficticios: `admin / Admin#2026` · `comercial1 / Comercial#2026` · `al
 | `src/actividad.js` | Log externo `actividad_sneaker.txt` (append, UTF-8) |
 | `src/exportaciones.js` | CSV (contrato con PSP/Python y CSV filtrado) y `usuarios_sneaker.json` con escritura segura |
 | `src/errores.js` | Traduce los errores de PostgreSQL a mensajes comprensibles |
+| `src/odoo.js` | Cliente de la API de Odoo (JSON-RPC): busca/crea el cliente y crea el pedido de venta |
 | `panel/` | Interfaz de gestión (HTML + CSS + JS sin librerías) |
 | `sql/07_web_backend.sql` | Rol técnico **Web**, usuario `web_publica`, funciones de detalle/análisis y vista de conciliación |
 | `sql/08_exportar_reconciliacion.sql` | Exporta las cifras SQL que Python concilia |
+| `sql/10_integracion_odoo.sql` | Tabla `pedidos_odoo` (qué pedido de Odoo corresponde a cada uno) y funciones de envío |
+| `sql/11_colores_catalogo.sql` | Tabla `colores_catalogo` (3 combinaciones por modelo) y columna `id_color` en las líneas |
+| `sql/12_pruebas_web_odoo.sql` | 16 pruebas en pgAdmin de colores de catálogo y envío a Odoo (termina en ROLLBACK) |
 | `test/api.test.js` | 9 pruebas de extremo a extremo |
+| `test/odoo.test.js` | 6 pruebas de la integración con un Odoo simulado (`npm run test:odoo`) |
 
 ## API
 | Método y ruta | Permiso (en PostgreSQL) | Descripción |
 |---|---|---|
 | `GET /api/modelos` · `GET /api/modelos/:codigo/stock` | público | Catálogo y existencias por talla |
+| `GET /api/colores` | público | Colores de catálogo de cada modelo (los muestra la ficha de producto) |
 | `POST /api/solicitudes` | rol Web: `crear_pedido` | Cliente (por email, sin duplicar) + pedido **pendiente** + líneas, en UNA transacción |
 | `POST /api/login` · `POST /api/logout` · `GET /api/me` | – | Sesión |
 | `GET /api/pedidos?cliente&modelo&estado&desde&hasta` | `consultar_pedidos` | Botón «Buscar / Consultar» (filtros vacíos no restringen) |
@@ -69,6 +77,8 @@ Usuarios ficticios: `admin / Admin#2026` · `comercial1 / Comercial#2026` · `al
 | `GET/POST /api/usuarios` · `PATCH /api/usuarios/:id` | `gestionar_usuarios` | Alta, activar/desactivar, cambiar rol (regenera el JSON) |
 | `POST /api/usuarios/exportar-json` | `exportar_usuarios` | `usuarios_sneaker.json` |
 | `POST /api/exportar-contrato` | `consultar_pedidos` | CSV para PSP y Python en `data/export/` |
+| `POST /api/pedidos/:ref/odoo` | `confirmar_pedido` | Reenvía a Odoo un pedido confirmado (si antes falló) |
+| `GET /api/odoo/estado` | sesión | ¿Integración configurada? ¿Odoo responde? (sin datos sensibles) |
 
 ## Cómo se cumplen los requisitos de Acceso a Datos (versión web, sin JDBC)
 - **Consultas parametrizadas**: todas con `$1, $2…` (equivalente a `PreparedStatement`); nunca se concatena un valor.
@@ -89,6 +99,57 @@ Usuarios ficticios: `admin / Admin#2026` · `comercial1 / Comercial#2026` · `al
 - **CSV**: UTF-8 con cabecera; el filtrado coincide fila a fila con la tabla; el contrato se exporta en una única
   instantánea `REPEATABLE READ` para que los 7 ficheros sean coherentes entre sí.
 
+## Colores de catálogo
+Cada modelo se vende en 3 combinaciones de color definidas por la marca (tabla `colores_catalogo`).
+En la ficha de producto se elige el color, la foto cambia a esa combinación y «Comprar este color»
+lleva al formulario con todo rellenado. Las fotos están en `lenguaje-de-marcas/img/colores/<codigo>.jpg`
+y se generan a partir de la foto original de cada modelo con
+`lenguaje-de-marcas/herramientas/recolorear_fotos.py` (cambia el azul de los detalles por el color nuevo).
+
+| | Color de catálogo | Personalizado (configurador) |
+|---|---|---|
+| Línea | `id_color` = combinación elegida, 6 colores vacíos | 6 colores elegidos, `id_color` vacío |
+| Tipo de pedido | estándar | custom |
+| Precio | base del modelo | base + 15 € (+5 € con texto) |
+| En Odoo | producto «SPEAKE Pulse», «Color: …» en la descripción | producto «SPEAKE Pulse Custom» (MTO) |
+
+La base de datos impide mezclar las dos cosas (`ck_color_catalogo_estandar`) y que se use un color
+de otro modelo (trigger `t1b_lineas_color`).
+
+## Integración con Odoo
+Odoo es el núcleo del negocio y tiene **su propia base de datos**, que gestiona con su ORM. Por eso no se
+escribe en sus tablas ni se usan triggers sobre ella: el backend llama a la **API externa de Odoo**
+(JSON-RPC), igual que haría un usuario desde la pantalla de Ventas, y Odoo aplica sus propias reglas.
+
+```
+Web ──► Express ──► PostgreSQL SPEAKE ──(confirmar en el panel)──► API de Odoo ──► Pedido de venta S000xx
+                       (triggers, permisos,                          (busca/crea el     · Ref. cliente = SO0xx
+                        stock, auditoría)                             cliente por email)  · fabricación MTO
+```
+
+1. Ejecutar `sql/10_integracion_odoo.sql` en SPEAKE (solo añade; no borra nada).
+2. Cargar en Odoo los productos con tallas: `odoo/scripts/cargar_datos_odoo.py`.
+3. Rellenar en `.env` `ODOO_URL`, `ODOO_DB`, `ODOO_USER` y `ODOO_PASSWORD` (mejor una clave API:
+   Odoo → Mi perfil → Seguridad de la cuenta → Nueva clave API). Reiniciar `npm start`.
+4. En el panel aparece «Odoo: conectado a …». Al **confirmar** un pedido se crea en Odoo con la
+   Referencia del cliente = referencia de SPEAKE, y la columna Odoo muestra su número (S000xx).
+
+Comportamiento ante fallos:
+- Si Odoo no responde, el pedido **sigue confirmado en SPEAKE** (stock y auditoría correctos), la columna
+  Odoo muestra «error» y el botón «Reenviar a Odoo» lo vuelve a intentar.
+- Reenviar no duplica: si ya existe en Odoo un pedido con esa referencia, se reutiliza.
+- Solo se envían pedidos confirmados o entregados, y solo quien tiene el permiso `confirmar_pedido`
+  (lo comprueba PostgreSQL en `fn_pedido_para_odoo`).
+- Cada envío queda en `pedidos_odoo` y en el TXT (`accion=enviar_odoo`).
+- **IVA:** SPEAKE guarda los importes sin IVA (como en el contrato de datos con Python). Odoo aplica
+  el impuesto de venta del 21 %, por eso SO003 vale 5.160 € en SPEAKE y 6.243,60 € en Odoo
+  (5.160 × 1,21). El precio unitario de cada línea es el mismo en los dos sistemas.
+
+Para ver en pgAdmin qué pedido de Odoo corresponde a cada uno:
+```sql
+SELECT * FROM v_pedidos_odoo ORDER BY actualizado DESC;
+```
+
 ## Pruebas (`npm test`)
 | Prueba | Qué comprueba |
 |---|---|
@@ -101,3 +162,17 @@ Usuarios ficticios: `admin / Admin#2026` · `comercial1 / Comercial#2026` · `al
 | I | crear y desactivar usuario actualiza el JSON sin perder los demás; duplicado rechazado |
 | Validación | datos incorrectos de la web no crean nada |
 | Contrato | exportación de los 7 CSV para PSP y Python |
+
+## Pruebas de Odoo (`npm run test:odoo`)
+No necesitan la máquina virtual: levantan un Odoo simulado y un backend propio en otro puerto.
+
+| Prueba | Qué comprueba |
+|---|---|
+| O1 | el panel ve Odoo conectado y nunca recibe la contraseña |
+| O2 | confirmar un pedido web crea en Odoo el cliente y el pedido de venta (variante por talla, colores en la descripción) y lo confirma |
+| O3 | reenviar no duplica el pedido en Odoo |
+| O4 | con Odoo caído la confirmación se mantiene, queda «error» y el reenvío posterior funciona |
+| O5 | no se envían pedidos pendientes y Almacén no tiene permiso |
+| O6 | un pedido con color de catálogo llega como producto estándar, a precio base y con su color |
+
+Al terminar, las pruebas cancelan los pedidos que han confirmado, así el stock vuelve a su valor.

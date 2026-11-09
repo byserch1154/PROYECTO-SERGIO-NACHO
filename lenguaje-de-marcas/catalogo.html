@@ -1,56 +1,96 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Descubre la colección de zapatillas SPEAKE.">
-  <title>Catálogo | SPEAKE</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="css/sf-layout.css">
-  <script src="js/sf-config.js"></script>
-  <script src="js/sf-layout.js" defer></script>
-</head>
-<body class="sf-body">
-   <div id="sf-header"></div>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubre la colección de zapatillas SPEAKE.">
+    <title>Catálogo | SPEAKE</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/sf-config.js"></script>
+    <script src="js/sf-layout.js" defer></script>
+  </head>
+  <body class="sf-body">
+    <div id="sf-header"></div>
 
+    <main>
+      <section class="seccion">
+        <div class="encabezado-seccion">
+          <div>
+            <p class="etiqueta">COLECCIÓN SPEAKE</p>
+            <h2>ENCUENTRA TU<br><span>PROPIO ESTILO.</span></h2>
+          </div>
+          <p class="catalogo-descripcion">
+            Modelos de diseño propio. Elige tu silueta favorita y descubre sus detalles.
+          </p>
+        </div>
 
-  <main>
-    <section class="seccion">
-      <div class="encabezado-seccion">
-        <div><p class="etiqueta">COLECCIÓN SPEAKE</p><h2>ENCUENTRA TU<br><span>PROPIO ESTILO.</span></h2></div>
-        <p class="catalogo-descripcion">Modelos de diseño propio. Elige tu silueta favorita y descubre sus detalles.</p>
-      </div>
+        <div class="catalogo-tarjetas">
+          <a href="producto.html?modelo=court" class="catalogo-tarjeta">
+            <img class="tarjeta-foto" src="img/court.jpg" alt="Zapatilla SPEAKE Court" loading="lazy">
+            <span class="tarjeta-flecha" aria-hidden="true">↗</span>
+            <div class="tarjeta-info">
+              <span class="tarjeta-num">01 / URBANO</span>
+              <h3>SPEAKE COURT</h3>
+              <span class="tarjeta-desc">Clásico renovado · Personalizable</span>
+            </div>
+          </a>
+          <a href="producto.html?modelo=pulse" class="catalogo-tarjeta">
+            <img class="tarjeta-foto" src="img/pulse.jpg" alt="Zapatilla SPEAKE Pulse" loading="lazy">
+            <span class="tarjeta-flecha" aria-hidden="true">↗</span>
+            <div class="tarjeta-info">
+              <span class="tarjeta-num">02 / DEPORTIVO</span>
+              <h3>SPEAKE PULSE</h3>
+              <span class="tarjeta-desc">Inspiración running · Personalizable</span>
+            </div>
+          </a>
+          <a href="producto.html?modelo=high" class="catalogo-tarjeta">
+            <img class="tarjeta-foto" src="img/high.jpg" alt="Zapatilla SPEAKE High" loading="lazy">
+            <span class="tarjeta-flecha" aria-hidden="true">↗</span>
+            <div class="tarjeta-info">
+              <span class="tarjeta-num">03 / BALONCESTO</span>
+              <h3>SPEAKE HIGH</h3>
+              <span class="tarjeta-desc">Caña alta · Personalizable</span>
+            </div>
+          </a>
+          <a href="producto.html?modelo=retro" class="catalogo-tarjeta">
+            <img class="tarjeta-foto" src="img/retro.jpg" alt="Zapatilla SPEAKE Retro" loading="lazy">
+            <span class="tarjeta-flecha" aria-hidden="true">↗</span>
+            <div class="tarjeta-info">
+              <span class="tarjeta-num">04 / RETRO</span>
+              <h3>SPEAKE RETRO</h3>
+              <span class="tarjeta-desc">Malla y capas · Personalizable</span>
+            </div>
+          </a>
+          <a href="producto.html?modelo=street" class="catalogo-tarjeta">
+            <img class="tarjeta-foto" src="img/street.jpg" alt="Zapatilla SPEAKE Street" loading="lazy">
+            <span class="tarjeta-flecha" aria-hidden="true">↗</span>
+            <div class="tarjeta-info">
+              <span class="tarjeta-num">05 / STREET</span>
+              <h3>SPEAKE STREET</h3>
+              <span class="tarjeta-desc">Suela ancha · Personalizable</span>
+            </div>
+          </a>
+          <a href="producto.html?modelo=aero" class="catalogo-tarjeta">
+            <img class="tarjeta-foto" src="img/aero.jpg" alt="Zapatilla SPEAKE Aero" loading="lazy">
+            <span class="tarjeta-flecha" aria-hidden="true">↗</span>
+            <div class="tarjeta-info">
+              <span class="tarjeta-num">06 / RUNNING</span>
+              <h3>SPEAKE AERO</h3>
+              <span class="tarjeta-desc">Ligereza · Personalizable</span>
+            </div>
+          </a>
+        </div>
+      </section>
 
-      <div class="catalogo-tarjetas">
-        <a href="producto.html?modelo=court" class="catalogo-tarjeta">
-          <span>01 / URBANO</span><h3>SPEAKE COURT</h3><span>Clásico renovado · Personalizable</span><span class="tarjeta-flecha">↗</span>
-        </a>
-        <a href="producto.html?modelo=pulse" class="catalogo-tarjeta tarjeta-aero">
-          <span>02 / DEPORTIVO</span><h3>SPEAKE PULSE</h3><span>Inspiración running · Personalizable</span><span class="tarjeta-flecha">↗</span>
-        </a>
-        <a href="producto.html?modelo=high" class="catalogo-tarjeta tarjeta-street">
-          <span>03 / BALONCESTO</span><h3>SPEAKE HIGH</h3><span>Caña alta · Personalizable</span><span class="tarjeta-flecha">↗</span>
-        </a>
-        <a href="producto.html?modelo=retro" class="catalogo-tarjeta tarjeta-aero">
-          <span>04 / RETRO</span><h3>SPEAKE RETRO</h3><span>Malla y capas · Personalizable</span><span class="tarjeta-flecha">↗</span>
-        </a>
-        <a href="producto.html?modelo=street" class="catalogo-tarjeta tarjeta-street">
-          <span>05 / STREET</span><h3>SPEAKE STREET</h3><span>Suela ancha · Personalizable</span><span class="tarjeta-flecha">↗</span>
-        </a>
-        <a href="producto.html?modelo=aero" class="catalogo-tarjeta">
-          <span>06 / RUNNING</span><h3>SPEAKE AERO</h3><span>Ligereza · Personalizable</span><span class="tarjeta-flecha">↗</span>
-        </a>
-      </div>
-    </section>
+      <section class="llamada">
+        <p class="etiqueta">HAZLO A TU MANERA</p>
+        <h2>¿QUIERES ALGO <span>ÚNICO?</span></h2>
+        <p>Elige cualquier modelo del catálogo y cambia el color de cada parte.</p>
+        <a href="personaliza.html" class="boton boton-azul">Ir al configurador <span>→</span></a>
+      </section>
+    </main>
 
-    <section class="llamada">
-      <p class="etiqueta">HAZLO A TU MANERA</p>
-      <h2>¿QUIERES ALGO <span>ÚNICO?</span></h2>
-      <p>Elige cualquier modelo del catálogo y cambia el color de cada parte.</p>
-      <a href="personaliza.html" class="boton boton-azul">Ir al configurador <span>→</span></a>
-    </section>
-  </main>
-
-  <div id="sf-footer"></div>
-</body>
+    <div id="sf-footer"></div>
+  </body>
 </html>

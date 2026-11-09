@@ -1,251 +1,232 @@
-
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SPEAKE: zapatillas deportivas con identidad propia y modelos personalizables.">
+    <meta
+      name="description"
+      content="SPEAKE: zapatillas deportivas con identidad propia y modelos personalizables.">
     <title>SPEAKE | Tu estilo, tus zapatillas</title>
-    <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="css/sf-layout.css">
-  <script src="js/sf-config.js"></script>
-  <script src="js/sf-layout.js" defer></script>
-</head>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/sf-config.js"></script>
+    <script src="js/sf-layout.js" defer></script>
+  </head>
 
-<body class="sf-body">
-
+  <body class="sf-body">
     <div id="sf-header"></div>
 
     <main>
+      <!-- PORTADA PRINCIPAL -->
+      <section class="hero" id="inicio">
+        <div class="hero-contenido">
+          <p class="etiqueta">
+            <span class="punto-azul"></span>
+            SNEAKERS · NUEVA IDENTIDAD
+          </p>
 
-        <!-- PORTADA PRINCIPAL -->
-        <section class="hero" id="inicio">
-            <div class="hero-contenido">
-                <p class="etiqueta">
-                    <span class="punto-azul"></span>
-                    SNEAKERS · NUEVA IDENTIDAD
-                </p>
+          <h1>
+            NO SIGAS<br>
+            EL <span>CAMINO.</span><br>
+            CRÉALO.
+          </h1>
 
-                <h1>
-                    NO SIGAS<br>
-                    EL <span>CAMINO.</span><br>
-                    CRÉALO.
-                </h1>
+          <p class="hero-texto">
+            Zapatillas con personalidad propia. Diseños deportivos, estilo urbano y modelos que
+            puedes adaptar a tu manera.
+          </p>
 
-                <p class="hero-texto">
-                    Zapatillas con personalidad propia.
-                    Diseños deportivos, estilo urbano y modelos
-                    que puedes adaptar a tu manera.
-                </p>
-
-                <div class="hero-botones">
-                    <a href="catalogo.html" class="boton boton-azul">
-                        Descubrir colección <span>→</span>
-                    </a>
-
-                    <a href="personaliza.html" class="boton boton-transparente">
-                        Diseña las tuyas
-                    </a>
-                </div>
-
-                <div class="hero-datos">
-                    <div>
-                        <strong>01</strong>
-                        <span>ESTILO PROPIO</span>
-                    </div>
-                    <div>
-                        <strong>02</strong>
-                        <span>PERSONALIZACIÓN</span>
-                    </div>
-                    <div>
-                        <strong>∞</strong>
-                        <span>TU IMAGINACIÓN</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hero-imagen">
-                <img
-                    src="img/hero-speake.jpg"
-                    alt="Zapatilla deportiva SPEAKE en negro y azul"
-                    onerror="this.style.display='none'"
-                >
-
-                <div class="hero-etiqueta">
-                    <span>FEATURED MODEL</span>
-                    <strong>SPEAKE PULSE</strong>
-                    <span>URBAN PERFORMANCE</span>
-                </div>
-
-                <div class="hero-numero">SP—001</div>
-                <div class="hero-circulo"></div>
-            </div>
-
-            <div class="hero-fondo-numero">S</div>
-        </section>
-
-        <!-- FRANJA INFORMATIVA -->
-        <section class="franja">
-            <span>DISEÑADO PARA DESTACAR</span>
-            <span class="franja-separador">✳</span>
-            <span>ESTILO SIN LÍMITES</span>
-            <span class="franja-separador">✳</span>
-            <span>MADE FOR YOUR STYLE</span>
-        </section>
-
-        <!-- MODELOS DESTACADOS -->
-        <section class="seccion destacados" id="destacados">
-            <div class="encabezado-seccion">
-                <div>
-                    <p class="etiqueta">LA SELECCIÓN SPEAKE</p>
-                    <h2>LOS QUE MARCAN<br>LA <span>DIFERENCIA.</span></h2>
-                </div>
-
-                <a href="catalogo.html" class="enlace-flecha">
-                    Ver colección completa ↗
-                </a>
-            </div>
-
-            <div class="productos">
-
-                <article class="producto">
-                    <a href="producto.html?modelo=court" class="producto-imagen imagen-court">
-                        <span class="producto-tag">PERSONALIZABLE</span>
-                        <img src="img/court.jpg"
-                             alt="Modelo SPEAKE Court"
-                             onerror="this.style.display='none'">
-                        <span class="producto-flecha">↗</span>
-                    </a>
-
-                    <div class="producto-info">
-                        <div>
-                            <h3>SPEAKE COURT</h3>
-                            <p>Urbano · Clásico renovado</p>
-                        </div>
-                        <span class="producto-numero">01</span>
-                    </div>
-                </article>
-
-                <article class="producto">
-                    <a href="producto.html?modelo=pulse" class="producto-imagen imagen-pulse">
-                        <span class="producto-tag">PERSONALIZABLE</span>
-                        <img src="img/pulse.jpg"
-                             alt="Modelo SPEAKE Pulse"
-                             onerror="this.style.display='none'">
-                        <span class="producto-flecha">↗</span>
-                    </a>
-
-                    <div class="producto-info">
-                        <div>
-                            <h3>SPEAKE PULSE</h3>
-                            <p>Deportivo · Futurista</p>
-                        </div>
-                        <span class="producto-numero">02</span>
-                    </div>
-                </article>
-
-                <article class="producto">
-                    <a href="producto.html?modelo=high" class="producto-imagen imagen-high">
-                        <span class="producto-tag">DISEÑO SPEAKE</span>
-                        <img src="img/high.jpg"
-                             alt="Modelo SPEAKE High"
-                             onerror="this.style.display='none'">
-                        <span class="producto-flecha">↗</span>
-                    </a>
-
-                    <div class="producto-info">
-                        <div>
-                            <h3>SPEAKE HIGH</h3>
-                            <p>Baloncesto · Streetwear</p>
-                        </div>
-                        <span class="producto-numero">03</span>
-                    </div>
-                </article>
-
-            </div>
-        </section>
-
-        <!-- PERSONALIZACIÓN -->
-        <section class="personalizacion" id="personaliza">
-            <div class="personalizacion-visual">
-                <img
-                    src="img/pulse.jpg"
-                    alt="Zapatilla SPEAKE Pulse para personalizar"
-                    onerror="this.style.display='none'"
-                >
-                <span class="visual-texto">YOUR DESIGN.<br>YOUR RULES.</span>
-            </div>
-
-            <div class="personalizacion-contenido">
-                <p class="etiqueta">TU IDEA, TU MODELO</p>
-
-                <h2>NO TIENES QUE<br>ADAPTARTE AL<br><span>ESTILO.</span></h2>
-
-                <p>
-                    Elige cualquier modelo de nuestro catálogo
-                    y crea una combinación que hable de ti.
-                    Cambia el color de cada parte y añade tus
-                    detalles para conseguir un diseño a tu medida.
-                </p>
-
-                <ul class="lista-personalizacion">
-                    <li><span>✓</span> Los 6 modelos del catálogo, personalizables</li>
-                    <li><span>✓</span> Color de cuerpo, franja, puntera, talón, suela y cordones</li>
-                    <li><span>✓</span> Vista previa en directo y precio orientativo</li>
-                </ul>
-
-                <a href="personaliza.html" class="boton boton-azul">
-                    Solicitar personalización <span>→</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- CATÁLOGO -->
-        <section class="seccion catalogo" id="catalogo">
-            <div class="encabezado-seccion">
-                <div>
-                    <p class="etiqueta">MÁS DE SPEAKE</p>
-                    <h2>ENCUENTRA TU<br><span>PRÓXIMO MODELO.</span></h2>
-                </div>
-                <p class="catalogo-descripcion">
-                    Diseños propios para quienes buscan algo diferente.
-                </p>
-            </div>
-
-            <div class="catalogo-tarjetas">
-                <a href="producto.html?modelo=retro" class="catalogo-tarjeta">
-                    <span>04 / RETRO</span>
-                    <h3>SPEAKE RETRO</h3>
-                    <span class="tarjeta-flecha">↗</span>
-                </a>
-
-                <a href="producto.html?modelo=street" class="catalogo-tarjeta tarjeta-street">
-                    <span>05 / STREET</span>
-                    <h3>SPEAKE STREET</h3>
-                    <span class="tarjeta-flecha">↗</span>
-                </a>
-
-                <a href="producto.html?modelo=aero" class="catalogo-tarjeta tarjeta-aero">
-                    <span>06 / RUNNING</span>
-                    <h3>SPEAKE AERO</h3>
-                    <span class="tarjeta-flecha">↗</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- LLAMADA FINAL -->
-        <section class="llamada" id="contacto">
-            <p class="etiqueta">ESTE ES TU MOMENTO</p>
-            <h2>HAZLO <span>A TU MANERA.</span></h2>
-            <p>Descubre la colección SPEAKE y encuentra tu estilo.</p>
-            <a href="index.html#destacados" class="boton boton-azul">
-                Explorar modelos <span>→</span>
+          <div class="hero-botones">
+            <a href="catalogo.html" class="boton boton-azul">
+              Descubrir colección <span>→</span>
             </a>
-        </section>
 
+            <a href="personaliza.html" class="boton boton-transparente"> Diseña las tuyas </a>
+          </div>
+
+          <div class="hero-datos">
+            <div>
+              <strong>01</strong>
+              <span>ESTILO PROPIO</span>
+            </div>
+            <div>
+              <strong>02</strong>
+              <span>PERSONALIZACIÓN</span>
+            </div>
+            <div>
+              <strong>∞</strong>
+              <span>TU IMAGINACIÓN</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-imagen">
+          <img src="img/hero-speake.jpg" alt="Zapatilla deportiva SPEAKE en negro y azul">
+
+          <div class="hero-etiqueta">
+            <span>MODELO DESTACADO</span>
+            <strong>SPEAKE PULSE</strong>
+            <span>RENDIMIENTO URBANO</span>
+          </div>
+
+          <div class="hero-numero">SP—001</div>
+          <div class="hero-circulo"></div>
+        </div>
+
+        <div class="hero-fondo-numero">S</div>
+      </section>
+
+      <!-- FRANJA INFORMATIVA -->
+      <section class="franja">
+        <span>DISEÑADO PARA DESTACAR</span>
+        <span class="franja-separador">✳</span>
+        <span>ESTILO SIN LÍMITES</span>
+        <span class="franja-separador">✳</span>
+        <span>HECHO A TU ESTILO</span>
+      </section>
+
+      <!-- MODELOS DESTACADOS -->
+      <section class="seccion destacados" id="destacados">
+        <div class="encabezado-seccion">
+          <div>
+            <p class="etiqueta">LA SELECCIÓN SPEAKE</p>
+            <h2>LOS QUE MARCAN<br>LA <span>DIFERENCIA.</span></h2>
+          </div>
+
+          <a href="catalogo.html" class="enlace-flecha"> Ver colección completa ↗ </a>
+        </div>
+
+        <div class="productos">
+          <article class="producto">
+            <a href="producto.html?modelo=court" class="producto-imagen imagen-court">
+              <span class="producto-tag">PERSONALIZABLE</span>
+              <img src="img/court.jpg" alt="Modelo SPEAKE Court">
+              <span class="producto-flecha">↗</span>
+            </a>
+
+            <div class="producto-info">
+              <div>
+                <h3>SPEAKE COURT</h3>
+                <p>Urbano · Clásico renovado</p>
+              </div>
+              <span class="producto-numero">01</span>
+            </div>
+          </article>
+
+          <article class="producto">
+            <a href="producto.html?modelo=pulse" class="producto-imagen imagen-pulse">
+              <span class="producto-tag">PERSONALIZABLE</span>
+              <img src="img/pulse.jpg" alt="Modelo SPEAKE Pulse">
+              <span class="producto-flecha">↗</span>
+            </a>
+
+            <div class="producto-info">
+              <div>
+                <h3>SPEAKE PULSE</h3>
+                <p>Deportivo · Futurista</p>
+              </div>
+              <span class="producto-numero">02</span>
+            </div>
+          </article>
+
+          <article class="producto">
+            <a href="producto.html?modelo=high" class="producto-imagen imagen-high">
+              <span class="producto-tag">DISEÑO SPEAKE</span>
+              <img src="img/high.jpg" alt="Modelo SPEAKE High">
+              <span class="producto-flecha">↗</span>
+            </a>
+
+            <div class="producto-info">
+              <div>
+                <h3>SPEAKE HIGH</h3>
+                <p>Baloncesto · Streetwear</p>
+              </div>
+              <span class="producto-numero">03</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- PERSONALIZACIÓN -->
+      <section class="personalizacion" id="personaliza">
+        <div class="personalizacion-visual">
+          <img src="img/pulse.jpg" alt="Zapatilla SPEAKE Pulse para personalizar">
+          <span class="visual-texto">TU DISEÑO.<br>TUS REGLAS.</span>
+        </div>
+
+        <div class="personalizacion-contenido">
+          <p class="etiqueta">TU IDEA, TU MODELO</p>
+
+          <h2>NO TIENES QUE<br>ADAPTARTE AL<br><span>ESTILO.</span></h2>
+
+          <p>
+            Elige cualquier modelo de nuestro catálogo y crea una combinación que hable de ti.
+            Cambia el color de cada parte y añade tus detalles para conseguir un diseño a tu medida.
+          </p>
+
+          <ul class="lista-personalizacion">
+            <li><span>✓</span> Los 6 modelos del catálogo, personalizables</li>
+            <li><span>✓</span> Color de cuerpo, franja, puntera, talón, suela y cordones</li>
+            <li><span>✓</span> Vista previa en directo y precio orientativo</li>
+          </ul>
+
+          <a href="personaliza.html" class="boton boton-azul">
+            Solicitar personalización <span>→</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- CATÁLOGO -->
+      <section class="seccion catalogo" id="catalogo">
+        <div class="encabezado-seccion">
+          <div>
+            <p class="etiqueta">MÁS DE SPEAKE</p>
+            <h2>ENCUENTRA TU<br><span>PRÓXIMO MODELO.</span></h2>
+          </div>
+          <p class="catalogo-descripcion">Diseños propios para quienes buscan algo diferente.</p>
+        </div>
+
+        <div class="catalogo-tarjetas">
+          <a href="producto.html?modelo=retro" class="catalogo-tarjeta">
+            <img class="tarjeta-foto" src="img/retro.jpg" alt="Zapatilla SPEAKE Retro" loading="lazy">
+            <span class="tarjeta-flecha" aria-hidden="true">↗</span>
+            <div class="tarjeta-info">
+              <span class="tarjeta-num">04 / RETRO</span>
+              <h3>SPEAKE RETRO</h3>
+            </div>
+          </a>
+
+          <a href="producto.html?modelo=street" class="catalogo-tarjeta">
+            <img class="tarjeta-foto" src="img/street.jpg" alt="Zapatilla SPEAKE Street" loading="lazy">
+            <span class="tarjeta-flecha" aria-hidden="true">↗</span>
+            <div class="tarjeta-info">
+              <span class="tarjeta-num">05 / STREET</span>
+              <h3>SPEAKE STREET</h3>
+            </div>
+          </a>
+
+          <a href="producto.html?modelo=aero" class="catalogo-tarjeta">
+            <img class="tarjeta-foto" src="img/aero.jpg" alt="Zapatilla SPEAKE Aero" loading="lazy">
+            <span class="tarjeta-flecha" aria-hidden="true">↗</span>
+            <div class="tarjeta-info">
+              <span class="tarjeta-num">06 / RUNNING</span>
+              <h3>SPEAKE AERO</h3>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- LLAMADA FINAL -->
+      <section class="llamada" id="contacto">
+        <p class="etiqueta">ESTE ES TU MOMENTO</p>
+        <h2>HAZLO <span>A TU MANERA.</span></h2>
+        <p>Descubre la colección SPEAKE y encuentra tu estilo.</p>
+        <a href="index.html#destacados" class="boton boton-azul">
+          Explorar modelos <span>→</span>
+        </a>
+      </section>
     </main>
 
     <div id="sf-footer"></div>
-
-</body>
+  </body>
 </html>

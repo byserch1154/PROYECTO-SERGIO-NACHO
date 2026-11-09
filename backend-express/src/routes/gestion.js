@@ -4,11 +4,12 @@
    usuario autenticado, comprueba su permiso y lo apunta en log_eventos.
 ============================================================= */
 const express = require("express");
-const { comoUsuario } = require("../db");
+const { comoUsuario, consulta } = require("../db");
 const auth = require("../auth");
 const { registrar, describirFiltros } = require("../actividad");
 const { traducirError, errorPublico } = require("../errores");
 const { aCsv, exportarContrato, exportarUsuariosJson } = require("../exportaciones");
+const odoo = require("../odoo");
 
 const router = express.Router();
 
@@ -88,8 +89,21 @@ router.get("/pedidos", async (req, res) => {
   const accion = req.query.limpiar === "1" ? "limpiar_filtros" : "buscar_pedidos";
   const out = await operar(req, res, accion, async (db) => ({ filas: (await db.query(SQL_BUSCAR, paramsBuscar(f))).rows }),
     { detalle: (o) => `${describirFiltros(f)} filas=${o.filas.length}` });
-  if (out) res.json({ filas: out.filas, filtros: f, consultado: new Date().toISOString() });
+  if (!out) return;
+  const enOdoo = await estadosOdoo();
+  out.filas.forEach((p) => { p.odoo = enOdoo[p.referencia] || null; });
+  res.json({ filas: out.filas, filtros: f, consultado: new Date().toISOString() });
 });
+
+// Estado de sincronización con Odoo de cada pedido (vacío si aún no se ejecutó 10_integracion_odoo.sql)
+async function estadosOdoo() {
+  try {
+    const r = await consulta("SELECT referencia, pedido_odoo, estado, mensaje FROM v_pedidos_odoo");
+    return Object.fromEntries(r.rows.map((x) => [x.referencia, x]));
+  } catch (err) {
+    return {};
+  }
+}
 
 // Exportación CSV del resultado ACTUAL filtrado (mismas filas que la tabla)
 router.get("/pedidos/export.csv", async (req, res) => {
@@ -113,6 +127,7 @@ router.get("/pedidos/:ref", async (req, res) => {
   const c = out.filas[0];
   res.json({
     referencia: c.referencia, fecha: c.fecha, cliente: c.cliente, estado: c.estado, tipo: c.tipo, total: Number(c.total),
+    odoo: (await estadosOdoo())[c.referencia] || null,
     lineas: out.filas.filter((x) => x.id_linea).map((l) => ({
       id_linea: l.id_linea, modelo: l.modelo, talla: l.talla, cantidad: l.cantidad,
       precio_unitario: Number(l.precio_unitario), personalizacion: l.personalizacion, texto_suela: l.texto_suela })),
@@ -153,8 +168,63 @@ router.patch("/pedidos/:ref/estado", async (req, res) => {
     if (!r.rows.length) throw errorPublico(`No existe el pedido ${ref}.`, 404);
     return r.rows[0];
   }, { detalle: `pedido=${ref} nuevo_estado=${estado}` });
-  if (out) res.json(out);
+  if (!out) return;
+  // Un pedido confirmado pasa a Odoo. Si Odoo falla, la confirmación en SPEAKE se mantiene
+  // y el error queda apuntado para reenviarlo desde el panel.
+  if (estado === "confirmado" && odoo.activo()) out.odoo = await enviarAOdoo(req, ref);
+  res.json(out);
 });
+
+// Reenvío manual a Odoo (por ejemplo si la máquina de Odoo estaba apagada)
+router.post("/pedidos/:ref/odoo", async (req, res) => {
+  if (!odoo.activo()) return res.status(400).json({ error: "La integración con Odoo no está configurada en .env." });
+  const r = await enviarAOdoo(req, String(req.params.ref).toUpperCase());
+  // 400 = no se puede enviar (permiso o estado); 502 = Odoo no respondió bien
+  const http = r.estado === "enviado" ? 200 : r.rechazado ? 400 : 502;
+  res.status(http).json(r.estado === "enviado" ? r : { ...r, error: r.mensaje });
+});
+
+router.get("/odoo/estado", async (req, res) => {
+  res.json(await odoo.comprobar());
+});
+
+async function enviarAOdoo(req, ref) {
+  const s = req.sesion;
+  let resultado;
+  let filas;
+  try {
+    // La BD comprueba el permiso y que el pedido esté confirmado
+    filas = await comoUsuario(s.id, async (db) => (await db.query("SELECT * FROM fn_pedido_para_odoo($1)", [ref])).rows);
+  } catch (err) {
+    const t = traducirError(err).mensaje;
+    registrar({ usuario: s.usuario, rol: s.rol, accion: "enviar_odoo", resultado: "rechazado", detalle: `pedido=${ref} ${t}`.slice(0, 200) });
+    return { estado: "error", rechazado: true, pedido_odoo: null, id_odoo: null, mensaje: t };
+  }
+  try {
+    const c = filas[0];
+    const enviado = await odoo.enviarPedido({
+      referencia: ref,
+      cliente: { nombre: c.cliente, email: c.email, telefono: c.telefono, tipo: c.tipo_cliente },
+      lineas: filas.map((l) => ({
+        modelo: l.modelo, talla: l.talla, cantidad: l.cantidad, precio: Number(l.precio_unitario),
+        personalizacion: l.personalizacion, texto: l.texto_suela, colorCatalogo: l.color_catalogo,
+      })),
+    });
+    const nota = enviado.nuevo ? "creado en Odoo" : "ya existía en Odoo";
+    resultado = { estado: "enviado", pedido_odoo: enviado.nombre, id_odoo: enviado.id, mensaje: nota };
+  } catch (err) {
+    resultado = { estado: "error", pedido_odoo: null, id_odoo: null, mensaje: err.message };
+  }
+  try {
+    await comoUsuario(s.id, (db) => db.query("SELECT fn_registrar_envio_odoo($1, $2, $3, $4, $5)",
+      [ref, resultado.estado, resultado.pedido_odoo, resultado.id_odoo, resultado.mensaje]));
+  } catch (err) {
+    resultado.mensaje += " (no se pudo guardar en SPEAKE: " + traducirError(err).mensaje + ")";
+  }
+  registrar({ usuario: s.usuario, rol: s.rol, accion: "enviar_odoo", resultado: resultado.estado === "enviado" ? "correcto" : "error",
+    detalle: `pedido=${ref} odoo=${resultado.pedido_odoo || "-"} ${resultado.mensaje}`.slice(0, 200) });
+  return resultado;
+}
 
 router.get("/clientes", async (req, res) => {
   const out = await operar(req, res, "listar_clientes", async (db) => {

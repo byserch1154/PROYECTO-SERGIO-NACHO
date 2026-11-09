@@ -13,5 +13,14 @@ module.exports = {
   exportDir: ruta("EXPORT_DIR", "./data/export"),
   usuariosJson: ruta("USUARIOS_JSON", "./data/usuarios_sneaker.json"),
   sesionMinutos: Number(process.env.SESION_MINUTOS || 120),
+  // Integración con Odoo (opcional): si falta algún dato, no se envía nada
+  odoo: {
+    url: process.env.ODOO_URL || "",
+    db: process.env.ODOO_DB || "",
+    user: process.env.ODOO_USER || "",
+    password: process.env.ODOO_PASSWORD || "",
+    confirmar: process.env.ODOO_CONFIRMAR !== "0",
+    timeoutMs: Number(process.env.ODOO_TIMEOUT_MS || 15000),
+  },
   // pg lee PGHOST, PGPORT, PGDATABASE, PGUSER y PGPASSWORD del entorno
 };

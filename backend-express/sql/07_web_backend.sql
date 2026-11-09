@@ -1,7 +1,7 @@
 -- =====================================================================
 -- 07_web_backend.sql · Ampliación para el backend Express (web pública)
 -- Ejecutar DESPUÉS de 01_esquema.sql y 02_datos.sql:
---   psql -d sneaker_factory -v ON_ERROR_STOP=1 -f 07_web_backend.sql
+--   psql -d SPEAKE -v ON_ERROR_STOP=1 -f 07_web_backend.sql
 --
 -- Las solicitudes Custom que llegan desde la web pública también deben
 -- quedar asociadas a un usuario autenticado en log_eventos. Para ello se

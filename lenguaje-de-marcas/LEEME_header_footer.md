@@ -1,22 +1,24 @@
-# Header y footer unificados (SPEAKE)
+# Estructura común de las páginas (SPEAKE)
 
-Compartidos entre asignaturas (copiar IDÉNTICOS, no editar por módulo):
-- css/sf-layout.css
-- js/sf-layout.js
+Todas las páginas usan los mismos tres ficheros:
+- `css/estilos.css` → la única hoja de estilos de la web (general + header/footer + reglas de cada página)
+- `js/sf-config.js` → menú, botón de la cabecera y nombre del módulo
+- `js/sf-layout.js` → crea el header y el footer en todas las páginas
 
-Propio de cada asignatura:
-- js/sf-config.js  -> `modulo`, y si hace falta `menu`, `cta`, `inicioHref`.
-
-Uso en cada página:
+Plantilla de una página:
+```html
 <head>
-  <link rel="stylesheet" href="css/sf-layout.css">
+  <link rel="stylesheet" href="css/estilos.css">
   <script src="js/sf-config.js"></script>
   <script src="js/sf-layout.js" defer></script>
 </head>
-<body class="sf-body">
+<body class="sf-body pagina-nombre">
   <div id="sf-header"></div>
   <main> ... </main>
   <div id="sf-footer"></div>
 </body>
+```
 
-Funciona abriendo el HTML con doble clic (sin servidor).
+Los estilos propios de una página van en `css/estilos.css`, dentro de su sección y empezando por
+`.pagina-nombre` (por ejemplo `.pagina-contacto .formulario`), para que no afecten a las demás.
+No se usan `<style>` ni atributos `style=""` en el HTML.

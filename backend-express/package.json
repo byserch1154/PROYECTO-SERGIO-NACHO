@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test --test-concurrency=1 test/api.test.js"
+    "test": "node --test --test-concurrency=1 test/api.test.js",
+    "test:odoo": "node --test --test-concurrency=1 test/odoo.test.js"
   },
   "engines": {
     "node": ">=18"

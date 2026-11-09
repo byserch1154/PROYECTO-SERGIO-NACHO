@@ -7,7 +7,7 @@
    módulo va en sf-config.js (window.SF_CONFIG).
 
    <head>
-     <link rel="stylesheet" href="css/sf-layout.css">
+     <link rel="stylesheet" href="css/estilos.css">
      <script src="js/sf-config.js"></script>
      <script src="js/sf-layout.js" defer></script>
    </head>
@@ -25,7 +25,7 @@
 
   var DEFAULTS = {
     marca: "SPEAKE",
-    simbolo: "S",
+    logo: "img/logo-speake.png",
     lema: "Tu estilo. Tus reglas.",
     modulo: "",
     legal: "Proyecto académico",
@@ -35,13 +35,13 @@
       { texto: "Inicio", href: "index.html" },
       { texto: "Catálogo", href: "catalogo.html" },
       { texto: "Personaliza", href: "personaliza.html" },
-      { texto: "Contacto", href: "contacto.html" }
+      { texto: "Contacto", href: "contacto.html" },
     ],
-    fuentes: "" // URL opcional de Google Fonts
+    fuentes: "", // URL opcional de Google Fonts
   };
 
   var cfg = Object.assign({}, DEFAULTS, window.SF_CONFIG || {});
-  var BP = 860; // mismo punto de corte que sf-layout.css
+  var BP = 860; // mismo punto de corte que css/estilos.css
 
   function el(tag, attrs, hijos) {
     var nodo = document.createElement(tag);
@@ -50,7 +50,9 @@
       else if (k === "text") nodo.textContent = attrs[k];
       else nodo.setAttribute(k, attrs[k]);
     });
-    (hijos || []).forEach(function (h) { if (h) nodo.appendChild(h); });
+    (hijos || []).forEach(function (h) {
+      if (h) nodo.appendChild(h);
+    });
     return nodo;
   }
 
@@ -61,24 +63,27 @@
   // Fichero actual; si la ruta termina en "/" se considera la página de inicio
   function paginaActual() {
     var ruta = "";
-    try { ruta = decodeURIComponent(window.location.pathname || ""); }
-    catch (e) { ruta = window.location.pathname || ""; }
+    try {
+      ruta = decodeURIComponent(window.location.pathname || "");
+    } catch (e) {
+      ruta = window.location.pathname || "";
+    }
     return ruta.split("/").pop().toLowerCase() || nombreFichero(cfg.inicioHref);
   }
 
   function cargarFuentes() {
     if (!cfg.fuentes || document.querySelector("link[data-sf-fuentes]")) return;
-    document.head.appendChild(el("link", { rel: "stylesheet", href: cfg.fuentes, "data-sf-fuentes": "1" }));
+    document.head.appendChild(
+      el("link", { rel: "stylesheet", href: cfg.fuentes, "data-sf-fuentes": "1" }),
+    );
   }
 
   function crearLogo() {
-    return el("a", { class: "sf-logo", href: cfg.inicioHref, "aria-label": cfg.marca + ", inicio" }, [
-      el("span", { class: "sf-logo__symbol", text: cfg.simbolo }),
-      el("span", {}, [
-        document.createTextNode(cfg.marca),
-        el("span", { class: "sf-logo__dot", text: "." })
-      ])
-    ]);
+    return el(
+      "a",
+      { class: "sf-logo", href: cfg.inicioHref, "aria-label": cfg.marca + ", inicio" },
+      [el("img", { class: "sf-logo__img", src: cfg.logo, alt: cfg.marca })],
+    );
   }
 
   function crearHeader() {
@@ -91,17 +96,30 @@
       nav.appendChild(a);
     });
     if (cfg.cta) {
-      nav.appendChild(el("a", { class: "sf-nav__link sf-nav__cta-mobile", href: cfg.cta.href, text: cfg.cta.texto + " ↗" }));
+      nav.appendChild(
+        el("a", {
+          class: "sf-nav__link sf-nav__cta-mobile",
+          href: cfg.cta.href,
+          text: cfg.cta.texto + " ↗",
+        }),
+      );
     }
 
-    var boton = el("button", {
-      class: "sf-menu-btn", type: "button",
-      "aria-label": "Abrir menú", "aria-expanded": "false", "aria-controls": "sf-nav"
-    }, [
-      el("span", { class: "sf-menu-btn__bar" }),
-      el("span", { class: "sf-menu-btn__bar" }),
-      el("span", { class: "sf-menu-btn__bar" })
-    ]);
+    var boton = el(
+      "button",
+      {
+        class: "sf-menu-btn",
+        type: "button",
+        "aria-label": "Abrir menú",
+        "aria-expanded": "false",
+        "aria-controls": "sf-nav",
+      },
+      [
+        el("span", { class: "sf-menu-btn__bar" }),
+        el("span", { class: "sf-menu-btn__bar" }),
+        el("span", { class: "sf-menu-btn__bar" }),
+      ],
+    );
 
     function cerrar() {
       nav.classList.remove("sf-nav--open");
@@ -116,18 +134,22 @@
     nav.addEventListener("click", function (e) {
       if (e.target.closest && e.target.closest("a")) cerrar();
     });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") cerrar(); });
-    window.addEventListener("resize", function () { if (window.innerWidth > BP) cerrar(); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") cerrar();
+    });
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > BP) cerrar();
+    });
 
     var cta = cfg.cta
       ? el("a", { class: "sf-cta", href: cfg.cta.href }, [
           document.createTextNode(cfg.cta.texto + " "),
-          el("span", { "aria-hidden": "true", text: "↗" })
+          el("span", { "aria-hidden": "true", text: "↗" }),
         ])
       : null;
 
     return el("header", { class: "sf-header" }, [
-      el("div", { class: "sf-header__inner" }, [crearLogo(), nav, cta, boton])
+      el("div", { class: "sf-header__inner" }, [crearLogo(), nav, cta, boton]),
     ]);
   }
 
@@ -154,8 +176,8 @@
       nav,
       el("small", { class: "sf-footer__legal" }, [
         el("span", { text: partes[0] }),
-        el("span", { text: partes.slice(1).join(" · ") })
-      ])
+        el("span", { text: partes.slice(1).join(" · ") }),
+      ]),
     ]);
   }
 
@@ -170,7 +192,7 @@
       if (!document.querySelector(".sf-skip")) {
         document.body.insertBefore(
           el("a", { class: "sf-skip", href: "#" + main.id, text: "Saltar al contenido" }),
-          document.body.firstChild
+          document.body.firstChild,
         );
       }
     }
@@ -185,6 +207,21 @@
     if (pf) pf.replaceWith(footer);
     else document.body.appendChild(footer);
   }
+
+  // Si una imagen no existe se oculta (en lugar de mostrar el icono de imagen rota)
+  function ocultarSiFalla(img) {
+    if (img.complete && img.naturalWidth === 0) img.classList.add("oculto");
+    img.addEventListener("error", function () {
+      img.classList.add("oculto");
+    });
+  }
+  function revisarImagenes() {
+    Array.prototype.forEach.call(document.images, ocultarSiFalla);
+  }
+
+  if (document.readyState === "loading")
+    document.addEventListener("DOMContentLoaded", revisarImagenes);
+  else revisarImagenes();
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", montar);
   else montar();

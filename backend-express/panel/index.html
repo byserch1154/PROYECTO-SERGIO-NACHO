@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión | SPEAKE</title>
+  <link rel="icon" type="image/png" href="/img/favicon.png">
   <link rel="stylesheet" href="panel.css">
   <script src="panel.js" defer></script>
 </head>
 <body>
   <header class="barra">
-    <a class="marca" href="/"><span class="simbolo">S</span> SPEAKE <small>Gestión</small></a>
+    <a class="marca" href="/"><img class="marca-logo" src="/img/logo-speake.png" alt="SPEAKE"> <small>Gestión</small></a>
     <div id="sesion-info" hidden>
       <span id="quien"></span>
       <button type="button" class="btn btn-sec" id="btn-logout">Cerrar sesión</button>
@@ -59,8 +60,9 @@
         </div>
       </form>
       <p class="info" id="info-pedidos"></p>
+      <p class="info" id="info-odoo"></p>
       <div class="tabla-wrap"><table id="tabla-pedidos">
-        <thead><tr><th>Referencia</th><th>Fecha</th><th>Cliente</th><th>Estado</th><th>Tipo</th><th class="num">Pares</th><th class="num">Total</th></tr></thead>
+        <thead><tr><th>Referencia</th><th>Fecha</th><th>Cliente</th><th>Estado</th><th>Tipo</th><th class="num">Pares</th><th class="num">Total</th><th>Odoo</th></tr></thead>
         <tbody></tbody>
       </table></div>
 
@@ -70,6 +72,7 @@
           <button type="button" class="btn btn-sec" id="d-cerrar">Cerrar</button>
         </div>
         <p id="d-resumen"></p>
+        <p id="d-odoo" class="nota"></p>
         <div class="tabla-wrap"><table id="d-lineas">
           <thead><tr><th>Modelo</th><th class="num">Talla</th><th class="num">Cantidad</th><th class="num">Precio</th><th>Personalización</th><th>Texto</th></tr></thead>
           <tbody></tbody>
@@ -78,6 +81,7 @@
           <button class="btn" type="button" data-estado="confirmado" data-permiso="confirmar_pedido">Confirmar</button>
           <button class="btn btn-sec" type="button" data-estado="entregado" data-permiso="entregar_pedido">Marcar entregado</button>
           <button class="btn btn-peligro" type="button" data-estado="cancelado" data-permiso="cancelar_pedido">Cancelar</button>
+          <button class="btn btn-sec" type="button" id="d-odoo-btn" hidden>Reenviar a Odoo</button>
         </div>
       </div>
     </section>

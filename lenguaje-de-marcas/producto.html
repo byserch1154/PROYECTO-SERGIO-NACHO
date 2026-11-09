@@ -1,79 +1,195 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Producto | SPEAKE</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="css/sf-layout.css">
-  <script src="js/sf-config.js"></script>
-  <script src="js/sf-layout.js" defer></script>
-  <style>
-    .detalle-producto{padding:75px 7%;display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}
-    .detalle-visual{min-height:440px;position:relative;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#1b3556,#11151c 72%);border:1px solid var(--borde);overflow:hidden}
-    .detalle-visual img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}
-    .detalle-visual .placeholder{font-size:5rem;font-weight:900;color:rgba(255,255,255,.12);letter-spacing:-5px}
-    .detalle-texto h1{font-size:clamp(2.7rem,5vw,4.6rem);line-height:1;letter-spacing:-3px}
-    .detalle-texto .precio{font-size:1.5rem;font-weight:800;margin:22px 0}
-    .detalle-texto p{color:var(--gris);margin:18px 0}
-    .tallas{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0 25px}
-    .tallas a{border:1px solid var(--borde);padding:8px 13px;font-size:.85rem}
-    .tallas a:hover{border-color:var(--azul);background:var(--azul)}
-    .detalle-nota{font-size:.78rem;color:var(--gris)}
-    @media(max-width:700px){.detalle-producto{grid-template-columns:1fr;padding:45px 6%;gap:30px}.detalle-visual{min-height:310px}}
-  </style>
-</head>
-<body class="sf-body">
-  <div id="sf-header"></div>
-  <main>
-    <section class="detalle-producto">
-      <div class="detalle-visual">
-        <img id="foto-producto" src="img/court.jpg" alt="Modelo SPEAKE" onerror="this.style.display='none'">
-        <span class="placeholder" id="placeholder-producto">S.</span>
-      </div>
-      <div class="detalle-texto">
-        <p class="etiqueta">COLECCIÓN SPEAKE / <span id="categoria">URBANO</span></p>
-        <h1 id="nombre">SPEAKE COURT</h1>
-        <div class="precio" id="precio">89 €*</div>
-        <p id="descripcion">Una silueta urbana de líneas limpias, pensada para combinar con tu día a día.</p>
-        <p><strong>Tallas orientativas</strong></p>
-        <div class="tallas" aria-label="Tallas disponibles"><a href="#solicitar">38</a><a href="#solicitar">39</a><a href="#solicitar">40</a><a href="#solicitar">41</a><a href="#solicitar">42</a><a href="#solicitar">43</a><a href="#solicitar">44</a><a href="#solicitar">45</a><a href="#solicitar">46</a></div>
-        <p class="detalle-nota">*Precio ilustrativo para la maqueta académica. Disponibilidad y precio final sujetos a confirmación.</p>
-        <div class="hero-botones">
-          <a id="boton-personalizar" href="personaliza.html?modelo=court" class="boton boton-azul">Personalizar modelo <span>→</span></a>
-          <a href="contacto.html" class="boton boton-transparente">Solicitar información</a>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto | SPEAKE</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/sf-config.js"></script>
+    <script src="js/sf-layout.js" defer></script>
+  </head>
+  <body class="sf-body pagina-producto">
+    <div id="sf-header"></div>
+    <main>
+      <section class="detalle-producto">
+        <div class="detalle-visual">
+          <img id="foto-producto" src="img/court.jpg" alt="Modelo SPEAKE">
+          <span class="placeholder" id="placeholder-producto">S.</span>
         </div>
-      </div>
-    </section>
-    <section class="seccion" id="solicitar">
-      <div class="encabezado-seccion"><div><p class="etiqueta">DISEÑO SPEAKE</p><h2>HECHAS PARA<br><span>DESTACAR.</span></h2></div><p class="catalogo-descripcion">Explora también el resto de la colección y encuentra el modelo que encaja contigo.</p></div>
-      <a href="catalogo.html" class="boton boton-azul">Ver todos los modelos <span>→</span></a>
-    </section>
-  </main>
-  <div id="sf-footer"></div>
+        <div class="detalle-texto">
+          <p class="etiqueta">COLECCIÓN SPEAKE / <span id="categoria">URBANO</span></p>
+          <h1 id="nombre">SPEAKE COURT</h1>
+          <div class="precio" id="precio">89 €*</div>
+          <p id="descripcion">
+            Una silueta urbana de líneas limpias, pensada para combinar con tu día a día.
+          </p>
+          <div id="bloque-colores" class="colores-catalogo" hidden>
+            <p><strong>Color</strong> <span id="color-nombre" class="color-nombre"></span></p>
+            <div
+              id="colores"
+              class="colores-lista"
+              role="radiogroup"
+              aria-label="Colores disponibles"
+            ></div>
+          </div>
+          <p><strong>Tallas orientativas</strong></p>
+          <div class="tallas" role="group" aria-label="Tallas disponibles">
+            <a href="#solicitar">38</a><a href="#solicitar">39</a><a href="#solicitar">40</a
+            ><a href="#solicitar">41</a><a href="#solicitar">42</a><a href="#solicitar">43</a
+            ><a href="#solicitar">44</a><a href="#solicitar">45</a><a href="#solicitar">46</a>
+          </div>
+          <p class="detalle-nota">
+            *Precio ilustrativo para la maqueta académica. Disponibilidad y precio final sujetos a
+            confirmación.
+          </p>
+          <div class="hero-botones">
+            <a id="boton-comprar" href="contacto.html?modelo=court" class="boton boton-azul"
+              >Comprar este color <span>→</span></a
+            >
+            <a
+              id="boton-personalizar"
+              href="personaliza.html?modelo=court"
+              class="boton boton-transparente"
+              >Personalizar a mi gusto</a
+            >
+          </div>
+        </div>
+      </section>
+      <section class="seccion" id="solicitar">
+        <div class="encabezado-seccion">
+          <div>
+            <p class="etiqueta">DISEÑO SPEAKE</p>
+            <h2>HECHAS PARA<br><span>DESTACAR.</span></h2>
+          </div>
+          <p class="catalogo-descripcion">
+            Explora también el resto de la colección y encuentra el modelo que encaja contigo.
+          </p>
+        </div>
+        <a href="catalogo.html" class="boton boton-azul">Ver todos los modelos <span>→</span></a>
+      </section>
+    </main>
+    <div id="sf-footer"></div>
 
-  <script>
-    const modelos = {
-      court: {nombre:"SPEAKE COURT", precio:"89 €*", categoria:"URBANO", descripcion:"Una silueta urbana de líneas limpias, inspirada en las zapatillas clásicas de cancha y reinterpretada con identidad SPEAKE.", foto:"img/court.jpg", personalizable:true},
-      pulse: {nombre:"SPEAKE PULSE", precio:"109 €*", categoria:"DEPORTIVO", descripcion:"Malla técnica, líneas dinámicas y una suela de carácter deportivo. Un modelo pensado para una estética urbana y futurista.", foto:"img/pulse.jpg", personalizable:true},
-      high: {nombre:"SPEAKE HIGH", precio:"99 €*", categoria:"BALONCESTO", descripcion:"Una zapatilla de caña alta con paneles contrastados y carácter de baloncesto.", foto:"img/high.jpg", personalizable:true},
-      retro: {nombre:"SPEAKE RETRO", precio:"95 €*", categoria:"RETRO", descripcion:"Capas de inspiración running, malla y tonos clásicos con un acabado contemporáneo.", foto:"img/retro.jpg", personalizable:true},
-      street: {nombre:"SPEAKE STREET", precio:"92 €*", categoria:"URBANO", descripcion:"Suela ancha y silueta robusta para un look streetwear.", foto:"img/street.jpg", personalizable:true},
-      aero: {nombre:"SPEAKE AERO", precio:"105 €*", categoria:"RUNNING", descripcion:"Un diseño ligero con malla transpirable y líneas aerodinámicas.", foto:"img/aero.jpg", personalizable:true}
-    };
-    const clave = new URLSearchParams(location.search).get("modelo") || "court";
-    const m = modelos[clave] || modelos.court;
-    document.title = m.nombre + " | SPEAKE";
-    document.getElementById("nombre").textContent = m.nombre;
-    document.getElementById("precio").textContent = m.precio;
-    document.getElementById("categoria").textContent = m.categoria;
-    document.getElementById("descripcion").textContent = m.descripcion;
-    const foto = document.getElementById("foto-producto");
-    foto.src = m.foto;
-    foto.alt = m.nombre;
-    document.getElementById("placeholder-producto").textContent = m.nombre.replace("SPEAKE ", "");
-    document.getElementById("boton-personalizar").href = "personaliza.html?modelo=" + (m.personalizable ? clave : "court");
-    document.getElementById("boton-personalizar").style.display = m.personalizable ? "inline-flex" : "none";
-  </script>
-</body>
+    <script>
+      const modelos = {
+        court: {
+          nombre: "SPEAKE COURT",
+          precio: "89 €*",
+          categoria: "URBANO",
+          descripcion:
+            "Una silueta urbana de líneas limpias, inspirada en las zapatillas clásicas de cancha y reinterpretada con identidad SPEAKE.",
+          foto: "img/court.jpg",
+          personalizable: true,
+        },
+        pulse: {
+          nombre: "SPEAKE PULSE",
+          precio: "109 €*",
+          categoria: "DEPORTIVO",
+          descripcion:
+            "Malla técnica, líneas dinámicas y una suela de carácter deportivo. Un modelo pensado para una estética urbana y futurista.",
+          foto: "img/pulse.jpg",
+          personalizable: true,
+        },
+        high: {
+          nombre: "SPEAKE HIGH",
+          precio: "99 €*",
+          categoria: "BALONCESTO",
+          descripcion:
+            "Una zapatilla de caña alta con paneles contrastados y carácter de baloncesto.",
+          foto: "img/high.jpg",
+          personalizable: true,
+        },
+        retro: {
+          nombre: "SPEAKE RETRO",
+          precio: "95 €*",
+          categoria: "RETRO",
+          descripcion:
+            "Capas de inspiración running, malla y tonos clásicos con un acabado contemporáneo.",
+          foto: "img/retro.jpg",
+          personalizable: true,
+        },
+        street: {
+          nombre: "SPEAKE STREET",
+          precio: "92 €*",
+          categoria: "URBANO",
+          descripcion: "Suela ancha y silueta robusta para un look streetwear.",
+          foto: "img/street.jpg",
+          personalizable: true,
+        },
+        aero: {
+          nombre: "SPEAKE AERO",
+          precio: "105 €*",
+          categoria: "RUNNING",
+          descripcion: "Un diseño ligero con malla transpirable y líneas aerodinámicas.",
+          foto: "img/aero.jpg",
+          personalizable: true,
+        },
+      };
+      const clave = new URLSearchParams(location.search).get("modelo") || "court";
+      const m = modelos[clave] || modelos.court;
+      document.title = m.nombre + " | SPEAKE";
+      document.getElementById("nombre").textContent = m.nombre;
+      document.getElementById("precio").textContent = m.precio;
+      document.getElementById("categoria").textContent = m.categoria;
+      document.getElementById("descripcion").textContent = m.descripcion;
+      const foto = document.getElementById("foto-producto");
+      foto.src = m.foto;
+      foto.alt = m.nombre;
+      document.getElementById("placeholder-producto").textContent = m.nombre.replace("SPEAKE ", "");
+      document.getElementById("boton-personalizar").href =
+        "personaliza.html?modelo=" + (m.personalizable ? clave : "court");
+      document.getElementById("boton-personalizar").hidden = !m.personalizable;
+
+      /* ---------- Colores de catálogo (salen de la base de datos: GET /api/colores) ---------- */
+      const comprar = document.getElementById("boton-comprar");
+      comprar.href = "contacto.html?modelo=" + clave;
+
+      function elegirColor(c) {
+        document.getElementById("color-nombre").textContent = "· " + c.nombre;
+        document.querySelectorAll("#colores button").forEach((b) => {
+          b.setAttribute("aria-checked", b.dataset.codigo === c.codigo);
+        });
+        // Cada combinación tiene su foto (img/colores/<codigo>.jpg)
+        foto.src = "img/colores/" + c.codigo + ".jpg";
+        foto.alt = m.nombre + " en " + c.nombre;
+        comprar.href = "contacto.html?modelo=" + clave + "&color=" + encodeURIComponent(c.codigo);
+      }
+
+      function muestra(c) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "color-op";
+        b.dataset.codigo = c.codigo;
+        b.setAttribute("role", "radio");
+        b.setAttribute("aria-label", c.nombre);
+        b.title = c.nombre;
+        ["cuerpo", "franja", "acento"].forEach((parte) => {
+          const punto = document.createElement("span");
+          punto.className = "color-punto";
+          punto.dataset.color = c[parte];
+          b.appendChild(punto);
+        });
+        return b;
+      }
+
+      if (location.protocol.startsWith("http")) {
+        fetch("/api/colores")
+          .then((r) => r.json())
+          .then((d) => {
+            const lista = (d.colores || {})[clave] || [];
+            if (!lista.length) return;
+            const cont = document.getElementById("colores");
+            lista.forEach((c) => {
+              const b = muestra(c);
+              b.addEventListener("click", () => elegirColor(c));
+              cont.appendChild(b);
+            });
+            document.getElementById("bloque-colores").hidden = false;
+            elegirColor(lista[0]);
+          })
+          .catch(() => {});
+      }
+    </script>
+  </body>
 </html>

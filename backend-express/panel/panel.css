@@ -60,3 +60,5 @@ legend{color:var(--gris);font-size:.8rem;font-weight:700;padding:0 6px}
 .check{display:flex;gap:8px;align-items:center;color:var(--texto)}
 .check input{width:auto}
 @media(max-width:760px){.dos,.fila{grid-template-columns:1fr}}
+.odoo-error{color:#ff8a94;font-weight:700}
+.marca-logo{display:block;height:32px;width:auto}

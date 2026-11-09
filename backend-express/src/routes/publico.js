@@ -2,7 +2,8 @@
    API PÚBLICA (la usa la web corporativa, sin login)
      GET  /api/modelos                 catálogo con precio y tallas
      GET  /api/modelos/:codigo/stock   disponibilidad por talla
-     POST /api/solicitudes             solicitud Custom -> pedido 'pendiente'
+     GET  /api/colores                 colores de catálogo de cada modelo
+     POST /api/solicitudes             solicitud (Custom o color de catálogo) -> pedido 'pendiente'
 ============================================================= */
 const express = require("express");
 const { consulta, comoUsuario } = require("../db");
@@ -52,6 +53,26 @@ router.get("/modelos/:codigo/stock", async (req, res) => {
   }
 });
 
+// Colores de catálogo agrupados por modelo (vacío si no se ejecutó 11_colores_catalogo.sql)
+router.get("/colores", async (req, res) => {
+  try {
+    const r = await consulta(
+      `SELECT m.codigo AS modelo, c.codigo, c.nombre, c.color_cuerpo AS cuerpo, c.color_franja AS franja,
+              c.color_puntera AS puntera, c.color_talon AS talon, c.color_suela AS suela,
+              c.color_cordones AS cordones, c.color_detalle AS acento
+         FROM colores_catalogo c JOIN modelos m USING (id_modelo)
+        WHERE c.activo
+        ORDER BY m.id_modelo, c.orden`);
+    const colores = {};
+    r.rows.forEach(({ modelo, ...c }) => (colores[modelo] = colores[modelo] || []).push(c));
+    res.json({ colores });
+  } catch (err) {
+    if (err.code === "42P01") return res.json({ colores: {} });
+    const t = traducirError(err);
+    res.status(t.http).json({ error: t.mensaje });
+  }
+});
+
 /* Validación en el servidor (la del navegador se puede saltar).
    Las reglas definitivas (tallas 38-46, colores, cantidad > 0...) están
    además en PostgreSQL como DOMAIN y CHECK. */
@@ -89,9 +110,11 @@ function validarSolicitud(b) {
   const texto = String(b.texto_suela || "").trim().toUpperCase();
   if (texto.length > 12) errores.push("El texto de la suela admite 12 caracteres.");
   if (texto && !colores) errores.push("El texto en la suela solo está disponible en diseños personalizados.");
+  // Color de catálogo (solo si no es personalizado). Que exista y sea del modelo lo comprueba la BD.
+  const colorCatalogo = colores ? null : String(b.color_catalogo || "").trim() || null;
 
   if (errores.length) throw errorPublico(errores.join(" "));
-  return { nombre, email, telefono: String(b.telefono || "").trim(), tipo, modelo, tallas, colores, texto: texto || null };
+  return { nombre, email, telefono: String(b.telefono || "").trim(), tipo, modelo, tallas, colores, colorCatalogo, texto: texto || null };
 }
 
 router.post("/solicitudes", async (req, res) => {
@@ -106,14 +129,22 @@ router.post("/solicitudes", async (req, res) => {
       const cli = await db.query("SELECT fn_cliente_web($1, $2, $3, $4) AS id", [datos.nombre, datos.email, datos.telefono, datos.tipo]);
       const p = await db.query("INSERT INTO pedidos (id_cliente) VALUES ($1) RETURNING id_pedido, referencia", [cli.rows[0].id]);
       const c = datos.colores || {};
+      let idColor = null;
+      if (datos.colorCatalogo) {
+        const col = await db.query(
+          "SELECT id_color FROM colores_catalogo WHERE codigo = $1 AND id_modelo = $2 AND activo", [datos.colorCatalogo, m.rows[0].id_modelo]);
+        if (!col.rows.length) throw errorPublico("Ese color no existe para el modelo elegido.");
+        idColor = col.rows[0].id_color;
+      }
       for (const t of datos.tallas) {
         // precio_unitario NULL => lo calcula el trigger t1_lineas_antes
         await db.query(
           `INSERT INTO lineas_pedido (id_pedido, id_modelo, talla, cantidad,
-                  color_cuerpo, color_franja, color_puntera, color_talon, color_suela, color_cordones, texto_suela)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+                  color_cuerpo, color_franja, color_puntera, color_talon, color_suela, color_cordones, texto_suela${idColor ? ", id_color" : ""})
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11${idColor ? ", $12" : ""})`,
           [p.rows[0].id_pedido, m.rows[0].id_modelo, t.talla, t.cantidad,
-           c.cuerpo || null, c.franja || null, c.puntera || null, c.talon || null, c.suela || null, c.cordones || null, datos.texto]);
+           c.cuerpo || null, c.franja || null, c.puntera || null, c.talon || null, c.suela || null, c.cordones || null, datos.texto,
+           ...(idColor ? [idColor] : [])]);
       }
       // El total lo ha recalculado el trigger t2_lineas_total
       const tot = await db.query("SELECT referencia, total::float, tipo, estado FROM pedidos WHERE id_pedido = $1", [p.rows[0].id_pedido]);
