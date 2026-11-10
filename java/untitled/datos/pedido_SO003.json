@@ -1,0 +1,16 @@
+{
+  "referencia": "SO003",
+  "pedido_odoo": "S00007",
+  "cliente": "Club Halcones",
+  "modelo": "SPEAKE Pulse",
+  "texto_suela": "HALCONES",
+  "colores": {
+    "cuerpo": "Negro", "franja": "Azul eléctrico", "puntera": "Negro",
+    "talon": "Gris", "suela": "Blanco", "cordones": "Azul eléctrico"
+  },
+  "lineas": [
+    {"talla": 38, "cantidad": 2}, {"talla": 39, "cantidad": 3}, {"talla": 40, "cantidad": 4},
+    {"talla": 41, "cantidad": 6}, {"talla": 42, "cantidad": 8}, {"talla": 43, "cantidad": 7},
+    {"talla": 44, "cantidad": 5}, {"talla": 45, "cantidad": 3}, {"talla": 46, "cantidad": 2}
+  ]
+}
