@@ -12,8 +12,6 @@ backend-express/sql/00_*.sql
 # Node
 node_modules/
 backend-express/.env
-backend-express/logs/*.txt
-backend-express/data/usuarios_sneaker.json
 backend-express/data/export/*.csv
 # Java
 java/untitled/out/

@@ -1,0 +1,7 @@
+name,email,phone,company_type,customer_rank
+Ana García,ana.garcia@example.com,600000001,person,1
+Club Halcones,info@halcones.example.com,600000002,company,1
+Pedro Ruiz,pedro.ruiz@example.com,600000003,person,1
+Peña Los Linces,linces@example.com,600000004,company,1
+Marta Sánchez,marta.s@example.com,600000005,person,1
+Escuela Deportiva Norte,escuela@norte.example.com,600000006,company,1

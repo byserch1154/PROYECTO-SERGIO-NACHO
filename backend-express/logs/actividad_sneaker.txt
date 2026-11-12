@@ -1,0 +1,148 @@
+2026-11-06T12:37:10.615Z | usuario=comercial1 | rol=Comercial | accion=login | resultado=correcto | 
+2026-11-06T12:37:10.641Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=12
+2026-11-06T12:37:10.656Z | usuario=comercial1 | rol=Comercial | accion=ver_indicadores | resultado=correcto | 
+2026-11-06T12:37:42.345Z | usuario=comercial1 | rol=- | accion=login | resultado=rechazado | credenciales no válidas o usuario inactivo
+2026-11-06T12:39:30.591Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO021 pares=30
+2026-11-06T12:40:12.692Z | usuario=comercial1 | rol=Comercial | accion=login | resultado=correcto | 
+2026-11-06T12:40:12.737Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=13
+2026-11-06T12:40:25.738Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO021 lineas=1
+2026-11-06T12:40:29.261Z | usuario=comercial1 | rol=Comercial | accion=listar_clientes | resultado=correcto | filas=7
+2026-11-06T12:40:30.320Z | usuario=comercial1 | rol=Comercial | accion=ver_indicadores | resultado=correcto | 
+2026-11-06T12:40:30.331Z | usuario=comercial1 | rol=Comercial | accion=stock_bajo | resultado=correcto | umbral=5 filas=4
+2026-11-06T12:40:33.794Z | usuario=comercial1 | rol=Comercial | accion=listar_clientes | resultado=correcto | filas=7
+2026-11-09T08:48:21.061Z | usuario=admin | rol=- | accion=login | resultado=rechazado | credenciales no válidas o usuario inactivo
+2026-11-09T08:48:23.671Z | usuario=admin | rol=- | accion=login | resultado=rechazado | credenciales no válidas o usuario inactivo
+2026-11-09T08:48:33.226Z | usuario=admin | rol=Administrador | accion=login | resultado=correcto | 
+2026-11-09T08:48:33.358Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=12
+2026-11-09T08:49:11.058Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO058 pares=1
+2026-11-09T08:49:15.459Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=13
+2026-11-09T08:49:17.843Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
+2026-11-09T08:49:24.836Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO003 lineas=9
+2026-11-09T08:49:27.875Z | usuario=admin | rol=Administrador | accion=listar_clientes | resultado=correcto | filas=7
+2026-11-09T08:49:28.874Z | usuario=admin | rol=Administrador | accion=ver_indicadores | resultado=correcto | 
+2026-11-09T08:49:28.885Z | usuario=admin | rol=Administrador | accion=stock_bajo | resultado=correcto | umbral=5 filas=4
+2026-11-09T08:49:34.431Z | usuario=admin | rol=Administrador | accion=listar_usuarios | resultado=correcto | filas=4
+2026-11-09T08:49:40.131Z | usuario=admin | rol=Administrador | accion=ver_indicadores | resultado=correcto | 
+2026-11-09T08:49:40.141Z | usuario=admin | rol=Administrador | accion=stock_bajo | resultado=correcto | umbral=5 filas=4
+2026-11-09T08:49:40.955Z | usuario=admin | rol=Administrador | accion=listar_clientes | resultado=correcto | filas=7
+2026-11-09T10:11:04.332Z | usuario=admin | rol=- | accion=login | resultado=rechazado | credenciales no válidas o usuario inactivo
+2026-11-09T10:11:05.286Z | usuario=admin | rol=- | accion=login | resultado=rechazado | credenciales no válidas o usuario inactivo
+2026-11-09T10:11:10.324Z | usuario=admin | rol=Administrador | accion=login | resultado=correcto | 
+2026-11-09T10:11:10.499Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=13
+2026-11-09T11:25:43.689Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO059 pares=1
+2026-11-09T11:26:44.358Z | usuario=admin | rol=Administrador | accion=login | resultado=correcto | 
+2026-11-09T11:26:44.612Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=14
+2026-11-09T11:28:20.522Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO059 lineas=1
+2026-11-09T11:28:22.352Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO059 nuevo_estado=confirmado
+2026-11-09T11:28:23.308Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO059 odoo=S00008 creado en Odoo
+2026-11-09T11:28:23.327Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO059 lineas=1
+2026-11-09T11:28:23.359Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=14
+2026-11-09T12:24:11.159Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO061 pares=1
+2026-11-09T12:24:18.455Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=15
+2026-11-09T12:24:24.201Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO061 lineas=1
+2026-11-09T12:24:26.704Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO061 nuevo_estado=confirmado
+2026-11-09T12:24:27.584Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO061 odoo=S00010 creado en Odoo
+2026-11-09T12:24:27.591Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO061 lineas=1
+2026-11-09T12:24:27.601Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=15
+2026-11-09T12:25:51.775Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=15
+2026-11-09T12:26:05.293Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO062 pares=1
+2026-11-09T12:26:08.391Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=16
+2026-11-09T12:26:09.545Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO062 lineas=1
+2026-11-09T12:26:13.141Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO062 nuevo_estado=confirmado
+2026-11-09T12:26:13.774Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO062 odoo=S00011 creado en Odoo
+2026-11-09T12:26:13.781Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO062 lineas=1
+2026-11-09T12:26:13.789Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=16
+2026-11-10T10:03:52.274Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO063 pares=1
+2026-11-10T10:04:12.662Z | usuario=admin | rol=Administrador | accion=login | resultado=correcto | 
+2026-11-10T10:04:13.015Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=17
+2026-11-10T10:04:15.273Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T10:04:25.944Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO063 nuevo_estado=confirmado
+2026-11-10T10:04:26.328Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=error | pedido=SO063 odoo=- Odoo: usuario o contraseña incorrectos
+2026-11-10T10:04:26.350Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T10:04:26.381Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=17
+2026-11-10T10:05:09.300Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=17
+2026-11-10T10:06:07.899Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=17
+2026-11-10T10:06:11.418Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T10:06:14.818Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO063 nuevo_estado=entregado
+2026-11-10T10:06:14.836Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T10:06:14.864Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=17
+2026-11-10T10:06:19.420Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T10:06:23.235Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=error | pedido=SO063 odoo=- Odoo: usuario o contraseña incorrectos
+2026-11-10T10:06:23.250Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T10:06:23.271Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=17
+2026-11-10T10:12:58.730Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO064 pares=2
+2026-11-10T10:13:02.517Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=18
+2026-11-10T10:13:04.258Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO064 lineas=2
+2026-11-10T10:13:07.006Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO064 nuevo_estado=confirmado
+2026-11-10T10:13:07.362Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=error | pedido=SO064 odoo=- Odoo: usuario o contraseña incorrectos
+2026-11-10T10:13:07.383Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO064 lineas=2
+2026-11-10T10:13:07.417Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=18
+2026-11-10T10:13:27.630Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=18
+2026-11-10T10:13:29.476Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO064 lineas=2
+2026-11-10T10:13:31.708Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=error | pedido=SO064 odoo=- Odoo: usuario o contraseña incorrectos
+2026-11-10T10:13:31.721Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO064 lineas=2
+2026-11-10T10:13:31.740Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=18
+2026-11-10T10:14:28.738Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO065 pares=1
+2026-11-10T10:14:40.653Z | usuario=admin | rol=Administrador | accion=login | resultado=correcto | 
+2026-11-10T10:14:40.917Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=19
+2026-11-10T10:14:42.735Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO065 lineas=1
+2026-11-10T10:14:44.342Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO065 nuevo_estado=confirmado
+2026-11-10T10:14:45.273Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO065 odoo=S00012 creado en Odoo
+2026-11-10T10:14:45.290Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO065 lineas=1
+2026-11-10T10:14:45.320Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=19
+2026-11-10T10:15:30.536Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO066 pares=1
+2026-11-10T10:15:33.920Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=20
+2026-11-10T10:15:34.053Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=20
+2026-11-10T10:15:35.258Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-10T10:15:38.481Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO066 nuevo_estado=confirmado
+2026-11-10T10:15:39.203Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO066 odoo=S00013 creado en Odoo
+2026-11-10T10:15:39.213Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-10T10:15:39.228Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=20
+2026-11-10T10:57:08.034Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-10T10:57:40.172Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-10T10:59:07.593Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-10T10:59:32.024Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-10T10:59:54.668Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-10T11:00:09.698Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-10T11:00:10.883Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO003 lineas=9
+2026-11-10T11:00:14.528Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO008 lineas=3
+2026-11-10T11:00:17.181Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO008 nuevo_estado=confirmado
+2026-11-10T11:00:18.147Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO008 odoo=S00014 creado en Odoo
+2026-11-10T11:00:18.162Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO008 lineas=3
+2026-11-10T11:00:18.195Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=20
+2026-11-10T11:00:43.089Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-10T11:00:44.819Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO006 lineas=1
+2026-11-10T11:00:47.098Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO009 lineas=1
+2026-11-10T11:00:48.686Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO010 lineas=2
+2026-11-10T11:00:50.752Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO009 lineas=1
+2026-11-10T11:00:53.292Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
+2026-11-10T11:00:56.189Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO059 lineas=1
+2026-11-10T11:00:58.065Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO061 lineas=1
+2026-11-10T11:01:01.793Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T11:01:04.908Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T11:01:08.184Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T11:01:10.266Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T11:01:14.026Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T11:01:16.447Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T11:01:19.990Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO063 lineas=1
+2026-11-10T11:01:27.533Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO012 lineas=1
+2026-11-10T11:01:29.933Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
+2026-11-10T11:01:30.154Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
+2026-11-10T11:01:34.072Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
+2026-11-10T11:01:38.413Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO012 lineas=1
+2026-11-10T11:01:44.838Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO011 lineas=1
+2026-11-10T11:02:14.544Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO010 lineas=2
+2026-11-10T11:02:18.207Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
+2026-11-10T11:02:18.412Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
+2026-11-10T11:02:20.078Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO012 lineas=1
+2026-11-10T11:18:04.633Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO010 lineas=2
+2026-11-10T11:18:07.022Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO010 nuevo_estado=confirmado
+2026-11-10T11:18:07.894Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO010 odoo=S00015 creado en Odoo
+2026-11-10T11:18:07.915Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO010 lineas=2
+2026-11-10T11:18:07.948Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=20
+2026-11-10T11:18:08.954Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO010 lineas=2
+2026-11-10T11:18:32.410Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
+2026-11-10T11:18:33.957Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO058 nuevo_estado=confirmado
+2026-11-10T11:18:34.411Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO058 odoo=S00016 creado en Odoo
+2026-11-10T11:18:34.425Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
+2026-11-10T11:18:34.446Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=20

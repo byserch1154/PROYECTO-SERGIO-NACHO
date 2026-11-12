@@ -52,7 +52,6 @@ Usuarios ficticios: `admin / Admin#2026` · `comercial1 / Comercial#2026` · `al
 | `src/odoo.js` | Cliente de la API de Odoo (JSON-RPC): busca/crea el cliente y crea el pedido de venta |
 | `panel/` | Interfaz de gestión (HTML + CSS + JS sin librerías) |
 | `sql/07_web_backend.sql` | Rol técnico **Web**, usuario `web_publica`, funciones de detalle/análisis y vista de conciliación |
-| `sql/08_exportar_reconciliacion.sql` | Exporta las cifras SQL que Python concilia |
 | `sql/10_integracion_odoo.sql` | Tabla `pedidos_odoo` (qué pedido de Odoo corresponde a cada uno) y funciones de envío |
 | `sql/11_colores_catalogo.sql` | Tabla `colores_catalogo` (3 combinaciones por modelo) y columna `id_color` en las líneas |
 | `sql/12_pruebas_web_odoo.sql` | 16 pruebas en pgAdmin de colores de catálogo y envío a Odoo (termina en ROLLBACK) |
@@ -102,9 +101,7 @@ Usuarios ficticios: `admin / Admin#2026` · `comercial1 / Comercial#2026` · `al
 ## Colores de catálogo
 Cada modelo se vende en 3 combinaciones de color definidas por la marca (tabla `colores_catalogo`).
 En la ficha de producto se elige el color, la foto cambia a esa combinación y «Comprar este color»
-lleva al formulario con todo rellenado. Las fotos están en `lenguaje-de-marcas/img/colores/<codigo>.jpg`
-y se generan a partir de la foto original de cada modelo con
-`lenguaje-de-marcas/herramientas/recolorear_fotos.py` (cambia el azul de los detalles por el color nuevo).
+lleva al formulario con todo rellenado. Las fotos están en `lenguaje-de-marcas/img/colores/<codigo>.jpg`.
 
 | | Color de catálogo | Personalizado (configurador) |
 |---|---|---|

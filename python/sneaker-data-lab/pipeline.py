@@ -1,5 +1,3 @@
-"""Carga y validación de los CSV exportados desde la base de datos SPEAKE."""
-
 from pathlib import Path
 
 import pandas as pd
@@ -8,11 +6,10 @@ import config
 
 
 class ErrorCarga(Exception):
-    """Los datos no se pueden usar: falta un fichero, una columna o hay claves rotas."""
+    pass
 
 
-def cargar(directorio: Path = config.DIR_ENTRADA) -> dict:
-    """Lee los 5 CSV y comprueba que tienen las columnas obligatorias."""
+def cargar(directorio=config.DIR_ENTRADA):
     directorio = Path(directorio)
     if not directorio.is_dir():
         raise ErrorCarga(f"No existe la carpeta {directorio}")
@@ -32,51 +29,53 @@ def cargar(directorio: Path = config.DIR_ENTRADA) -> dict:
     return tablas
 
 
-def validar(tablas: dict) -> dict:
-    """Limpia tipos y comprueba la integridad. Devuelve copias, nunca toca los originales."""
+def _quitar(df, malas, tabla, regla, incidencias):
+    for _, fila in df[malas].iterrows():
+        incidencias.append({"tabla": tabla, "regla": regla, "id": fila.iloc[0]})
+    return df[~malas]
+
+
+def validar(tablas):
     t = {k: v.copy() for k, v in tablas.items()}
+    inc = []
 
-    pedidos = t["pedidos"]
-    pedidos["fecha"] = pd.to_datetime(pedidos["fecha"], errors="coerce")
-    if pedidos["fecha"].isna().any():
-        raise ErrorCarga("pedidos.csv tiene fechas no válidas")
-    if pedidos["id_pedido"].duplicated().any():
-        raise ErrorCarga("pedidos.csv tiene id_pedido duplicados")
-    if not pedidos["estado"].isin(config.ESTADOS).all():
-        raise ErrorCarga("pedidos.csv tiene estados desconocidos")
+    p = t["pedidos"]
+    p["fecha"] = pd.to_datetime(p["fecha"], format="%Y-%m-%d", errors="coerce")
+    p = _quitar(p, p["fecha"].isna(), "pedidos", "fecha no válida", inc)
+    p = _quitar(p, p["id_pedido"].duplicated(), "pedidos", "id_pedido duplicado", inc)
+    p = _quitar(p, ~p["estado"].isin(config.ESTADOS), "pedidos", "estado desconocido", inc)
+    p = _quitar(p, ~p["id_cliente"].isin(t["clientes"]["id_cliente"]), "pedidos", "cliente inexistente", inc)
+    t["pedidos"] = p
 
-    lineas = t["lineas_pedido"]
-    if (lineas["cantidad"] <= 0).any():
-        raise ErrorCarga("lineas_pedido.csv tiene cantidades no positivas")
-    if not lineas["id_pedido"].isin(pedidos["id_pedido"]).all():
-        raise ErrorCarga("lineas_pedido.csv tiene líneas de pedidos que no existen")
-    if not lineas["id_modelo"].isin(t["modelos"]["id_modelo"]).all():
-        raise ErrorCarga("lineas_pedido.csv tiene modelos que no existen")
-    if not pedidos["id_cliente"].isin(t["clientes"]["id_cliente"]).all():
-        raise ErrorCarga("pedidos.csv tiene clientes que no existen")
+    lin = t["lineas_pedido"]
+    lin = _quitar(lin, lin["id_linea"].duplicated(), "lineas_pedido", "id_linea duplicado", inc)
+    lin = _quitar(lin, lin["cantidad"] <= 0, "lineas_pedido", "cantidad no positiva", inc)
+    lin = _quitar(lin, lin["precio_unitario"] < 0, "lineas_pedido", "precio negativo", inc)
+    lin = _quitar(lin, ~lin["talla"].isin(config.TALLAS), "lineas_pedido", "talla fuera de 38-46", inc)
+    lin = _quitar(lin, ~lin["id_pedido"].isin(p["id_pedido"]), "lineas_pedido", "pedido inexistente", inc)
+    lin = _quitar(lin, ~lin["id_modelo"].isin(t["modelos"]["id_modelo"]), "lineas_pedido", "modelo inexistente", inc)
+    t["lineas_pedido"] = lin
 
-    # TODO: más reglas de calidad (tallas fuera de 38-46, precios negativos, stock negativo,
-    #   id_linea duplicados...) y en vez de parar en el primer error, guardar todas las
-    #   incidencias en una tabla para enseñarlas en el dashboard.
-    return t
+    s = t["stock"]
+    t["stock"] = _quitar(s, s["stock_disponible"] < 0, "stock", "stock negativo", inc)
+
+    return t, pd.DataFrame(inc, columns=["tabla", "regla", "id"])
 
 
-def construir_lineas(t: dict) -> pd.DataFrame:
-    """Una fila por línea de pedido con los datos del pedido, el cliente y el modelo."""
+def construir_lineas(t):
     pedidos = t["pedidos"].merge(
         t["clientes"].rename(columns={"tipo": "tipo_cliente"}),
         on="id_cliente",
         how="left",
         validate="many_to_one",
     )
-    lineas = t["lineas_pedido"].merge(pedidos, on="id_pedido", how="left", validate="many_to_one")
+    lineas = t["lineas_pedido"].merge(pedidos, on="id_pedido", how="inner", validate="many_to_one")
     lineas = lineas.merge(t["modelos"], on="id_modelo", how="left", validate="many_to_one")
     lineas["importe"] = lineas["cantidad"] * lineas["precio_unitario"]
     lineas["es_venta"] = lineas["estado"].isin(config.ESTADOS_VENTA)
     return lineas
 
 
-def ejecutar(directorio: Path = config.DIR_ENTRADA) -> tuple[dict, pd.DataFrame]:
-    """Carga, valida y une. Devuelve (tablas limpias, líneas enriquecidas)."""
-    t = validar(cargar(directorio))
-    return t, construir_lineas(t)
+def ejecutar(directorio=config.DIR_ENTRADA):
+    t, incidencias = validar(cargar(directorio))
+    return t, construir_lineas(t), incidencias

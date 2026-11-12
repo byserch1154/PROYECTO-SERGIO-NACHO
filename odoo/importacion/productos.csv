@@ -1,0 +1,13 @@
+name,list_price,sale_ok,description_sale
+SPEAKE Court,89,True,Modelo Urbano
+SPEAKE Court Custom,104,True,Modelo Urbano personalizado
+SPEAKE Pulse,109,True,Modelo Deportivo
+SPEAKE Pulse Custom,124,True,Modelo Deportivo personalizado
+SPEAKE High,99,True,Modelo Baloncesto
+SPEAKE High Custom,114,True,Modelo Baloncesto personalizado
+SPEAKE Retro,95,True,Modelo Retro
+SPEAKE Retro Custom,110,True,Modelo Retro personalizado
+SPEAKE Street,92,True,Modelo Street
+SPEAKE Street Custom,107,True,Modelo Street personalizado
+SPEAKE Aero,105,True,Modelo Running
+SPEAKE Aero Custom,120,True,Modelo Running personalizado

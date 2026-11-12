@@ -1,12 +1,10 @@
-"""Configuración común del laboratorio de datos de SPEAKE."""
-
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
-DIR_ENTRADA = BASE / "entrada_acc"  # CSV exportados desde la base de datos SPEAKE
+DIR_ENTRADA = BASE / "entrada_acc"
 DIR_SALIDA = BASE / "outputs"
+LOG = BASE / "logs" / "ejecuciones.log"
 
-# Columnas obligatorias de cada CSV
 ESQUEMA = {
     "clientes": ["id_cliente", "nombre", "tipo"],
     "modelos": ["id_modelo", "modelo", "categoria"],
@@ -16,7 +14,8 @@ ESQUEMA = {
 }
 
 ESTADOS = ["pendiente", "confirmado", "entregado", "cancelado"]
-ESTADOS_VENTA = ["confirmado", "entregado"]  # lo que cuenta como venta
+ESTADOS_VENTA = ["confirmado", "entregado"]
 TALLAS = list(range(38, 47))
 STOCK_MINIMO = 10
 REFRESCO_SEGUNDOS = 60
+SEMILLA = 42
