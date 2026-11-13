@@ -1,0 +1,20 @@
+indicador,valor,formula
+Pedidos únicos,12,nº id_pedido distintos (toda la actividad)
+Pendientes,3,pedidos con estado pendiente
+Confirmados,4,pedidos con estado confirmado
+Entregados,3,pedidos con estado entregado
+Cancelados,2,pedidos con estado cancelado
+Pedidos de venta,7,confirmados + entregados
+Pares vendidos,59,Σ cantidad de pedidos de venta
+Ingresos (€),7191.0,Σ cantidad × precio de pedidos de venta
+Ticket medio (€),1027.29,ingresos / pedidos de venta
+Pares por pedido,8.43,pares / pedidos de venta
+% pedidos Custom,42.9,pedidos custom / pedidos de venta
+% pares Custom,89.8,pares custom / pares vendidos
+% ingresos Custom,91.6,ingresos custom / ingresos
+Modelo top,SPEAKE Pulse,modelo con más ingresos
+Talla top,42,talla con más pares
+Cliente top,Club Halcones,cliente con más ingresos
+Variación último mes %,-85.7,ingresos último mes / mes anterior − 1
+Pareto 20 % modelos %,74.8,ingresos del 20 % de modelos con más ventas / ingresos
+Variantes con stock bajo,5,modelo-talla con stock < 10

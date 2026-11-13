@@ -1,7 +1,7 @@
 # 02 · Matriz de permisos por rol y operación
 
 ✅ permitido · ❌ denegado. La comprobación se hace **en PostgreSQL** (funciones `fn_exigir_permiso`
-y triggers `BEFORE`), no solo ocultando botones en Java.
+y triggers `BEFORE`), no solo ocultando botones en el panel.
 
 | Operación | Administrador | Comercial | Almacén |
 |---|:-:|:-:|:-:|
@@ -23,7 +23,7 @@ y triggers `BEFORE`), no solo ocultando botones en Java.
 - **Administrador**: acceso completo, incluida la gestión de usuarios, roles y auditoría. Existe desde la carga inicial (`02_datos.sql`).
 - **Auditoría** solo para el Administrador: contiene la actividad de todos los usuarios.
 
-## Usuarios ficticios de prueba (contraseñas ficticias, bcrypt, cámbialas)
+## Usuarios de prueba (ficticios, guardados con bcrypt)
 | Usuario | Rol | Contraseña de prueba |
 |---|---|---|
 | admin | Administrador | Admin#2026 |
@@ -32,4 +32,4 @@ y triggers `BEFORE`), no solo ocultando botones en Java.
 
 ## Roles de la aplicación vs. roles de PostgreSQL
 - **Roles funcionales de la app** (`roles`, `permisos`, `usuarios`): los que ve el negocio (Administrador, Comercial, Almacén). Son datos en tablas.
-- **Roles/privilegios de PostgreSQL** (`CREATE ROLE`, `GRANT/REVOKE`): quién puede conectarse a la base y a qué tablas. No se han usado para los perfiles de negocio (es opcional en el enunciado); la app se conecta con una sola cuenta de base de datos y la identidad del usuario funcional viaja en cada transacción.
+- **Roles/privilegios de PostgreSQL** (`CREATE ROLE`, `GRANT/REVOKE`): quién puede conectarse a la base y a qué tablas. No se han usado para los perfiles de negocio (es opcional en el enunciado). El backend se conecta con una sola cuenta de base de datos y la identidad del usuario funcional viaja en cada transacción.

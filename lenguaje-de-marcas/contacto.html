@@ -9,11 +9,27 @@
     <title>Contacto | SPEAKE</title>
     <link rel="icon" type="image/png" href="img/favicon.png">
     <link rel="stylesheet" href="css/estilos.css">
-    <script src="js/sf-config.js"></script>
-    <script src="js/sf-layout.js" defer></script>
   </head>
   <body class="sf-body pagina-contacto">
-    <div id="sf-header"></div>
+    <header class="sf-header">
+      <div class="sf-header__inner">
+        <input class="sf-menu-check" type="checkbox" id="menu">
+        <a class="sf-logo" href="index.html"><img class="sf-logo__img" src="img/logo-speake.png" alt="SPEAKE"></a>
+        <nav class="sf-nav" aria-label="Navegación principal">
+          <a class="sf-nav__link" href="index.html">Inicio</a>
+          <a class="sf-nav__link" href="catalogo.html">Catálogo</a>
+          <a class="sf-nav__link" href="personaliza.html">Personaliza</a>
+          <a class="sf-nav__link" href="contacto.html" aria-current="page">Contacto</a>
+          <a class="sf-nav__link sf-nav__cta-mobile" href="catalogo.html">Explorar modelos ↗</a>
+        </nav>
+        <a class="sf-cta" href="catalogo.html">Explorar modelos <span aria-hidden="true">↗</span></a>
+        <label class="sf-menu-btn" for="menu" aria-label="Abrir menú">
+          <span class="sf-menu-btn__bar"></span>
+          <span class="sf-menu-btn__bar"></span>
+          <span class="sf-menu-btn__bar"></span>
+        </label>
+      </div>
+    </header>
     <main>
       <section class="contacto">
         <div class="contacto-intro">
@@ -110,7 +126,18 @@
         </form>
       </section>
     </main>
-    <div id="sf-footer"></div>
+    <footer class="sf-footer">
+      <a class="sf-logo" href="index.html"><img class="sf-logo__img" src="img/logo-speake.png" alt="SPEAKE"></a>
+      <p class="sf-footer__tagline">Tu estilo. Tus reglas.</p>
+      <nav class="sf-footer__nav" aria-label="Enlaces del pie">
+        <a href="index.html">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="personaliza.html">Personaliza</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="#">Volver arriba ↑</a>
+      </nav>
+      <small class="sf-footer__legal"><span>© 2026 SPEAKE</span><span>Proyecto académico</span></small>
+    </footer>
 
     <script>
       /* ---------- Solicitud Custom conectada al backend Express ----------

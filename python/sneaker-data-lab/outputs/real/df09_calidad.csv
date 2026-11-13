@@ -1,0 +1,6 @@
+tabla,filas_entrada,filas_validas,filas_rechazadas,pct_calidad,nulos,bloqueantes,recuperables,advertencias,referencias_sin_resolver,tasa_integridad_pct
+clientes,6,6,0,100.0,0,0,0,0,0,100.0
+modelos,6,6,0,100.0,0,0,0,0,0,100.0
+pedidos,12,12,0,100.0,0,0,0,0,0,100.0
+lineas_pedido,26,26,0,100.0,0,0,0,0,0,100.0
+stock,54,54,0,100.0,0,0,0,0,0,100.0

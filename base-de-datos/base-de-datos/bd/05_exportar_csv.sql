@@ -16,3 +16,4 @@
 \copy (SELECT * FROM v_export_pedidos       ORDER BY 1) TO 'export/pedidos.csv'       WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')
 \copy (SELECT * FROM v_export_lineas_pedido ORDER BY 1) TO 'export/lineas_pedido.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')
 \copy (SELECT * FROM v_export_stock         ORDER BY 1,2) TO 'export/stock.csv'       WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')
+\copy (SELECT * FROM v_reconciliacion) TO 'export/reconciliacion_sql.csv' WITH (FORMAT csv, HEADER true, ENCODING 'UTF8')

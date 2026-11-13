@@ -5,18 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * PROCESO HIJO 2 · AnalizadorTallas
- * stdin : pedido normalizado (salida del validador)
- * stdout: resumen clave=valor, por ejemplo:
- *           REFERENCIA=SO003
- *           CLIENTE=Club Halcones
- *           MODELO=SPEAKE Pulse
- *           TALLA.38=2
- *           TOTAL_PARES=40
- * Códigos de salida: 0 = OK, 5 = no se pudo analizar.
- * Argumento opcional --retardo-ms N: espera N ms para probar el timeout del padre.
- */
+// Proceso hijo 2: cuenta cuántos pares hay de cada talla
 public final class AnalizadorTallas {
 
     private AnalizadorTallas() { }
@@ -25,6 +14,7 @@ public final class AnalizadorTallas {
         PrintStream out = Csv.salida();
         PrintStream err = Csv.error();
 
+        // Solo para probar el timeout: hace esperar al proceso
         if (args.length == 2 && args[0].equals("--retardo-ms")) {
             Thread.sleep(Long.parseLong(args[1]));
         }
@@ -35,17 +25,28 @@ public final class AnalizadorTallas {
             System.exit(5);
         }
 
-        List<String> primera = Csv.separar(lineas.get(1));
+        // TreeMap para que las tallas salgan ordenadas
         Map<Integer, Integer> porTalla = new TreeMap<>();
         int total = 0;
+        for (String l : lineas.subList(1, lineas.size())) {
+            List<String> f = Csv.separar(l);
+            if (f.size() != Csv.COLUMNAS.size()) {
+                err.println("ERROR: línea con formato incorrecto: " + l);
+                System.exit(5);
+            }
+            int talla = Integer.parseInt(f.get(10));
+            int pares = Integer.parseInt(f.get(11));
+            porTalla.merge(talla, pares, Integer::sum);
+            total += pares;
+        }
 
-        // TODO: recorrer las filas (desde la 1) y sumar la cantidad (columna 11) de cada
-        //   talla (columna 10) en «porTalla», y el total de pares en «total».
-        //   Si una fila no tiene el formato esperado, mensaje por stderr y salir con 5.
-
+        // Escribimos el resumen como clave=valor para el siguiente proceso
+        List<String> primera = Csv.separar(lineas.get(1));
         out.println("REFERENCIA=" + primera.get(0));
         out.println("CLIENTE=" + primera.get(1));
         out.println("MODELO=" + primera.get(2));
+        out.println("COLORES=" + String.join(" / ", primera.subList(3, 9)));
+        out.println("TEXTO=" + primera.get(9));
         porTalla.forEach((talla, pares) -> out.println("TALLA." + talla + "=" + pares));
         out.println("TOTAL_PARES=" + total);
         System.exit(0);

@@ -1,15 +1,12 @@
 package speake.psp;
 
 import java.io.PrintStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * PROCESO HIJO 3 · GeneradorFichaTaller
- * stdin : resumen clave=valor del AnalizadorTallas
- * stdout: ficha auxiliar para el taller (la orden de fabricación oficial está en Odoo)
- * Códigos de salida: 0 = OK, 6 = resumen incompleto.
- */
+// Proceso hijo 3: con el resumen monta la ficha que se imprime para el taller
 public final class GeneradorFichaTaller {
 
     private GeneradorFichaTaller() { }
@@ -18,6 +15,7 @@ public final class GeneradorFichaTaller {
         PrintStream out = Csv.salida();
         PrintStream err = Csv.error();
 
+        // Leemos el resumen clave=valor que manda el analizador
         Map<String, String> datos = new LinkedHashMap<>();
         for (String l : Csv.leerTodo(Csv.entrada())) {
             int igual = l.indexOf('=');
@@ -32,18 +30,37 @@ public final class GeneradorFichaTaller {
             }
         }
 
-        out.println("==============================================");
+        // La talla con más pares sirve de referencia para el tamaño de las barras
+        int maximo = 1;
+        for (Map.Entry<String, String> d : datos.entrySet()) {
+            if (d.getKey().startsWith("TALLA.")) {
+                maximo = Math.max(maximo, Integer.parseInt(d.getValue()));
+            }
+        }
+
+        // A partir de aquí se dibuja la ficha
+        String linea = "=".repeat(50);
+        out.println(linea);
         out.println(" SPEAKE · FICHA AUXILIAR DE TALLER");
         out.println(" (la orden de fabricación oficial está en Odoo)");
-        out.println("==============================================");
-        out.println(" Pedido : " + datos.get("REFERENCIA"));
-        out.println(" Cliente: " + datos.get("CLIENTE"));
-        out.println(" Modelo : " + datos.get("MODELO"));
-        out.println(" Pares  : " + datos.get("TOTAL_PARES"));
-        out.println("----------------------------------------------");
-        // TODO: imprimir una línea por cada clave TALLA.xx con sus pares, por ejemplo
-        //   "  Talla 42 :  8 pares", y al final la fecha y hora de generación.
-        out.println("==============================================");
+        out.println(linea);
+        out.println(" Pedido   : " + datos.get("REFERENCIA"));
+        out.println(" Cliente  : " + datos.get("CLIENTE"));
+        out.println(" Modelo   : " + datos.get("MODELO"));
+        out.println(" Colores  : " + datos.getOrDefault("COLORES", "-"));
+        out.println(" Texto    : " + datos.getOrDefault("TEXTO", "-"));
+        out.println("-".repeat(50));
+        for (Map.Entry<String, String> d : datos.entrySet()) {
+            if (d.getKey().startsWith("TALLA.")) {
+                int pares = Integer.parseInt(d.getValue());
+                String barra = "#".repeat(Math.max(1, pares * 20 / maximo));
+                out.printf(" Talla %s : %3d pares  %s%n", d.getKey().substring(6), pares, barra);
+            }
+        }
+        out.println("-".repeat(50));
+        out.println(" Total    : " + datos.get("TOTAL_PARES") + " pares");
+        out.println(" Generada : " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        out.println(linea);
         System.exit(0);
     }
 }

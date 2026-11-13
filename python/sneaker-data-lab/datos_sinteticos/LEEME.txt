@@ -1,0 +1,1 @@
+DATOS SINTÉTICOS generados con generador_datos.py (semilla fija). No son ventas reales.

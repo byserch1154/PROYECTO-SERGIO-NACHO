@@ -1021,6 +1021,9 @@ body.sf-body > main {
 }
 
 /* ---------- Botón hamburguesa (solo móvil) ---------- */
+.sf-menu-check {
+  display: none;
+}
 .sf-menu-btn {
   display: none;
   width: 44px;
@@ -1049,13 +1052,13 @@ body.sf-body > main {
     transform 0.2s ease,
     opacity 0.2s ease;
 }
-.sf-menu-btn[aria-expanded="true"] .sf-menu-btn__bar:nth-child(1) {
+.sf-menu-check:checked ~ .sf-menu-btn .sf-menu-btn__bar:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
-.sf-menu-btn[aria-expanded="true"] .sf-menu-btn__bar:nth-child(2) {
+.sf-menu-check:checked ~ .sf-menu-btn .sf-menu-btn__bar:nth-child(2) {
   opacity: 0;
 }
-.sf-menu-btn[aria-expanded="true"] .sf-menu-btn__bar:nth-child(3) {
+.sf-menu-check:checked ~ .sf-menu-btn .sf-menu-btn__bar:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
 
@@ -1088,7 +1091,7 @@ body.sf-body > main {
     border-bottom: 1px solid var(--sf-border);
     box-shadow: 0 16px 28px rgba(0, 0, 0, 0.5);
   }
-  .sf-nav--open {
+  .sf-menu-check:checked ~ .sf-nav {
     display: flex;
   }
   .sf-nav__link {

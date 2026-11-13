@@ -1,0 +1,13 @@
+id_pedido,fecha,nombre,estado,tipo,es_venta,pares,importe
+1,2026-08-05,Ana García,entregado,estandar,True,1,89.0
+2,2026-08-12,Pedro Ruiz,entregado,estandar,True,2,197.0
+3,2026-08-20,Club Halcones,confirmado,custom,True,40,5160.0
+4,2026-09-02,Marta Sánchez,confirmado,estandar,True,1,99.0
+5,2026-09-08,Peña Los Linces,confirmado,custom,True,12,1308.0
+6,2026-09-15,Ana García,confirmado,custom,True,1,120.0
+7,2026-09-21,Pedro Ruiz,cancelado,estandar,False,2,190.0
+8,2026-09-28,Escuela Deportiva Norte,pendiente,estandar,False,15,1335.0
+9,2026-10-03,Marta Sánchez,pendiente,estandar,False,1,92.0
+10,2026-10-10,Club Halcones,pendiente,custom,False,20,2380.0
+11,2026-10-18,Ana García,entregado,estandar,True,2,218.0
+12,2026-10-25,Peña Los Linces,cancelado,estandar,False,3,315.0

@@ -1,0 +1,7 @@
+fichero,existe,fecha_analisis,filas,columnas,bytes,modificado
+clientes.csv,True,2026-11-12 09:58:56,6,3,178,2026-11-12 09:51:35
+modelos.csv,True,2026-11-12 09:58:56,6,3,165,2026-11-12 09:51:36
+pedidos.csv,True,2026-11-12 09:58:56,12,5,446,2026-11-12 09:51:37
+lineas_pedido.csv,True,2026-11-12 09:58:56,26,6,543,2026-11-12 09:51:36
+stock.csv,True,2026-11-12 09:58:56,54,4,1066,2026-11-12 09:51:38
+reconciliacion_sql.csv,True,2026-11-12 09:58:56,6,2,131,2026-11-12 09:51:37

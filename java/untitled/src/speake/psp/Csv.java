@@ -6,10 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-/** Utilidades comunes: columnas del CSV y lectura/escritura en UTF-8. */
+// Cosas comunes a todos los procesos: las columnas del pedido y leer/escribir en UTF-8
 public final class Csv {
 
     public static final List<String> COLUMNAS = List.of(
@@ -30,7 +29,7 @@ public final class Csv {
         return new PrintStream(System.err, true, StandardCharsets.UTF_8);
     }
 
-    /** Lee todas las líneas no vacías de la entrada estándar. */
+    // Lee todo lo que llega por la entrada estándar, sin líneas vacías
     public static List<String> leerTodo(BufferedReader in) throws IOException {
         List<String> lineas = new ArrayList<>();
         String l;
@@ -42,10 +41,10 @@ public final class Csv {
         return lineas;
     }
 
-    /** Separa una línea por comas (los datos del pedido no llevan comas dentro). */
+    // Parte una línea del CSV por las comas
     public static List<String> separar(String linea) {
         List<String> campos = new ArrayList<>();
-        for (String c : Arrays.asList(linea.split(",", -1))) {
+        for (String c : linea.split(",", -1)) {
             campos.add(c.trim());
         }
         return campos;

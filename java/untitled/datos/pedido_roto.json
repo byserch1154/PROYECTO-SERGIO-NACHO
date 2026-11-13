@@ -1,0 +1,5 @@
+{
+  "referencia": "SO003",
+  "cliente": "Club Halcones",
+  "lineas": [
+    {"talla": 38, "cantidad": 2},

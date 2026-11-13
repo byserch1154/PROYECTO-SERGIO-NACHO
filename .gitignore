@@ -21,5 +21,9 @@ java/untitled/.idea/workspace.xml
 __pycache__/
 .pytest_cache/
 .venv/
-python/sneaker-data-lab/logs/
-python/sneaker-data-lab/outputs/
+
+# Odoo está en la máquina virtual
+odoo/
+
+# Copias locales
+Claude outputs/

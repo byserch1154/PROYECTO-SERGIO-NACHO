@@ -1,7 +1,6 @@
 # 01 · Diseño: diagrama entidad-relación
 
-Diagrama (Mermaid; se visualiza en GitHub/VS Code. Expórtalo a imagen para la memoria
-desde https://mermaid.live):
+El diagrama está en Mermaid: GitHub y VS Code lo dibujan solos.
 
 ```mermaid
 erDiagram
@@ -13,6 +12,9 @@ erDiagram
     MODELOS      ||--o{ LINEAS_PEDIDO: "se pide en"
     MODELOS      ||--o{ STOCK        : "existencias por talla"
     USUARIOS     ||--o{ LOG_EVENTOS  : "responsable"
+    MODELOS      ||--o{ COLORES_CATALOGO : "se vende en"
+    COLORES_CATALOGO ||--o{ LINEAS_PEDIDO : "color elegido"
+    PEDIDOS      ||--o| PEDIDOS_ODOO : "se envía a Odoo"
 
     ROLES { smallint id_rol PK  text nombre UK }
     PERMISOS { smallint id_rol PK,FK  text operacion PK  boolean permitido }
@@ -20,9 +22,11 @@ erDiagram
     CLIENTES { int id_cliente PK  text nombre  text email UK  text telefono  text tipo  date fecha_alta }
     MODELOS  { smallint id_modelo PK  text codigo UK  text nombre  text categoria  numeric precio_base }
     PEDIDOS  { int id_pedido PK  text referencia UK  int id_cliente FK  date fecha  text estado  text tipo  numeric total  int creado_por FK }
-    LINEAS_PEDIDO { int id_linea PK  int id_pedido FK  smallint id_modelo FK  smallint talla  int cantidad  numeric precio_unitario  text color_cuerpo  text color_franja  text color_puntera  text color_talon  text color_suela  text color_cordones  varchar texto_suela }
+    LINEAS_PEDIDO { int id_linea PK  int id_pedido FK  smallint id_modelo FK  smallint talla  int cantidad  numeric precio_unitario  text color_cuerpo  text color_franja  text color_puntera  text color_talon  text color_suela  text color_cordones  varchar texto_suela  smallint id_color FK }
     STOCK    { smallint id_modelo PK,FK  smallint talla PK  int stock_disponible  timestamptz fecha_corte }
     LOG_EVENTOS { bigint id_evento PK  timestamptz fecha  text tabla  text operacion  text id_registro  int id_usuario FK  text resumen }
+    COLORES_CATALOGO { smallint id_color PK  text codigo UK  smallint id_modelo FK  text nombre  boolean activo }
+    PEDIDOS_ODOO { int id_pedido PK,FK  text pedido_odoo  int id_odoo  text estado  text mensaje  timestamptz actualizado }
 ```
 
 ## Tablas y relaciones
@@ -35,6 +39,8 @@ erDiagram
 | `stock` | Existencias por modelo y talla (PK compuesta). |
 | `roles`, `permisos`, `usuarios` | Seguridad: roles funcionales de la app y matriz de permisos. |
 | `log_eventos` | Auditoría de altas, modificaciones y bajas de pedidos y líneas. |
+| `colores_catalogo` | Los 3 colores ya hechos de cada modelo que se pueden comprar desde la ficha de producto. |
+| `pedidos_odoo` | Qué pedidos se han enviado a Odoo, con qué número (S000xx) y si dio error. |
 
 ## Decisiones de diseño (justificación)
 1. **Cabecera + líneas**: un pedido tiene varias tallas (SO003 = 9 líneas). Evita repetir cliente y fecha.
