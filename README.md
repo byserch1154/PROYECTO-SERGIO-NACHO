@@ -7,6 +7,8 @@ el cliente elige los colores y un texto para la suela.
 
 **Memoria técnica:** `SERGIO-SIERRA-NACHO-MEMORIA_TECNICA_SANTI.docx`, en esta misma carpeta.
 
+**Manual de demostración:** `docs/MANUAL_DEMO.md` · **Presentación:** `docs/PRESENTACION_SPEAKE.pdf`
+
 ## Qué mirar en cada asignatura
 
 | Asignatura | Dónde está |

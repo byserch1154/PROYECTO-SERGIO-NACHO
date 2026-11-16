@@ -125,7 +125,7 @@ Web ──► Express ──► PostgreSQL SPEAKE ──(confirmar en el panel)�
 ```
 
 1. Ejecutar `sql/10_integracion_odoo.sql` en SPEAKE (solo añade; no borra nada).
-2. Cargar en Odoo los productos con tallas: `odoo/scripts/cargar_datos_odoo.py`.
+2. Cargar en Odoo los productos con sus tallas (lo hicimos con un script que se queda en la máquina virtual de Odoo; Odoo no se sube al repositorio).
 3. Rellenar en `.env` `ODOO_URL`, `ODOO_DB`, `ODOO_USER` y `ODOO_PASSWORD` (mejor una clave API:
    Odoo → Mi perfil → Seguridad de la cuenta → Nueva clave API). Reiniciar `npm start`.
 4. En el panel aparece «Odoo: conectado a …». Al **confirmar** un pedido se crea en Odoo con la
