@@ -1,0 +1,30 @@
+[
+  {
+    "id_usuario": 1,
+    "username": "admin",
+    "rol": "Administrador",
+    "activo": true,
+    "fecha_creacion": "2026-11-05T09:24:50.408Z"
+  },
+  {
+    "id_usuario": 2,
+    "username": "comercial1",
+    "rol": "Comercial",
+    "activo": true,
+    "fecha_creacion": "2026-11-05T09:24:50.408Z"
+  },
+  {
+    "id_usuario": 3,
+    "username": "almacen1",
+    "rol": "Almacén",
+    "activo": true,
+    "fecha_creacion": "2026-11-05T09:24:50.408Z"
+  },
+  {
+    "id_usuario": 4,
+    "username": "web_publica",
+    "rol": "Web",
+    "activo": true,
+    "fecha_creacion": "2026-11-06T11:57:01.941Z"
+  }
+]
