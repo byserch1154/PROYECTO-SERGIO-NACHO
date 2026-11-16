@@ -9,6 +9,8 @@ el cliente elige los colores y un texto para la suela.
 
 **Manual de demostración:** `docs/MANUAL_DEMO.md` · **Presentación:** `docs/PRESENTACION_SPEAKE.pdf`
 
+Acceso a Datos y Python tienen su propia memoria: `SERGIO-SIERRA-NACHO-MEMORIA_ACCESO_DATOS.docx` y `SERGIO-SIERRA-NACHO-MEMORIA_PYTHON.docx`.
+
 ## Qué mirar en cada asignatura
 
 | Asignatura | Dónde está |
