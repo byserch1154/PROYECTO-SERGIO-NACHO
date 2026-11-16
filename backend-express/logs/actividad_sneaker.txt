@@ -146,3 +146,9 @@
 2026-11-10T11:18:34.411Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO058 odoo=S00016 creado en Odoo
 2026-11-10T11:18:34.425Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO058 lineas=1
 2026-11-10T11:18:34.446Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=20
+2026-11-16T11:08:52.964Z | usuario=admin | rol=Administrador | accion=login | resultado=correcto | 
+2026-11-16T11:08:53.272Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=20
+2026-11-16T11:08:56.711Z | usuario=admin | rol=Administrador | accion=listar_usuarios | resultado=correcto | filas=4
+2026-11-16T11:09:01.487Z | usuario=admin | rol=Administrador | accion=exportar_usuarios_json | resultado=correcto | usuarios=4
+2026-11-16T11:09:07.203Z | usuario=admin | rol=Administrador | accion=listar_usuarios | resultado=correcto | filas=4
+2026-11-16T11:09:09.177Z | usuario=admin | rol=Administrador | accion=exportar_usuarios_json | resultado=correcto | usuarios=4

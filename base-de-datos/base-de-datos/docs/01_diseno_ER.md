@@ -1,6 +1,6 @@
 # 01 · Diseño: diagrama entidad-relación
 
-El diagrama está en Mermaid: GitHub y VS Code lo dibujan solos.
+El diagrama está hecho con Mermaid: al abrir este fichero en GitHub o en VS Code se ve dibujado.
 
 ```mermaid
 erDiagram
@@ -29,27 +29,31 @@ erDiagram
     PEDIDOS_ODOO { int id_pedido PK,FK  text pedido_odoo  int id_odoo  text estado  text mensaje  timestamptz actualizado }
 ```
 
-## Tablas y relaciones
+## Tablas
 | Tabla | Para qué sirve |
 |---|---|
 | `clientes` | Particulares, clubes y equipos. |
-| `modelos` | Catálogo: los 6 modelos de la web (mismo `codigo`, nombre y precio). |
-| `pedidos` | Cabecera: cliente, fecha, estado, tipo y total (derivados por trigger). |
-| `lineas_pedido` | Una línea = modelo + talla + cantidad + personalización (6 partes de color + texto). |
-| `stock` | Existencias por modelo y talla (PK compuesta). |
-| `roles`, `permisos`, `usuarios` | Seguridad: roles funcionales de la app y matriz de permisos. |
-| `log_eventos` | Auditoría de altas, modificaciones y bajas de pedidos y líneas. |
-| `colores_catalogo` | Los 3 colores ya hechos de cada modelo que se pueden comprar desde la ficha de producto. |
-| `pedidos_odoo` | Qué pedidos se han enviado a Odoo, con qué número (S000xx) y si dio error. |
+| `modelos` | Los 6 modelos de la web, con el mismo código, nombre y precio. |
+| `pedidos` | La cabecera del pedido: cliente, fecha, estado, tipo y total. |
+| `lineas_pedido` | Cada línea es un modelo en una talla, con su cantidad y, si es Custom, sus 6 colores y el texto. |
+| `stock` | Cuántos pares hay de cada modelo en cada talla. |
+| `roles`, `permisos`, `usuarios` | Los usuarios de la aplicación, su rol y qué puede hacer cada rol. |
+| `log_eventos` | La auditoría: quién creó, cambió o borró cada pedido y cuándo. |
+| `colores_catalogo` | Las 3 combinaciones de color que se venden de cada modelo. |
+| `pedidos_odoo` | Qué pedido de Odoo corresponde a cada uno y si el envío dio error. |
 
-## Decisiones de diseño (justificación)
-1. **Cabecera + líneas**: un pedido tiene varias tallas (SO003 = 9 líneas). Evita repetir cliente y fecha.
-2. **Personalización en la línea, no en el pedido**: cada línea puede tener colores distintos. Regla CHECK: o las 6 partes son NULL (estándar) o las 6 están definidas (Custom).
-3. **`tipo` y `total` son derivados**: los mantienen triggers; no se escriben a mano → sin totales incoherentes.
-4. **`referencia` generada** (`SO` + id con ceros): es la clave de correspondencia con Odoo y PSP.
-5. **Dominios `talla_t` y `color_t`**: los mismos valores que el configurador web (tallas 38-46, 8 colores).
-6. **Sin `ON DELETE CASCADE`**: un borrado nunca arrastra datos por accidente; para borrar un pedido hay que borrar antes sus líneas.
-7. **Clave de duplicidad documentada**: índice único (pedido, modelo, talla, personalización, texto).
-8. **Stock por (modelo, talla)** con `CHECK (stock_disponible >= 0)` como red de seguridad además del trigger.
-9. **Precio copiado a la línea** (`precio_unitario`): si cambia el catálogo, los pedidos antiguos no cambian.
-10. **Eliminación lógica**: un pedido no se borra de la historia, pasa a `cancelado` (queda auditado). El DELETE físico solo existe para el Administrador y solo sobre pedidos pendientes.
+## Por qué está diseñada así
+1. **Cabecera y líneas.** Un pedido tiene varias tallas (SO003 tiene 9 líneas). Así el cliente y la fecha no se
+   repiten en cada línea.
+2. **Los colores van en la línea.** Cada talla podría llevar colores distintos. Una regla obliga a que estén los 6
+   colores o ninguno.
+3. **El total y el tipo los calcula la base.** Los triggers los recalculan cada vez que cambian las líneas, así nunca
+   hay un total que no cuadre.
+4. **La referencia se genera sola** (SO + el número con ceros). Es la que une el pedido con Odoo y con Java.
+5. **Tallas y colores con valores fijos.** Solo se admiten las tallas 38 a 46 y los 8 colores del configurador.
+6. **No hay borrado en cascada.** Borrar un pedido nunca arrastra datos por accidente: primero hay que borrar sus líneas.
+7. **No se repiten líneas.** No puede haber dos líneas iguales (mismo pedido, modelo, talla y colores).
+8. **El stock nunca baja de cero.** Lo impide una regla de la tabla, además del trigger.
+9. **El precio se guarda en la línea.** Si mañana cambia el precio del catálogo, los pedidos antiguos no cambian.
+10. **Los pedidos se cancelan, no se borran.** Así queda la historia en la auditoría. Borrar de verdad solo puede el
+    administrador y solo pedidos pendientes.

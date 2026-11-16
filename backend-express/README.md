@@ -1,175 +1,101 @@
-# Backend Express · conexión web ↔ PostgreSQL (Acceso a Datos)
+# Backend Express · cómo se conecta la web con la base de datos
 
-Servidor **Node.js + Express** que conecta la web corporativa con la base de datos PostgreSQL del proyecto
-(`base-de-datos/`). Sustituye a la interfaz Java/JDBC del enunciado de Acceso a Datos: la persistencia, los triggers,
-los permisos y la auditoría siguen estando **dentro de PostgreSQL**; el backend solo propaga la identidad del usuario y
-presenta los resultados.
+Este servidor está hecho con **Node.js y Express**. Hace de puente entre la web y la base de datos PostgreSQL: recibe
+los pedidos de la web, los guarda en la base y ofrece un **panel de gestión** para los empleados.
+
+El enunciado de Acceso a Datos pedía una aplicación Java con JDBC. En nuestro caso no hacía falta: lo hemos hecho con
+este backend, que cumple lo mismo (consultas seguras, transacciones, login, log, JSON y CSV). Lo importante (importes,
+stock, permisos y auditoría) lo sigue controlando PostgreSQL con sus triggers; el backend solo le pasa los datos y le
+dice qué usuario está trabajando.
 
 ```
-Navegador ── web (lenguaje-de-marcas) ──► POST /api/solicitudes ─┐
-Navegador ── panel /gestion (login) ───► /api/pedidos, ...  ─────┤  driver pg (consultas parametrizadas)
-                                                                 ▼
-                         PostgreSQL: triggers (importes, stock, auditoría) + permisos por rol
-                                                                 │
-              logs/actividad_sneaker.txt · data/usuarios_sneaker.json · data/export/*.csv (PSP + Python)
+Web ──────────► pedido nuevo ──────┐
+Panel (login) ─► consultas, etc. ──┤──► PostgreSQL (triggers, permisos, auditoría)
+                                   │
+                                   └──► ficheros: log TXT, JSON de usuarios y CSV para Java y Python
 ```
 
-## Puesta en marcha
-Requisitos: Node.js 18+ y PostgreSQL 14+.
+## Cómo se arranca
+Hace falta Node.js 18 o superior y la base `SPEAKE` ya cargada (ver el README de `base-de-datos`).
 ```bat
-:: 1. Base de datos (desde la carpeta base-de-datos\base-de-datos\bd)
-createdb SPEAKE
-psql -d SPEAKE -v ON_ERROR_STOP=1 -f 01_esquema.sql
-psql -d SPEAKE -v ON_ERROR_STOP=1 -f 02_datos.sql
-:: 2. Ampliación para el backend (desde backend-express\sql)
-psql -d SPEAKE -v ON_ERROR_STOP=1 -f 07_web_backend.sql
-psql -d SPEAKE -v ON_ERROR_STOP=1 -f 10_integracion_odoo.sql
-psql -d SPEAKE -v ON_ERROR_STOP=1 -f 11_colores_catalogo.sql
-:: 3. Servidor
 cd backend-express
-copy .env.example .env          (y poner la contraseña de PostgreSQL en .env)
+copy .env.example .env
 npm install
 npm start
 ```
-- Web: <http://localhost:3000/> (la misma web de Lenguaje de Marcas, ahora conectada)
-- Panel de gestión: <http://localhost:3000/gestion/>
-- Pruebas automáticas (con el servidor arrancado y la base recién cargada): `npm test`
+En el `.env` se pone la contraseña de PostgreSQL y los datos de Odoo. Ese fichero no se sube a GitHub.
 
-Usuarios ficticios: `admin / Admin#2026` · `comercial1 / Comercial#2026` · `almacen1 / Almacen#2026`
-(contraseñas guardadas con bcrypt en la BD; cambiarlas desde el panel si se desea).
+- Web: http://localhost:3000/
+- Panel de gestión: http://localhost:3000/gestion/
+- Pruebas: `npm test` (con el servidor arrancado) y `npm run test:odoo`
 
-## Ficheros
+Usuarios de prueba: `admin / Admin#2026`, `comercial1 / Comercial#2026` y `almacen1 / Almacen#2026`.
+
+## Qué hay en cada fichero
 | Fichero | Qué hace |
 |---|---|
-| `src/server.js` | Arranque, cabeceras de seguridad, sirve la web y el panel |
-| `src/db.js` | Pool de conexiones y `comoUsuario()`: transacción + `set_config('app.id_usuario', id, true)` |
-| `src/auth.js` | Login con `fn_login()` (bcrypt en PostgreSQL) y token de sesión aleatorio |
-| `src/routes/publico.js` | Catálogo, stock por talla y **solicitudes Custom de la web** |
-| `src/routes/gestion.js` | Consultas con filtros, alta, confirmar/cancelar/entregar, indicadores, auditoría, usuarios, exportaciones |
-| `src/actividad.js` | Log externo `actividad_sneaker.txt` (append, UTF-8) |
-| `src/exportaciones.js` | CSV (contrato con PSP/Python y CSV filtrado) y `usuarios_sneaker.json` con escritura segura |
-| `src/errores.js` | Traduce los errores de PostgreSQL a mensajes comprensibles |
-| `src/odoo.js` | Cliente de la API de Odoo (JSON-RPC): busca/crea el cliente y crea el pedido de venta |
-| `panel/` | Interfaz de gestión (HTML + CSS + JS sin librerías) |
-| `sql/07_web_backend.sql` | Rol técnico **Web**, usuario `web_publica`, funciones de detalle/análisis y vista de conciliación |
-| `sql/10_integracion_odoo.sql` | Tabla `pedidos_odoo` (qué pedido de Odoo corresponde a cada uno) y funciones de envío |
-| `sql/11_colores_catalogo.sql` | Tabla `colores_catalogo` (3 combinaciones por modelo) y columna `id_color` en las líneas |
-| `sql/12_pruebas_web_odoo.sql` | 16 pruebas en pgAdmin de colores de catálogo y envío a Odoo (termina en ROLLBACK) |
-| `test/api.test.js` | 9 pruebas de extremo a extremo |
-| `test/odoo.test.js` | 6 pruebas de la integración con un Odoo simulado (`npm run test:odoo`) |
+| `src/server.js` | Arranca el servidor y sirve la web y el panel |
+| `src/db.js` | Conexión con PostgreSQL. Cada operación va en una transacción que lleva el usuario que la hace |
+| `src/auth.js` | Login (la contraseña la comprueba PostgreSQL con bcrypt) |
+| `src/routes/publico.js` | Lo que usa la web: catálogo, stock y pedidos nuevos |
+| `src/routes/gestion.js` | Lo que usa el panel: buscar, crear, confirmar, cancelar, entregar, indicadores, auditoría, usuarios y exportar |
+| `src/actividad.js` | Escribe el log `logs/actividad_sneaker.txt` |
+| `src/exportaciones.js` | Crea los CSV y el `usuarios_sneaker.json` |
+| `src/errores.js` | Convierte los errores de PostgreSQL en mensajes que se entienden |
+| `src/odoo.js` | Envía los pedidos confirmados a Odoo |
+| `panel/` | La pantalla del panel de gestión (HTML, CSS y JavaScript) |
+| `sql/07_web_backend.sql` | Usuario técnico de la web y funciones del panel |
+| `sql/10_integracion_odoo.sql` | Tabla que apunta qué pedido de Odoo corresponde a cada uno |
+| `sql/11_colores_catalogo.sql` | Los 3 colores de catálogo de cada modelo |
+| `sql/12_pruebas_web_odoo.sql` | 16 pruebas para pgAdmin (acaba en ROLLBACK, no cambia nada) |
+| `test/` | Pruebas automáticas del backend y de la conexión con Odoo |
 
-## API
-| Método y ruta | Permiso (en PostgreSQL) | Descripción |
-|---|---|---|
-| `GET /api/modelos` · `GET /api/modelos/:codigo/stock` | público | Catálogo y existencias por talla |
-| `GET /api/colores` | público | Colores de catálogo de cada modelo (los muestra la ficha de producto) |
-| `POST /api/solicitudes` | rol Web: `crear_pedido` | Cliente (por email, sin duplicar) + pedido **pendiente** + líneas, en UNA transacción |
-| `POST /api/login` · `POST /api/logout` · `GET /api/me` | – | Sesión |
-| `GET /api/pedidos?cliente&modelo&estado&desde&hasta` | `consultar_pedidos` | Botón «Buscar / Consultar» (filtros vacíos no restringen) |
-| `GET /api/pedidos/export.csv?...` | `consultar_pedidos` | CSV con exactamente las filas de la tabla |
-| `GET /api/pedidos/:ref` | `consultar_pedidos` | Cabecera + líneas |
-| `POST /api/pedidos` | `crear_pedido` + `editar_pedido` | Alta desde el panel |
-| `PATCH /api/pedidos/:ref/estado` | `confirmar_/cancelar_/entregar_pedido` | El stock lo mueve el trigger |
-| `GET /api/indicadores` | `consultar_pedidos` | Panel de indicadores, modelos y tallas |
-| `GET /api/stock-bajo?umbral=5` | `consultar_stock` | Variantes bajo el umbral |
-| `GET /api/auditoria` | `ver_auditoria` | `log_eventos` con usuario y fecha |
-| `GET/POST /api/usuarios` · `PATCH /api/usuarios/:id` | `gestionar_usuarios` | Alta, activar/desactivar, cambiar rol (regenera el JSON) |
-| `POST /api/usuarios/exportar-json` | `exportar_usuarios` | `usuarios_sneaker.json` |
-| `POST /api/exportar-contrato` | `consultar_pedidos` | CSV para PSP y Python en `data/export/` |
-| `POST /api/pedidos/:ref/odoo` | `confirmar_pedido` | Reenvía a Odoo un pedido confirmado (si antes falló) |
-| `GET /api/odoo/estado` | sesión | ¿Integración configurada? ¿Odoo responde? (sin datos sensibles) |
-
-## Cómo se cumplen los requisitos de Acceso a Datos (versión web, sin JDBC)
-- **Consultas parametrizadas**: todas con `$1, $2…` (equivalente a `PreparedStatement`); nunca se concatena un valor.
-- **Transacciones**: cabecera + líneas en una misma transacción; si una línea falla, `ROLLBACK` de todo.
-- **Cierre de recursos**: cada conexión se devuelve al pool en un `finally`.
-- **Credenciales fuera del código**: `.env` (no se sube a Git; se entrega `.env.example`).
-- **Identidad hasta PostgreSQL**: `set_config('app.id_usuario', id, true)` al inicio de cada transacción. El `true` hace
-  que el valor muera con la transacción (seguro con el pool). Los triggers lo leen con `fn_usuario_actual()` y lo escriben
-  en `log_eventos`. Las solicitudes de la web quedan auditadas con el usuario técnico `web_publica`.
-- **Permisos de verdad**: el panel oculta botones por comodidad, pero la API llama a funciones que ejecutan
-  `fn_exigir_permiso()`. Un `curl` directo con un rol sin permiso recibe 403 y no cambia nada (probado en `npm test`).
-- **Automatizaciones en la BD**: el backend nunca actualiza totales, stock ni auditoría; lo hacen los triggers.
-- **Log TXT**: una línea por login, búsqueda, limpiar filtros, alta, cambio de estado, exportación o intento denegado,
-  con fecha/hora, usuario, rol, acción, resultado (`correcto`, `vacio`, `rechazado`, `error`), filtros sin datos
-  sensibles y nº de filas. Se escribe **después** del COMMIT/ROLLBACK, así nunca marca como correcto algo deshecho.
-- **JSON de usuarios**: sin contraseñas ni hashes; se regenera tras cada cambio confirmado de usuarios, leyendo en
-  otra transacción el estado ya confirmado; escritura en temporal + `rename` (nunca queda a medias).
-- **CSV**: UTF-8 con cabecera; el filtrado coincide fila a fila con la tabla; el contrato se exporta en una única
-  instantánea `REPEATABLE READ` para que los 7 ficheros sean coherentes entre sí.
+## Cómo se cumplen los requisitos de Acceso a Datos
+- **Consultas seguras.** Los valores van siempre aparte del SQL (`$1, $2…`), como un PreparedStatement en Java. Así no
+  se puede colar código en una búsqueda.
+- **Transacciones.** La cabecera y las líneas de un pedido se guardan juntas. Si una línea falla, se deshace todo
+  (ROLLBACK) y no queda un pedido a medias.
+- **Conexiones.** Cada conexión se devuelve siempre al terminar, aunque haya un error.
+- **Contraseñas fuera del código.** Van en el `.env`, que no se sube. En el repositorio solo está `.env.example`.
+- **El usuario llega a PostgreSQL.** Al empezar cada transacción, el backend le dice a la base qué usuario está
+  trabajando. Los triggers lo usan para comprobar sus permisos y para apuntarlo en la auditoría. Los pedidos de la web
+  quedan a nombre del usuario técnico `web_publica`.
+- **Permisos de verdad.** El panel esconde los botones que un rol no puede usar, pero eso es solo comodidad: si alguien
+  llama a la API a mano sin permiso, PostgreSQL lo rechaza y no cambia nada.
+- **Log TXT.** Cada login, búsqueda, alta, cambio de estado, exportación o intento sin permiso añade una línea con la
+  hora, el usuario, el rol, la acción y el resultado. Nunca se escriben contraseñas. Se escribe después de saber si la
+  operación salió bien o se deshizo.
+- **JSON de usuarios.** Lista de usuarios con su rol y si están activos, sin contraseñas. Se rehace cada vez que se
+  crea, desactiva o cambia de rol un usuario.
+- **CSV.** En UTF-8 y con cabecera. El CSV del panel tiene exactamente las filas que se ven en la tabla.
 
 ## Colores de catálogo
-Cada modelo se vende en 3 combinaciones de color definidas por la marca (tabla `colores_catalogo`).
-En la ficha de producto se elige el color, la foto cambia a esa combinación y «Comprar este color»
-lleva al formulario con todo rellenado. Las fotos están en `lenguaje-de-marcas/img/colores/<codigo>.jpg`.
+Además del configurador, cada modelo se vende en 3 combinaciones de color ya diseñadas. Se eligen en la ficha de
+producto y el pedido es estándar (precio base). En el configurador el pedido es Custom (precio base + 15 €, +5 € con
+texto). La base de datos no deja mezclar las dos cosas ni usar un color de otro modelo.
 
-| | Color de catálogo | Personalizado (configurador) |
-|---|---|---|
-| Línea | `id_color` = combinación elegida, 6 colores vacíos | 6 colores elegidos, `id_color` vacío |
-| Tipo de pedido | estándar | custom |
-| Precio | base del modelo | base + 15 € (+5 € con texto) |
-| En Odoo | producto «SPEAKE Pulse», «Color: …» en la descripción | producto «SPEAKE Pulse Custom» (MTO) |
+## Conexión con Odoo
+Odoo tiene su propia base de datos y no la tocamos. Cuando el comercial **confirma** un pedido en el panel, el backend
+lo crea en Odoo por su API, igual que si alguien lo hiciera desde la pantalla de Ventas.
 
-La base de datos impide mezclar las dos cosas (`ck_color_catalogo_estandar`) y que se use un color
-de otro modelo (trigger `t1b_lineas_color`).
+1. Ejecutar `sql/10_integracion_odoo.sql` en la base SPEAKE.
+2. Tener en Odoo los productos con sus tallas (los cargamos con un script que está en la máquina virtual de Odoo).
+3. Poner en el `.env` la dirección de Odoo, la base, el usuario y una clave API (Odoo → Mi perfil → Seguridad de la
+   cuenta → Nueva clave API) y volver a hacer `npm start`.
+4. Al confirmar un pedido, aparece en Odoo con nuestra referencia (SO0xx) en «Referencia del cliente».
 
-## Integración con Odoo
-Odoo es el núcleo del negocio y tiene **su propia base de datos**, que gestiona con su ORM. Por eso no se
-escribe en sus tablas ni se usan triggers sobre ella: el backend llama a la **API externa de Odoo**
-(JSON-RPC), igual que haría un usuario desde la pantalla de Ventas, y Odoo aplica sus propias reglas.
+Si algo falla:
+- Si Odoo no responde, el pedido sigue confirmado en SPEAKE y en el panel sale «error». El botón «Reenviar a Odoo» lo
+  vuelve a intentar.
+- Reenviar no duplica el pedido: si ya existe uno con esa referencia, se usa ese.
+- Solo se envían pedidos confirmados o entregados, y solo puede hacerlo quien tiene permiso para confirmar.
+- **IVA.** En SPEAKE los importes van sin IVA y Odoo le suma el 21 %. Por eso SO003 vale 5.160 € en SPEAKE y
+  6.243,60 € en Odoo.
 
-```
-Web ──► Express ──► PostgreSQL SPEAKE ──(confirmar en el panel)──► API de Odoo ──► Pedido de venta S000xx
-                       (triggers, permisos,                          (busca/crea el     · Ref. cliente = SO0xx
-                        stock, auditoría)                             cliente por email)  · fabricación MTO
-```
+## Pruebas
+`npm test` (9 pruebas, con el servidor arrancado): login, pedido de la web, confirmar y cancelar con el stock, pedido
+sin stock, permisos, búsquedas con filtros, log TXT, indicadores, CSV, usuarios y JSON.
 
-1. Ejecutar `sql/10_integracion_odoo.sql` en SPEAKE (solo añade; no borra nada).
-2. Cargar en Odoo los productos con sus tallas (lo hicimos con un script que se queda en la máquina virtual de Odoo; Odoo no se sube al repositorio).
-3. Rellenar en `.env` `ODOO_URL`, `ODOO_DB`, `ODOO_USER` y `ODOO_PASSWORD` (mejor una clave API:
-   Odoo → Mi perfil → Seguridad de la cuenta → Nueva clave API). Reiniciar `npm start`.
-4. En el panel aparece «Odoo: conectado a …». Al **confirmar** un pedido se crea en Odoo con la
-   Referencia del cliente = referencia de SPEAKE, y la columna Odoo muestra su número (S000xx).
-
-Comportamiento ante fallos:
-- Si Odoo no responde, el pedido **sigue confirmado en SPEAKE** (stock y auditoría correctos), la columna
-  Odoo muestra «error» y el botón «Reenviar a Odoo» lo vuelve a intentar.
-- Reenviar no duplica: si ya existe en Odoo un pedido con esa referencia, se reutiliza.
-- Solo se envían pedidos confirmados o entregados, y solo quien tiene el permiso `confirmar_pedido`
-  (lo comprueba PostgreSQL en `fn_pedido_para_odoo`).
-- Cada envío queda en `pedidos_odoo` y en el TXT (`accion=enviar_odoo`).
-- **IVA:** SPEAKE guarda los importes sin IVA (como en el contrato de datos con Python). Odoo aplica
-  el impuesto de venta del 21 %, por eso SO003 vale 5.160 € en SPEAKE y 6.243,60 € en Odoo
-  (5.160 × 1,21). El precio unitario de cada línea es el mismo en los dos sistemas.
-
-Para ver en pgAdmin qué pedido de Odoo corresponde a cada uno:
-```sql
-SELECT * FROM v_pedidos_odoo ORDER BY actualizado DESC;
-```
-
-## Pruebas (`npm test`)
-| Prueba | Qué comprueba |
-|---|---|
-| Login | acceso por rol; contraseña errónea y usuario técnico `web_publica` rechazados |
-| A + C | solicitud web → pedido custom pendiente con total calculado por trigger → confirmar descuenta stock → auditoría con usuario → cancelar devuelve stock |
-| B | confirmar sin stock: 409, ni la talla con stock se descuenta, el pedido sigue pendiente |
-| Permisos | Almacén no puede crear pedidos, Comercial no ve auditoría ni exporta usuarios, sin token = 401 |
-| E/F/G | sin filtros, filtros combinados, sin coincidencias y limpiar; 4 líneas nuevas en el TXT al instante y sin contraseñas |
-| H/J | indicadores coherentes (suma de estados = total) y CSV filtrado = filas de la tabla |
-| I | crear y desactivar usuario actualiza el JSON sin perder los demás; duplicado rechazado |
-| Validación | datos incorrectos de la web no crean nada |
-| Contrato | exportación de los 7 CSV para PSP y Python |
-
-## Pruebas de Odoo (`npm run test:odoo`)
-No necesitan la máquina virtual: levantan un Odoo simulado y un backend propio en otro puerto.
-
-| Prueba | Qué comprueba |
-|---|---|
-| O1 | el panel ve Odoo conectado y nunca recibe la contraseña |
-| O2 | confirmar un pedido web crea en Odoo el cliente y el pedido de venta (variante por talla, colores en la descripción) y lo confirma |
-| O3 | reenviar no duplica el pedido en Odoo |
-| O4 | con Odoo caído la confirmación se mantiene, queda «error» y el reenvío posterior funciona |
-| O5 | no se envían pedidos pendientes y Almacén no tiene permiso |
-| O6 | un pedido con color de catálogo llega como producto estándar, a precio base y con su color |
-
-Al terminar, las pruebas cancelan los pedidos que han confirmado, así el stock vuelve a su valor.
+`npm run test:odoo` (6 pruebas): no necesitan la máquina virtual porque usan un Odoo simulado. Comprueban que se crea
+el pedido en Odoo, que no se duplica al reenviar, que si Odoo está caído el pedido no se pierde y que solo se envía lo
+que se debe.
