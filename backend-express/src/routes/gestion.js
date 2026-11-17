@@ -144,12 +144,14 @@ router.post("/pedidos", async (req, res) => {
     for (const l of lineas) {
       const m = await db.query("SELECT id_modelo FROM modelos WHERE codigo = $1", [l.modelo]);
       if (!m.rows.length) throw errorPublico(`Modelo «${l.modelo}» inexistente.`);
+      if (!Number.isInteger(Number(l.cantidad)) || Number(l.cantidad) <= 0) throw errorPublico(`Cantidad no válida en la talla ${l.talla}.`);
+      if (!Number.isInteger(Number(l.talla))) throw errorPublico(`Talla no válida: ${l.talla}.`);
       const c = l.colores || {};
       await db.query(
         `INSERT INTO lineas_pedido (id_pedido, id_modelo, talla, cantidad, color_cuerpo, color_franja,
                 color_puntera, color_talon, color_suela, color_cordones, texto_suela)
          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
-        [p.rows[0].id_pedido, m.rows[0].id_modelo, parseInt(l.talla, 10), parseInt(l.cantidad, 10),
+        [p.rows[0].id_pedido, m.rows[0].id_modelo, Number(l.talla), Number(l.cantidad),
          c.cuerpo || null, c.franja || null, c.puntera || null, c.talon || null, c.suela || null, c.cordones || null,
          (l.texto_suela || "").trim() || null]);
     }

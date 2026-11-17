@@ -87,13 +87,16 @@ function validarSolicitud(b) {
   if (!modelo) errores.push("Elige un modelo.");
 
   let tallas = Array.isArray(b.tallas) ? b.tallas : [];
-  tallas = tallas
-    .map((t) => ({ talla: parseInt(t.talla, 10), cantidad: parseInt(t.cantidad, 10) }))
-    .filter((t) => t.cantidad > 0);
+  tallas = tallas.map((t) => ({ talla: Number(t.talla), cantidad: Number(t.cantidad) }));
+  // Las cantidades tienen que ser números enteros y no negativos (nada de 2,5 pares)
+  for (const t of tallas) {
+    if (!Number.isInteger(t.cantidad) || t.cantidad < 0) errores.push(`Cantidad no válida en talla ${t.talla}.`);
+  }
+  tallas = tallas.filter((t) => t.cantidad > 0);
   if (!tallas.length) errores.push("Indica al menos una talla con cantidad.");
   const vistas = new Set();
   for (const t of tallas) {
-    if (!(t.talla >= 38 && t.talla <= 46)) errores.push(`Talla ${t.talla} fuera de rango (38-46).`);
+    if (!(Number.isInteger(t.talla) && t.talla >= 38 && t.talla <= 46)) errores.push(`Talla ${t.talla} fuera de rango (38-46).`);
     if (t.cantidad > 500) errores.push(`Cantidad demasiado alta en talla ${t.talla}.`);
     if (vistas.has(t.talla)) errores.push(`Talla ${t.talla} repetida.`);
     vistas.add(t.talla);
