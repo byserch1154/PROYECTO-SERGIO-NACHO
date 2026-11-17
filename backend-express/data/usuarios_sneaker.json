@@ -26,5 +26,12 @@
     "rol": "Web",
     "activo": true,
     "fecha_creacion": "2026-11-06T11:57:01.941Z"
+  },
+  {
+    "id_usuario": 6,
+    "username": "prueba38936",
+    "rol": "Comercial",
+    "activo": false,
+    "fecha_creacion": "2026-11-17T08:52:18.941Z"
   }
 ]

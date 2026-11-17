@@ -32,6 +32,6 @@ Si todo va bien, el último mensaje de las pruebas es `=== TODAS LAS PRUEBAS SUP
 Desde la carpeta `bd/`: `psql -d SPEAKE -f 05_exportar_csv.sql`. También se puede hacer desde el panel de gestión con
 el botón «Exportar CSV PSP/Python».
 
-## Documentación (`docs/`)
-`01_diseno_ER.md` (diagrama y decisiones) y `02_matriz_permisos.md`. La explicación completa está en el apartado 4 de
-la memoria técnica.
+## Documentación
+El diagrama entidad-relación, la matriz de permisos y la explicación de todo están en la memoria de Acceso a Datos
+(`SERGIO-SIERRA-NACHO-MEMORIA_ACCESO_DATOS.docx`).

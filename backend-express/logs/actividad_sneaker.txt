@@ -152,3 +152,141 @@
 2026-11-16T11:09:01.487Z | usuario=admin | rol=Administrador | accion=exportar_usuarios_json | resultado=correcto | usuarios=4
 2026-11-16T11:09:07.203Z | usuario=admin | rol=Administrador | accion=listar_usuarios | resultado=correcto | filas=4
 2026-11-16T11:09:09.177Z | usuario=admin | rol=Administrador | accion=exportar_usuarios_json | resultado=correcto | usuarios=4
+2026-11-17T08:51:29.236Z | usuario=comercial1 | rol=Comercial | accion=login | resultado=correcto | 
+2026-11-17T08:51:29.379Z | usuario=almacen1 | rol=Almacén | accion=login | resultado=correcto | 
+2026-11-17T08:51:29.646Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO067 pares=3
+2026-11-17T08:51:29.661Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO067 nuevo_estado=confirmado
+2026-11-17T08:51:29.696Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=correcto | pedido=SO067 odoo=S00900 creado en Odoo
+2026-11-17T08:51:29.703Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=cliente:[texto] filas=1
+2026-11-17T08:51:29.716Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=correcto | pedido=SO067 odoo=S00900 ya existía en Odoo
+2026-11-17T08:51:29.727Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO068 pares=3
+2026-11-17T08:51:29.735Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO068 nuevo_estado=confirmado
+2026-11-17T08:51:29.741Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=error | pedido=SO068 odoo=- Odoo respondió 503
+2026-11-17T08:51:29.746Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO068 lineas=2
+2026-11-17T08:51:29.763Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=correcto | pedido=SO068 odoo=S00901 creado en Odoo
+2026-11-17T08:51:29.766Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO068 lineas=2
+2026-11-17T08:51:29.778Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO069 pares=3
+2026-11-17T08:51:29.829Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=rechazado | pedido=SO069 El pedido SO069 está pendiente: solo se envían a Odoo los pedidos confirmados
+2026-11-17T08:51:29.838Z | usuario=almacen1 | rol=Almacén | accion=enviar_odoo | resultado=rechazado | pedido=SO069 Permiso denegado: su rol no puede ejecutar "confirmar_pedido"
+2026-11-17T08:51:29.858Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO070 pares=2
+2026-11-17T08:51:29.866Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO070 nuevo_estado=confirmado
+2026-11-17T08:51:29.885Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=correcto | pedido=SO070 odoo=S00902 creado en Odoo
+2026-11-17T08:51:29.896Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO067 nuevo_estado=cancelado
+2026-11-17T08:51:29.903Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO068 nuevo_estado=cancelado
+2026-11-17T08:51:29.914Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO070 nuevo_estado=cancelado
+2026-11-17T08:52:17.634Z | usuario=admin | rol=Administrador | accion=login | resultado=correcto | 
+2026-11-17T08:52:17.783Z | usuario=comercial1 | rol=Comercial | accion=login | resultado=correcto | 
+2026-11-17T08:52:17.935Z | usuario=almacen1 | rol=Almacén | accion=login | resultado=correcto | 
+2026-11-17T08:52:18.085Z | usuario=admin | rol=- | accion=login | resultado=rechazado | credenciales no válidas o usuario inactivo
+2026-11-17T08:52:18.207Z | usuario=web_publica | rol=- | accion=login | resultado=rechazado | credenciales no válidas o usuario inactivo
+2026-11-17T08:52:18.250Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO071 pares=5
+2026-11-17T08:52:18.264Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO071 lineas=2
+2026-11-17T08:52:18.277Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO071 nuevo_estado=confirmado
+2026-11-17T08:52:18.771Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=error | pedido=SO071 odoo=- Odoo: usuario o contraseña incorrectos
+2026-11-17T08:52:18.789Z | usuario=admin | rol=Administrador | accion=ver_auditoria | resultado=correcto | filas=20
+2026-11-17T08:52:18.797Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO071 nuevo_estado=cancelado
+2026-11-17T08:52:18.815Z | usuario=comercial1 | rol=Comercial | accion=crear_pedido | resultado=correcto | pedido=SO072 lineas=2
+2026-11-17T08:52:18.824Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T08:52:18.837Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO072 lineas=2
+2026-11-17T08:52:18.845Z | usuario=almacen1 | rol=Almacén | accion=crear_pedido | resultado=rechazado | motivo=Permiso denegado: su rol no puede ejecutar "crear_pedido"
+2026-11-17T08:52:18.851Z | usuario=comercial1 | rol=Comercial | accion=ver_auditoria | resultado=rechazado | motivo=Permiso denegado: su rol no puede ejecutar "ver_auditoria"
+2026-11-17T08:52:18.861Z | usuario=comercial1 | rol=Comercial | accion=exportar_usuarios_json | resultado=rechazado | motivo=Permiso denegado: su rol no puede ejecutar "exportar_usuarios"
+2026-11-17T08:52:18.874Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=26
+2026-11-17T08:52:18.883Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=cliente:[texto],estado:confirmado filas=2
+2026-11-17T08:52:18.889Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=vacio | filtros=cliente:[texto] filas=0
+2026-11-17T08:52:18.898Z | usuario=comercial1 | rol=Comercial | accion=limpiar_filtros | resultado=correcto | filtros=ninguno filas=26
+2026-11-17T08:52:18.918Z | usuario=comercial1 | rol=Comercial | accion=ver_indicadores | resultado=correcto | 
+2026-11-17T08:52:18.924Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=estado:confirmado filas=13
+2026-11-17T08:52:18.933Z | usuario=comercial1 | rol=Comercial | accion=exportar_csv_pedidos | resultado=correcto | filtros=estado:confirmado filas=13
+2026-11-17T08:52:19.015Z | usuario=admin | rol=Administrador | accion=crear_usuario | resultado=correcto | nuevo_usuario=prueba38936 rol=Comercial
+2026-11-17T08:52:19.023Z | usuario=admin | rol=Administrador | accion=json_usuarios_auto | resultado=correcto | usuarios=5
+2026-11-17T08:52:19.030Z | usuario=admin | rol=Administrador | accion=modificar_usuario | resultado=correcto | id_usuario=6 activo=false rol=-
+2026-11-17T08:52:19.036Z | usuario=admin | rol=Administrador | accion=json_usuarios_auto | resultado=correcto | usuarios=5
+2026-11-17T08:52:19.106Z | usuario=admin | rol=Administrador | accion=crear_usuario | resultado=rechazado | nuevo_usuario=prueba38936 rol=Comercial motivo=Ya existe un registro con esos datos.
+2026-11-17T08:52:19.109Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=rechazado | motivo=El nombre es obligatorio. El correo electrónico no es válido. Talla 50 fuera de rango (38-46).
+2026-11-17T08:52:19.150Z | usuario=comercial1 | rol=Comercial | accion=exportar_contrato_csv | resultado=correcto | ficha_fabricacion.csv=20 clientes.csv=14 modelos.csv=6 pedidos.csv=26 lineas_pedido.csv=46 stock.csv=54 reconciliacion_sql.csv=6
+2026-11-17T08:52:20.751Z | usuario=comercial1 | rol=Comercial | accion=login | resultado=correcto | 
+2026-11-17T08:52:20.940Z | usuario=almacen1 | rol=Almacén | accion=login | resultado=correcto | 
+2026-11-17T08:52:21.038Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO074 pares=3
+2026-11-17T08:52:21.055Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO074 nuevo_estado=confirmado
+2026-11-17T08:52:21.105Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=correcto | pedido=SO074 odoo=S00900 creado en Odoo
+2026-11-17T08:52:21.113Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=cliente:[texto] filas=4
+2026-11-17T08:52:21.125Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=correcto | pedido=SO074 odoo=S00900 ya existía en Odoo
+2026-11-17T08:52:21.143Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO075 pares=3
+2026-11-17T08:52:21.153Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO075 nuevo_estado=confirmado
+2026-11-17T08:52:21.161Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=error | pedido=SO075 odoo=- Odoo respondió 503
+2026-11-17T08:52:21.167Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO075 lineas=2
+2026-11-17T08:52:21.197Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=correcto | pedido=SO075 odoo=S00901 creado en Odoo
+2026-11-17T08:52:21.204Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO075 lineas=2
+2026-11-17T08:52:21.219Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO076 pares=3
+2026-11-17T08:52:21.227Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=rechazado | pedido=SO076 El pedido SO076 está pendiente: solo se envían a Odoo los pedidos confirmados
+2026-11-17T08:52:21.232Z | usuario=almacen1 | rol=Almacén | accion=enviar_odoo | resultado=rechazado | pedido=SO076 Permiso denegado: su rol no puede ejecutar "confirmar_pedido"
+2026-11-17T08:52:21.253Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO077 pares=2
+2026-11-17T08:52:21.261Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO077 nuevo_estado=confirmado
+2026-11-17T08:52:21.279Z | usuario=comercial1 | rol=Comercial | accion=enviar_odoo | resultado=correcto | pedido=SO077 odoo=S00902 creado en Odoo
+2026-11-17T08:52:21.286Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO074 nuevo_estado=cancelado
+2026-11-17T08:52:21.293Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO075 nuevo_estado=cancelado
+2026-11-17T08:52:21.299Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=correcto | pedido=SO077 nuevo_estado=cancelado
+2026-11-17T08:56:54.571Z | usuario=admin | rol=Administrador | accion=login | resultado=correcto | 
+2026-11-17T08:56:54.705Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=30
+2026-11-17T08:57:04.062Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO077 lineas=1
+2026-11-17T08:57:08.402Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO076 lineas=2
+2026-11-17T08:57:10.119Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO076 nuevo_estado=confirmado
+2026-11-17T08:57:10.471Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=error | pedido=SO076 odoo=- Odoo: usuario o contraseña incorrectos
+2026-11-17T08:57:10.481Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO076 lineas=2
+2026-11-17T08:57:10.499Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=30
+2026-11-17T08:58:23.190Z | usuario=admin | rol=Administrador | accion=login | resultado=correcto | 
+2026-11-17T08:58:23.356Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=30
+2026-11-17T08:58:25.342Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO072 lineas=2
+2026-11-17T08:58:26.650Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T08:58:28.232Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T08:58:39.359Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO012 lineas=1
+2026-11-17T08:58:52.196Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO069 lineas=2
+2026-11-17T08:58:54.056Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO069 nuevo_estado=confirmado
+2026-11-17T08:58:55.013Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO069 odoo=S00017 creado en Odoo
+2026-11-17T08:58:55.020Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO069 lineas=2
+2026-11-17T08:58:55.031Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=30
+2026-11-17T08:59:03.231Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=30
+2026-11-17T08:59:32.845Z | usuario=web_publica | rol=Web | accion=solicitud_web | resultado=correcto | pedido=SO078 pares=2
+2026-11-17T08:59:36.266Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T08:59:37.411Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO078 lineas=2
+2026-11-17T08:59:38.931Z | usuario=admin | rol=Administrador | accion=cambiar_estado | resultado=correcto | pedido=SO078 nuevo_estado=confirmado
+2026-11-17T08:59:39.422Z | usuario=admin | rol=Administrador | accion=enviar_odoo | resultado=correcto | pedido=SO078 odoo=S00018 creado en Odoo
+2026-11-17T08:59:39.428Z | usuario=admin | rol=Administrador | accion=ver_pedido | resultado=correcto | pedido=SO078 lineas=2
+2026-11-17T08:59:39.439Z | usuario=admin | rol=Administrador | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:00:27.376Z | usuario=admin | rol=Administrador | accion=logout | resultado=correcto | 
+2026-11-17T09:00:41.862Z | usuario=comercial1 | rol=Comercial | accion=login | resultado=correcto | 
+2026-11-17T09:00:41.937Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:00:50.411Z | usuario=comercial1 | rol=Comercial | accion=exportar_contrato_csv | resultado=correcto | ficha_fabricacion.csv=26 clientes.csv=14 modelos.csv=6 pedidos.csv=31 lineas_pedido.csv=55 stock.csv=54 reconciliacion_sql.csv=6
+2026-11-17T09:08:31.960Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO077 lineas=1
+2026-11-17T09:08:34.770Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO071 lineas=2
+2026-11-17T09:08:37.556Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO072 lineas=2
+2026-11-17T09:08:38.991Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T09:08:39.905Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T09:09:06.562Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO072 lineas=2
+2026-11-17T09:09:12.031Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:09:12.498Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:09:12.865Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:09:13.041Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:09:13.204Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:09:13.506Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:09:14.208Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO066 lineas=1
+2026-11-17T09:09:17.625Z | usuario=comercial1 | rol=Comercial | accion=limpiar_filtros | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:09:18.241Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:09:18.681Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:09:18.841Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:10:17.414Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO072 lineas=2
+2026-11-17T09:11:44.745Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO072 lineas=2
+2026-11-17T09:11:50.112Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T09:11:50.801Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T09:11:51.467Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T09:11:51.857Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T09:11:51.993Z | usuario=comercial1 | rol=Comercial | accion=cambiar_estado | resultado=rechazado | pedido=SO072 nuevo_estado=confirmado motivo=Stock insuficiente para SPEAKE Aero talla 38 (se piden 5 pares)
+2026-11-17T09:13:46.008Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO072 lineas=2
+2026-11-17T09:14:25.671Z | usuario=comercial1 | rol=- | accion=login | resultado=rechazado | credenciales no válidas o usuario inactivo
+2026-11-17T09:14:26.895Z | usuario=comercial1 | rol=- | accion=login | resultado=rechazado | credenciales no válidas o usuario inactivo
+2026-11-17T09:14:32.078Z | usuario=comercial1 | rol=Comercial | accion=login | resultado=correcto | 
+2026-11-17T09:14:32.142Z | usuario=comercial1 | rol=Comercial | accion=buscar_pedidos | resultado=correcto | filtros=ninguno filas=31
+2026-11-17T09:15:29.521Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO072 lineas=2
+2026-11-17T09:15:29.555Z | usuario=comercial1 | rol=Comercial | accion=stock_bajo | resultado=correcto | umbral=1000 filas=54
+2026-11-17T09:16:38.651Z | usuario=comercial1 | rol=Comercial | accion=ver_pedido | resultado=correcto | pedido=SO072 lineas=2
