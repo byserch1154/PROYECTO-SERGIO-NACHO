@@ -1,0 +1,2136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.4" use-changelog="false" last-position="0,94" last-zoom="0.6" max-obj-count="30"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="SPEAKE" encoding="UTF8" lc-collate="Spanish_Spain.1252" lc-ctype="Spanish_Spain.1252" is-template="false" allow-conns="true">
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" layers="0" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<extension name="pgcrypto" cur-version="1.3">
+	<schema name="public"/>
+	<comment><![CDATA[cryptographic functions]]></comment>
+</extension>
+
+<domain name="talla_t" not-null="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<type name="smallint" length="2" precision="0"/>
+	<constraint name="talla_t_check" type="check">
+		<expression><![CDATA[((VALUE >= 38) AND (VALUE <= 46))]]></expression>
+	</constraint>
+</domain>
+
+<domain name="color_t" not-null="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<type name="text" length="1"/>
+	<constraint name="color_t_check" type="check">
+		<expression><![CDATA[(VALUE = ANY (ARRAY['Negro'::text, 'Blanco'::text, 'Azul eléctrico'::text, 'Rojo'::text, 'Verde'::text, 'Amarillo'::text, 'Naranja'::text, 'Gris'::text]))]]></expression>
+	</constraint>
+</domain>
+
+<sequence name="roles_id_rol_seq" cycle="false" start="1" increment="1" min-value="1" max-value="32767" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="roles" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="660" y="220"/>
+	<column name="id_rol" not-null="true" sequence="public.roles_id_rol_seq">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="roles_pkey" type="pk-constr" table="public.roles">
+		<columns names="id_rol" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="roles_nombre_key" type="uq-constr" table="public.roles">
+		<columns names="nombre" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="permisos" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="980" y="220"/>
+	<column name="id_rol" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="operacion" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="permitido" not-null="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<constraint name="permisos_operacion_check" type="ck-constr" table="public.permisos">
+			<expression><![CDATA[(operacion = ANY (ARRAY['consultar_pedidos'::text, 'crear_pedido'::text, 'editar_pedido'::text, 'confirmar_pedido'::text, 'cancelar_pedido'::text, 'entregar_pedido'::text, 'eliminar_pedido'::text, 'consultar_stock'::text, 'ver_auditoria'::text, 'gestionar_usuarios'::text, 'exportar_usuarios'::text]))]]></expression>
+	</constraint>
+	<constraint name="permisos_pkey" type="pk-constr" table="public.permisos">
+		<columns names="id_rol,operacion" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="usuarios_id_usuario_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="usuarios" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1340" y="220"/>
+	<column name="id_usuario" not-null="true" sequence="public.usuarios_id_usuario_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="username" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="password_hash" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="id_rol" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="activo" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="fecha_creacion" not-null="true" default-value="now()">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<constraint name="usuarios_username_check" type="ck-constr" table="public.usuarios">
+			<expression><![CDATA[(length(username) >= 3)]]></expression>
+	</constraint>
+	<constraint name="usuarios_pkey" type="pk-constr" table="public.usuarios">
+		<columns names="id_usuario" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="usuarios_username_key" type="uq-constr" table="public.usuarios">
+		<columns names="username" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="clientes_id_cliente_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="clientes" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1760" y="220"/>
+	<column name="id_cliente" not-null="true" sequence="public.clientes_id_cliente_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="email" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="telefono">
+		<type name="text" length="0"/>
+	</column>
+	<column name="tipo" not-null="true" default-value="'particular'">
+		<type name="text" length="0"/>
+	</column>
+	<column name="fecha_alta" not-null="true" default-value="CURRENT_DATE">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="clientes_email_check" type="ck-constr" table="public.clientes">
+			<expression><![CDATA[(email ~~ '%_@_%'::text)]]></expression>
+	</constraint>
+	<constraint name="clientes_tipo_check" type="ck-constr" table="public.clientes">
+			<expression><![CDATA[(tipo = ANY (ARRAY['particular'::text, 'club'::text, 'equipo'::text]))]]></expression>
+	</constraint>
+	<constraint name="clientes_pkey" type="pk-constr" table="public.clientes">
+		<columns names="id_cliente" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="clientes_email_key" type="uq-constr" table="public.clientes">
+		<columns names="email" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="modelos_id_modelo_seq" cycle="false" start="1" increment="1" min-value="1" max-value="32767" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="modelos" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2100" y="220"/>
+	<column name="id_modelo" not-null="true" sequence="public.modelos_id_modelo_seq">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="codigo" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="categoria" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="precio_base" not-null="true">
+		<type name="numeric" length="8" precision="2"/>
+	</column>
+	<constraint name="modelos_precio_base_check" type="ck-constr" table="public.modelos">
+			<expression><![CDATA[(precio_base > (0)::numeric)]]></expression>
+	</constraint>
+	<constraint name="modelos_pkey" type="pk-constr" table="public.modelos">
+		<columns names="id_modelo" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="modelos_codigo_key" type="uq-constr" table="public.modelos">
+		<columns names="codigo" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="pedidos_id_pedido_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="pedidos" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="660" y="500"/>
+	<column name="id_pedido" not-null="true" sequence="public.pedidos_id_pedido_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="referencia" default-value="'SO'::text || lpad((id_pedido)::text, 3, '0'::text)" generated="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="id_cliente" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fecha" not-null="true" default-value="CURRENT_DATE">
+		<type name="date" length="0"/>
+	</column>
+	<column name="estado" not-null="true" default-value="'pendiente'">
+		<type name="text" length="0"/>
+	</column>
+	<column name="tipo" not-null="true" default-value="'estandar'">
+		<type name="text" length="0"/>
+	</column>
+	<column name="total" not-null="true" default-value="0">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<column name="creado_por">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="pedidos_estado_check" type="ck-constr" table="public.pedidos">
+			<expression><![CDATA[(estado = ANY (ARRAY['pendiente'::text, 'confirmado'::text, 'entregado'::text, 'cancelado'::text]))]]></expression>
+	</constraint>
+	<constraint name="pedidos_tipo_check" type="ck-constr" table="public.pedidos">
+			<expression><![CDATA[(tipo = ANY (ARRAY['estandar'::text, 'custom'::text]))]]></expression>
+	</constraint>
+	<constraint name="pedidos_total_check" type="ck-constr" table="public.pedidos">
+			<expression><![CDATA[(total >= (0)::numeric)]]></expression>
+	</constraint>
+	<constraint name="pedidos_pkey" type="pk-constr" table="public.pedidos">
+		<columns names="id_pedido" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="pedidos_referencia_key" type="uq-constr" table="public.pedidos">
+		<columns names="referencia" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="lineas_pedido_id_linea_seq" cycle="false" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="lineas_pedido" layers="0" collapse-mode="2" max-obj-count="16" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1020" y="500"/>
+	<column name="id_linea" not-null="true" sequence="public.lineas_pedido_id_linea_seq">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_pedido" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_modelo" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="talla" not-null="true">
+		<type name="public.talla_t" length="0"/>
+	</column>
+	<column name="cantidad" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="precio_unitario" not-null="true">
+		<type name="numeric" length="8" precision="2"/>
+	</column>
+	<column name="color_cuerpo">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_franja">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_puntera">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_talon">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_suela">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_cordones">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="texto_suela">
+		<type name="character varying" length="12"/>
+	</column>
+	<column name="id_color">
+		<type name="smallint" length="0"/>
+	</column>
+	<constraint name="lineas_pedido_cantidad_check" type="ck-constr" table="public.lineas_pedido">
+			<expression><![CDATA[(cantidad > 0)]]></expression>
+	</constraint>
+	<constraint name="lineas_pedido_precio_unitario_check" type="ck-constr" table="public.lineas_pedido">
+			<expression><![CDATA[(precio_unitario >= (0)::numeric)]]></expression>
+	</constraint>
+	<constraint name="ck_personalizacion_completa" type="ck-constr" table="public.lineas_pedido">
+			<expression><![CDATA[(num_nonnulls(color_cuerpo, color_franja, color_puntera, color_talon, color_suela, color_cordones) = ANY (ARRAY[0, 6]))]]></expression>
+	</constraint>
+	<constraint name="ck_texto_solo_custom" type="ck-constr" table="public.lineas_pedido">
+			<expression><![CDATA[((texto_suela IS NULL) OR (color_cuerpo IS NOT NULL))]]></expression>
+	</constraint>
+	<constraint name="lineas_pedido_pkey" type="pk-constr" table="public.lineas_pedido">
+		<columns names="id_linea" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="ck_color_catalogo_estandar" type="ck-constr" table="public.lineas_pedido">
+			<expression><![CDATA[((id_color IS NULL) OR (color_cuerpo IS NULL))]]></expression>
+	</constraint>
+</table>
+
+<index name="ix_lineas_pedido" table="public.lineas_pedido"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="id_pedido"/>
+		</idxelement>
+</index>
+
+<index name="ix_pedidos_cliente" table="public.pedidos"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="id_cliente"/>
+		</idxelement>
+</index>
+
+<index name="ix_pedidos_fecha_estado" table="public.pedidos"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="fecha"/>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<column name="estado"/>
+		</idxelement>
+</index>
+
+<table name="stock" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1460" y="500"/>
+	<column name="id_modelo" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="talla" not-null="true">
+		<type name="public.talla_t" length="0"/>
+	</column>
+	<column name="stock_disponible" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fecha_corte" not-null="true" default-value="now()">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<constraint name="stock_stock_disponible_check" type="ck-constr" table="public.stock">
+			<expression><![CDATA[(stock_disponible >= 0)]]></expression>
+	</constraint>
+	<constraint name="stock_pkey" type="pk-constr" table="public.stock">
+		<columns names="id_modelo,talla" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="log_eventos_id_evento_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="log_eventos" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1860" y="500"/>
+	<column name="id_evento" not-null="true" sequence="public.log_eventos_id_evento_seq">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="fecha" not-null="true" default-value="now()">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<column name="tabla" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="operacion" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="id_registro" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="id_usuario" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="resumen" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="log_eventos_operacion_check" type="ck-constr" table="public.log_eventos">
+			<expression><![CDATA[(operacion = ANY (ARRAY['INSERT'::text, 'UPDATE'::text, 'DELETE'::text]))]]></expression>
+	</constraint>
+	<constraint name="log_eventos_pkey" type="pk-constr" table="public.log_eventos">
+		<columns names="id_evento" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<index name="ix_log_fecha" table="public.log_eventos"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="fecha"/>
+		</idxelement>
+</index>
+
+<function name="fn_login"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="sql"/>
+	<return-type>
+	<type name="integer" length="0"/>
+	</return-type>
+	<parameter name="p_username">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_password">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition><![CDATA[    SELECT id_usuario FROM usuarios
+     WHERE username = p_username AND activo
+       AND password_hash = crypt(p_password, password_hash);]]></definition>
+</function>
+
+<function name="fn_usuario_actual"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="integer" length="0"/>
+	</return-type>
+	<definition><![CDATA[DECLARE
+    v text := current_setting('app.id_usuario', true);
+    u integer;
+BEGIN
+    IF v IS NULL OR v = '' THEN
+        RAISE EXCEPTION 'Operación sin usuario autenticado'
+              USING ERRCODE = '28000';
+    END IF;
+    SELECT id_usuario INTO u FROM usuarios WHERE id_usuario = v::integer AND activo;
+    IF u IS NULL THEN
+        RAISE EXCEPTION 'Usuario % inexistente o inactivo', v
+              USING ERRCODE = '28000';
+    END IF;
+    RETURN u;
+END ]]></definition>
+</function>
+
+<function name="fn_tiene_permiso"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="sql"/>
+	<return-type>
+	<type name="boolean" length="0"/>
+	</return-type>
+	<parameter name="p_operacion">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition><![CDATA[    SELECT coalesce((SELECT p.permitido
+                       FROM usuarios u JOIN permisos p ON p.id_rol = u.id_rol
+                      WHERE u.id_usuario = fn_usuario_actual()
+                        AND p.operacion = p_operacion), false);]]></definition>
+</function>
+
+<function name="fn_exigir_permiso"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="void" length="0"/>
+	</return-type>
+	<parameter name="p_operacion">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition><![CDATA[BEGIN
+    IF NOT fn_tiene_permiso(p_operacion) THEN
+        RAISE EXCEPTION 'Permiso denegado: su rol no puede ejecutar "%"', p_operacion
+              USING ERRCODE = '42501';
+    END IF;
+END ]]></definition>
+</function>
+
+<function name="fn_pedidos_permisos"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="trigger" length="0"/>
+	</return-type>
+	<definition><![CDATA[BEGIN
+    IF TG_OP = 'INSERT' THEN
+        PERFORM fn_exigir_permiso('crear_pedido');
+        -- Un pedido nuevo siempre nace pendiente: confirmarlo es una transición
+        -- (UPDATE) que descuenta stock. Si pudiera nacer confirmado se saltaría el stock.
+        IF NEW.estado <> 'pendiente' THEN
+            RAISE EXCEPTION 'Un pedido nuevo debe crearse como pendiente (recibido: %)', NEW.estado;
+        END IF;
+        NEW.creado_por := fn_usuario_actual();
+        RETURN NEW;
+    ELSIF TG_OP = 'UPDATE' THEN
+        IF OLD.estado IS DISTINCT FROM NEW.estado THEN
+            PERFORM fn_exigir_permiso(CASE NEW.estado
+                WHEN 'confirmado' THEN 'confirmar_pedido'
+                WHEN 'cancelado'  THEN 'cancelar_pedido'
+                WHEN 'entregado'  THEN 'entregar_pedido'
+                ELSE 'editar_pedido' END);
+        ELSIF OLD.id_cliente IS DISTINCT FROM NEW.id_cliente
+           OR OLD.fecha      IS DISTINCT FROM NEW.fecha THEN
+            PERFORM fn_exigir_permiso('editar_pedido');
+        END IF;   -- cambios de total/tipo son derivados (los hace otro trigger)
+        RETURN NEW;
+    ELSE
+        PERFORM fn_exigir_permiso('eliminar_pedido');
+        RETURN OLD;
+    END IF;
+END ]]></definition>
+</function>
+
+<trigger name="t1_pedidos_permisos" firing-type="BEFORE" per-line="true" constraint="false"
+	 ins-event="true" del-event="true" upd-event="true" trunc-event="false"
+	 table="public.pedidos">
+		<function signature="public.fn_pedidos_permisos()"/>
+</trigger>
+
+<function name="fn_pedidos_validar"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="trigger" length="0"/>
+	</return-type>
+	<definition><![CDATA[BEGIN
+    IF TG_OP = 'DELETE' THEN
+        IF OLD.estado <> 'pendiente' THEN
+            RAISE EXCEPTION 'Solo se pueden eliminar pedidos pendientes (%: %)', OLD.referencia, OLD.estado;
+        END IF;
+        RETURN OLD;
+    END IF;
+
+    IF NEW.estado IS DISTINCT FROM OLD.estado THEN
+        IF NOT ((OLD.estado = 'pendiente'  AND NEW.estado IN ('confirmado','cancelado'))
+             OR (OLD.estado = 'confirmado' AND NEW.estado IN ('entregado','cancelado'))) THEN
+            RAISE EXCEPTION 'Transición no permitida en %: % -> %', OLD.referencia, OLD.estado, NEW.estado;
+        END IF;
+        IF NEW.estado = 'confirmado'
+           AND NOT EXISTS (SELECT 1 FROM lineas_pedido WHERE id_pedido = NEW.id_pedido) THEN
+            RAISE EXCEPTION 'No se puede confirmar % sin líneas', OLD.referencia;
+        END IF;
+    ELSIF OLD.estado <> 'pendiente'
+          AND (OLD.id_cliente IS DISTINCT FROM NEW.id_cliente
+            OR OLD.fecha      IS DISTINCT FROM NEW.fecha) THEN
+        RAISE EXCEPTION 'El pedido % está % y ya no es editable', OLD.referencia, OLD.estado;
+    END IF;
+    RETURN NEW;
+END ]]></definition>
+</function>
+
+<trigger name="t2_pedidos_validar" firing-type="BEFORE" per-line="true" constraint="false"
+	 ins-event="false" del-event="true" upd-event="true" trunc-event="false"
+	 table="public.pedidos">
+		<function signature="public.fn_pedidos_validar()"/>
+</trigger>
+
+<function name="fn_pedidos_stock"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="trigger" length="0"/>
+	</return-type>
+	<definition><![CDATA[DECLARE
+    r record;
+BEGIN
+    IF OLD.estado = 'pendiente' AND NEW.estado = 'confirmado' THEN
+        FOR r IN SELECT l.id_modelo, l.talla, sum(l.cantidad)::integer AS q, m.nombre
+                   FROM lineas_pedido l JOIN modelos m USING (id_modelo)
+                  WHERE l.id_pedido = NEW.id_pedido
+                  GROUP BY l.id_modelo, l.talla, m.nombre
+                  ORDER BY l.id_modelo, l.talla            -- orden fijo: evita interbloqueos
+        LOOP
+            UPDATE stock
+               SET stock_disponible = stock_disponible - r.q, fecha_corte = now()
+             WHERE id_modelo = r.id_modelo AND talla = r.talla
+               AND stock_disponible >= r.q;
+            IF NOT FOUND THEN
+                RAISE EXCEPTION 'Stock insuficiente para % talla % (se piden % pares)',
+                      r.nombre, r.talla, r.q USING ERRCODE = '23514';
+            END IF;
+        END LOOP;
+    ELSIF OLD.estado = 'confirmado' AND NEW.estado = 'cancelado' THEN
+        UPDATE stock s
+           SET stock_disponible = s.stock_disponible + x.q, fecha_corte = now()
+          FROM (SELECT id_modelo, talla, sum(cantidad)::integer AS q
+                  FROM lineas_pedido WHERE id_pedido = NEW.id_pedido
+                 GROUP BY id_modelo, talla) x
+         WHERE s.id_modelo = x.id_modelo AND s.talla = x.talla;
+    END IF;
+    RETURN NULL;
+END ]]></definition>
+</function>
+
+<trigger name="t3_pedidos_stock" firing-type="AFTER" per-line="true" constraint="false"
+	 ins-event="false" del-event="false" upd-event="true" trunc-event="false"
+	 table="public.pedidos">
+	<condition><![CDATA[(old.estado IS DISTINCT FROM new.estado)]]></condition>
+		<function signature="public.fn_pedidos_stock()"/>
+</trigger>
+
+<function name="fn_auditar"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="trigger" length="0"/>
+	</return-type>
+	<definition><![CDATA[DECLARE
+    v_reg   jsonb := to_jsonb(CASE WHEN TG_OP = 'DELETE' THEN OLD ELSE NEW END);
+    v_res   text;
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        v_res := 'alta ' || v_reg::text;
+    ELSIF TG_OP = 'DELETE' THEN
+        v_res := 'baja ' || v_reg::text;
+    ELSE
+        SELECT string_agg(o.key || ': ' || coalesce(o.value,'NULL') || ' -> ' || coalesce(n.value,'NULL'),
+                          '; ' ORDER BY o.key)
+          INTO v_res
+          FROM jsonb_each_text(to_jsonb(OLD)) AS o(key, value)
+          JOIN jsonb_each_text(to_jsonb(NEW)) AS n(key, value) ON n.key = o.key
+         WHERE o.value IS DISTINCT FROM n.value;
+    END IF;
+
+    INSERT INTO log_eventos (tabla, operacion, id_registro, id_usuario, resumen)
+    VALUES (TG_TABLE_NAME, TG_OP, v_reg ->> TG_ARGV[0], fn_usuario_actual(), v_res);
+    RETURN NULL;
+END ]]></definition>
+</function>
+
+<trigger name="t4_pedidos_audit_altabaja" firing-type="AFTER" per-line="true" constraint="false"
+	 ins-event="true" del-event="true" upd-event="false" trunc-event="false" arguments="id_pedido"
+	 table="public.pedidos">
+		<function signature="public.fn_auditar()"/>
+</trigger>
+
+<trigger name="t4_pedidos_audit_cambios" firing-type="AFTER" per-line="true" constraint="false"
+	 ins-event="false" del-event="false" upd-event="true" trunc-event="false" arguments="id_pedido"
+	 table="public.pedidos">
+	<condition><![CDATA[((old.estado IS DISTINCT FROM new.estado) OR (old.id_cliente IS DISTINCT FROM new.id_cliente) OR (old.fecha IS DISTINCT FROM new.fecha))]]></condition>
+		<function signature="public.fn_auditar()"/>
+</trigger>
+
+<function name="fn_lineas_antes"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="trigger" length="0"/>
+	</return-type>
+	<definition><![CDATA[DECLARE
+    v_estado text;
+    v_base   numeric(8,2);
+BEGIN
+    PERFORM fn_exigir_permiso('editar_pedido');
+
+    SELECT estado INTO v_estado FROM pedidos
+     WHERE id_pedido = CASE WHEN TG_OP = 'DELETE' THEN OLD.id_pedido ELSE NEW.id_pedido END;
+    IF v_estado IS DISTINCT FROM 'pendiente' THEN
+        RAISE EXCEPTION 'No se pueden modificar líneas: el pedido no existe o está % ', v_estado;
+    END IF;
+
+    IF TG_OP = 'DELETE' THEN
+        RETURN OLD;
+    END IF;
+
+    IF TG_OP = 'UPDATE' AND NEW.id_pedido <> OLD.id_pedido THEN
+        RAISE EXCEPTION 'Una línea no se puede mover a otro pedido';
+    END IF;
+
+    NEW.texto_suela := nullif(btrim(NEW.texto_suela), '');
+
+    -- Precio automático: base del modelo + 15 € si es personalizada + 5 € si lleva texto
+    IF NEW.precio_unitario IS NULL THEN
+        SELECT precio_base INTO v_base FROM modelos WHERE id_modelo = NEW.id_modelo;
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'El modelo % no existe en el catálogo', NEW.id_modelo
+                  USING ERRCODE = '23503';
+        END IF;
+        NEW.precio_unitario := v_base
+            + CASE WHEN NEW.color_cuerpo IS NOT NULL THEN 15 ELSE 0 END
+            + CASE WHEN NEW.texto_suela  IS NOT NULL THEN 5  ELSE 0 END;
+    END IF;
+    RETURN NEW;
+END ]]></definition>
+</function>
+
+<trigger name="t1_lineas_antes" firing-type="BEFORE" per-line="true" constraint="false"
+	 ins-event="true" del-event="true" upd-event="true" trunc-event="false"
+	 table="public.lineas_pedido">
+		<function signature="public.fn_lineas_antes()"/>
+</trigger>
+
+<function name="fn_lineas_total"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="trigger" length="0"/>
+	</return-type>
+	<definition><![CDATA[DECLARE
+    v_id integer := CASE WHEN TG_OP = 'DELETE' THEN OLD.id_pedido ELSE NEW.id_pedido END;
+BEGIN
+    UPDATE pedidos p
+       SET total = coalesce((SELECT sum(l.cantidad * l.precio_unitario)
+                               FROM lineas_pedido l WHERE l.id_pedido = p.id_pedido), 0),
+           tipo  = CASE WHEN EXISTS (SELECT 1 FROM lineas_pedido l
+                                      WHERE l.id_pedido = p.id_pedido
+                                        AND l.color_cuerpo IS NOT NULL)
+                        THEN 'custom' ELSE 'estandar' END
+     WHERE p.id_pedido = v_id;
+    RETURN NULL;
+END ]]></definition>
+</function>
+
+<trigger name="t2_lineas_total" firing-type="AFTER" per-line="true" constraint="false"
+	 ins-event="true" del-event="true" upd-event="true" trunc-event="false"
+	 table="public.lineas_pedido">
+		<function signature="public.fn_lineas_total()"/>
+</trigger>
+
+<trigger name="t3_lineas_audit" firing-type="AFTER" per-line="true" constraint="false"
+	 ins-event="true" del-event="true" upd-event="true" trunc-event="false" arguments="id_linea"
+	 table="public.lineas_pedido">
+		<function signature="public.fn_auditar()"/>
+</trigger>
+
+<function name="fn_buscar_pedidos"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<parameter name="referencia">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="fecha">
+		<type name="date" length="0"/>
+	</parameter>
+	<parameter name="cliente">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="estado">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="tipo">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="pares">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="total">
+		<type name="numeric" length="0"/>
+	</parameter>
+	</return-type>
+	<parameter name="p_cliente" in="true" default-value="NULL::text">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_modelo" in="true" default-value="NULL::text">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_estado" in="true" default-value="NULL::text">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_desde" in="true" default-value="NULL::date">
+		<type name="date" length="0"/>
+	</parameter>
+	<parameter name="p_hasta" in="true" default-value="NULL::date">
+		<type name="date" length="0"/>
+	</parameter>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('consultar_pedidos');
+    RETURN QUERY
+    SELECT p.referencia, p.fecha, c.nombre, p.estado, p.tipo,
+           coalesce((SELECT sum(l.cantidad) FROM lineas_pedido l
+                      WHERE l.id_pedido = p.id_pedido), 0)::integer,
+           p.total
+      FROM pedidos p JOIN clientes c USING (id_cliente)
+     WHERE (p_cliente IS NULL OR c.nombre ILIKE '%' || p_cliente || '%')
+       AND (p_estado  IS NULL OR p.estado = p_estado)
+       AND (p_desde   IS NULL OR p.fecha >= p_desde)
+       AND (p_hasta   IS NULL OR p.fecha <= p_hasta)
+       AND (p_modelo  IS NULL OR EXISTS (
+              SELECT 1 FROM lineas_pedido l JOIN modelos m USING (id_modelo)
+               WHERE l.id_pedido = p.id_pedido AND m.codigo = p_modelo))
+     ORDER BY p.fecha DESC, p.id_pedido DESC;
+END ]]></definition>
+</function>
+
+<function name="fn_stock_bajo"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<parameter name="modelo">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="talla">
+		<type name="smallint" length="0"/>
+	</parameter>
+	<parameter name="stock_disponible">
+		<type name="integer" length="0"/>
+	</parameter>
+	</return-type>
+	<parameter name="p_umbral" in="true" default-value="5">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('consultar_stock');
+    RETURN QUERY
+    SELECT m.nombre, s.talla::smallint, s.stock_disponible
+      FROM stock s JOIN modelos m USING (id_modelo)
+     WHERE s.stock_disponible <= p_umbral
+     ORDER BY s.stock_disponible, m.nombre, s.talla;
+END ]]></definition>
+</function>
+
+<function name="fn_indicadores"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<parameter name="indicador">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="valor">
+		<type name="numeric" length="0"/>
+	</parameter>
+	</return-type>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('consultar_pedidos');
+    RETURN QUERY
+    SELECT 'pedidos_totales', count(*)::numeric FROM pedidos
+    UNION ALL
+    -- pares solicitados = pares de pedidos no cancelados (actividad)
+    SELECT 'pares_solicitados', coalesce(sum(l.cantidad),0)::numeric
+      FROM lineas_pedido l JOIN pedidos p USING (id_pedido)
+     WHERE p.estado <> 'cancelado'
+    UNION ALL
+    -- pares vendidos = pares de pedidos confirmados o entregados (ventas)
+    SELECT 'pares_vendidos', coalesce(sum(l.cantidad),0)::numeric
+      FROM lineas_pedido l JOIN pedidos p USING (id_pedido)
+     WHERE p.estado IN ('confirmado','entregado')
+    UNION ALL
+    SELECT 'importe_ventas', coalesce(sum(total),0)
+      FROM pedidos WHERE estado IN ('confirmado','entregado')
+    UNION ALL
+    SELECT 'pedidos_' || e.estado, count(p.id_pedido)::numeric
+      FROM (VALUES ('pendiente'),('confirmado'),('entregado'),('cancelado')) e(estado)
+      LEFT JOIN pedidos p ON p.estado = e.estado
+     GROUP BY e.estado;
+END ]]></definition>
+</function>
+
+<view name="v_export_clientes" layers="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1060" y="1140"/>
+	<reference>
+		<expression><![CDATA[ SELECT clientes.id_cliente,
+    clientes.nombre,
+    clientes.tipo
+   FROM clientes;]]></expression>
+	<column name="id_cliente">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nombre">
+		<type name="text" length="0"/>
+	</column>
+	<column name="tipo">
+		<type name="text" length="0"/>
+	</column>
+		<reftable name="public.clientes"/>
+	</reference>
+</view>
+
+<relationship name="rel_v_export_clientes_clientes" type="reltv" layers="0"
+	 custom-color="#6a8add"
+	 src-table="public.v_export_clientes"
+	 dst-table="public.clientes"
+	 src-required="false" dst-required="false"/>
+
+<view name="v_export_modelos" layers="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1300" y="1140"/>
+	<reference>
+		<expression><![CDATA[ SELECT modelos.id_modelo,
+    modelos.nombre AS modelo,
+    modelos.categoria
+   FROM modelos;]]></expression>
+	<column name="id_modelo">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="modelo">
+		<type name="text" length="0"/>
+	</column>
+	<column name="categoria">
+		<type name="text" length="0"/>
+	</column>
+		<reftable name="public.modelos"/>
+	</reference>
+</view>
+
+<relationship name="rel_v_export_modelos_modelos" type="reltv" layers="0"
+	 custom-color="#658c85"
+	 src-table="public.v_export_modelos"
+	 dst-table="public.modelos"
+	 src-required="false" dst-required="false"/>
+
+<view name="v_export_pedidos" layers="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1640" y="1260"/>
+	<reference>
+		<expression><![CDATA[ SELECT pedidos.id_pedido,
+    pedidos.fecha,
+    pedidos.id_cliente,
+    pedidos.estado,
+    pedidos.tipo
+   FROM pedidos;]]></expression>
+	<column name="id_pedido">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fecha">
+		<type name="date" length="0"/>
+	</column>
+	<column name="id_cliente">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="estado">
+		<type name="text" length="0"/>
+	</column>
+	<column name="tipo">
+		<type name="text" length="0"/>
+	</column>
+		<reftable name="public.pedidos"/>
+	</reference>
+</view>
+
+<relationship name="rel_v_export_pedidos_pedidos" type="reltv" layers="0"
+	 custom-color="#bba04b"
+	 src-table="public.v_export_pedidos"
+	 dst-table="public.pedidos"
+	 src-required="false" dst-required="false"/>
+
+<view name="v_export_lineas_pedido" layers="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2080" y="1160"/>
+	<reference>
+		<expression><![CDATA[ SELECT lineas_pedido.id_linea,
+    lineas_pedido.id_pedido,
+    lineas_pedido.id_modelo,
+    lineas_pedido.talla,
+    lineas_pedido.cantidad,
+    lineas_pedido.precio_unitario
+   FROM lineas_pedido;]]></expression>
+	<column name="id_linea">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_pedido">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_modelo">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="talla">
+		<type name="public.talla_t" length="0"/>
+	</column>
+	<column name="cantidad">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="precio_unitario">
+		<type name="numeric" length="8" precision="2"/>
+	</column>
+		<reftable name="public.lineas_pedido"/>
+	</reference>
+</view>
+
+<relationship name="rel_v_export_lineas_pedido_lineas_pedido" type="reltv" layers="0"
+	 custom-color="#13d040"
+	 src-table="public.v_export_lineas_pedido"
+	 dst-table="public.lineas_pedido"
+	 src-required="false" dst-required="false"/>
+
+<view name="v_export_stock" layers="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="660" y="1540"/>
+	<reference>
+		<expression><![CDATA[ SELECT stock.id_modelo,
+    stock.talla,
+    stock.stock_disponible,
+    (stock.fecha_corte)::date AS fecha_corte
+   FROM stock;]]></expression>
+	<column name="id_modelo">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="talla">
+		<type name="public.talla_t" length="0"/>
+	</column>
+	<column name="stock_disponible">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="fecha_corte">
+		<type name="date" length="0"/>
+	</column>
+		<reftable name="public.stock"/>
+	</reference>
+</view>
+
+<relationship name="rel_v_export_stock_stock" type="reltv" layers="0"
+	 custom-color="#7f5ff6"
+	 src-table="public.v_export_stock"
+	 dst-table="public.stock"
+	 src-required="false" dst-required="false"/>
+
+<view name="v_ficha_fabricacion" layers="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="940" y="1540"/>
+	<reference>
+		<expression><![CDATA[ SELECT p.referencia,
+    c.nombre AS cliente,
+    m.nombre AS modelo,
+    l.color_cuerpo,
+    l.color_franja,
+    l.color_puntera,
+    l.color_talon,
+    l.color_suela,
+    l.color_cordones,
+    l.texto_suela,
+    l.talla,
+    l.cantidad
+   FROM (((lineas_pedido l
+     JOIN pedidos p USING (id_pedido))
+     JOIN clientes c USING (id_cliente))
+     JOIN modelos m USING (id_modelo))
+  WHERE ((p.estado = 'confirmado'::text) AND (l.color_cuerpo IS NOT NULL))
+  ORDER BY p.referencia, l.talla;]]></expression>
+	<column name="referencia">
+		<type name="text" length="0"/>
+	</column>
+	<column name="cliente">
+		<type name="text" length="0"/>
+	</column>
+	<column name="modelo">
+		<type name="text" length="0"/>
+	</column>
+	<column name="color_cuerpo">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_franja">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_puntera">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_talon">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_suela">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_cordones">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="texto_suela">
+		<type name="character varying" length="12"/>
+	</column>
+	<column name="talla">
+		<type name="public.talla_t" length="0"/>
+	</column>
+	<column name="cantidad">
+		<type name="integer" length="0"/>
+	</column>
+		<reftable name="public.clientes"/>
+		<reftable name="public.modelos"/>
+		<reftable name="public.pedidos"/>
+		<reftable name="public.lineas_pedido"/>
+	</reference>
+</view>
+
+<relationship name="rel_v_ficha_fabricacion_clientes" type="reltv" layers="0"
+	 custom-color="#8647be"
+	 src-table="public.v_ficha_fabricacion"
+	 dst-table="public.clientes"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_v_ficha_fabricacion_modelos" type="reltv" layers="0"
+	 custom-color="#870ba3"
+	 src-table="public.v_ficha_fabricacion"
+	 dst-table="public.modelos"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_v_ficha_fabricacion_pedidos" type="reltv" layers="0"
+	 custom-color="#781667"
+	 src-table="public.v_ficha_fabricacion"
+	 dst-table="public.pedidos"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_v_ficha_fabricacion_lineas_pedido" type="reltv" layers="0"
+	 custom-color="#ad524e"
+	 src-table="public.v_ficha_fabricacion"
+	 dst-table="public.lineas_pedido"
+	 src-required="false" dst-required="false"/>
+
+<function name="fn_crear_usuario"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="integer" length="0"/>
+	</return-type>
+	<parameter name="p_username">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_password">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_rol">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition><![CDATA[DECLARE v_id integer;
+BEGIN
+    PERFORM fn_exigir_permiso('gestionar_usuarios');
+    INSERT INTO usuarios (username, password_hash, id_rol)
+    SELECT p_username, crypt(p_password, gen_salt('bf', 10)), r.id_rol
+      FROM roles r WHERE r.nombre = p_rol
+    RETURNING id_usuario INTO v_id;
+    IF v_id IS NULL THEN
+        RAISE EXCEPTION 'El rol "%" no existe', p_rol;
+    END IF;
+    RETURN v_id;
+END ]]></definition>
+</function>
+
+<function name="fn_cambiar_activo"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="void" length="0"/>
+	</return-type>
+	<parameter name="p_id">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="p_activo">
+		<type name="boolean" length="0"/>
+	</parameter>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('gestionar_usuarios');
+    IF NOT p_activo AND p_id = fn_usuario_actual() THEN
+        RAISE EXCEPTION 'No puedes desactivar tu propio usuario';
+    END IF;
+    UPDATE usuarios SET activo = p_activo WHERE id_usuario = p_id;
+    IF NOT FOUND THEN RAISE EXCEPTION 'Usuario % inexistente', p_id; END IF;
+END ]]></definition>
+</function>
+
+<function name="fn_cambiar_rol"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="void" length="0"/>
+	</return-type>
+	<parameter name="p_id">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="p_rol">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('gestionar_usuarios');
+    UPDATE usuarios SET id_rol = (SELECT id_rol FROM roles WHERE nombre = p_rol)
+     WHERE id_usuario = p_id;
+    IF NOT FOUND THEN RAISE EXCEPTION 'Usuario % o rol "%" inexistente', p_id, p_rol; END IF;
+END ]]></definition>
+</function>
+
+<function name="fn_listar_usuarios"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<parameter name="id_usuario">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="username">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="rol">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="activo">
+		<type name="boolean" length="0"/>
+	</parameter>
+	<parameter name="fecha_creacion">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</parameter>
+	</return-type>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('exportar_usuarios');
+    RETURN QUERY
+    SELECT u.id_usuario, u.username, r.nombre, u.activo, u.fecha_creacion
+      FROM usuarios u JOIN roles r USING (id_rol) ORDER BY u.id_usuario;
+END ]]></definition>
+</function>
+
+<function name="fn_auditoria"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<parameter name="id_evento">
+		<type name="bigint" length="0"/>
+	</parameter>
+	<parameter name="fecha">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</parameter>
+	<parameter name="tabla">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="operacion">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="id_registro">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="usuario">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="resumen">
+		<type name="text" length="0"/>
+	</parameter>
+	</return-type>
+	<parameter name="p_limite" in="true" default-value="100">
+		<type name="integer" length="0"/>
+	</parameter>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('ver_auditoria');
+    RETURN QUERY
+    SELECT e.id_evento, e.fecha, e.tabla, e.operacion, e.id_registro, u.username, e.resumen
+      FROM log_eventos e JOIN usuarios u USING (id_usuario)
+     ORDER BY e.id_evento DESC LIMIT p_limite;
+END ]]></definition>
+</function>
+
+<function name="fn_cliente_web"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="integer" length="0"/>
+	</return-type>
+	<parameter name="p_nombre">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_email">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_telefono">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_tipo">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition><![CDATA[DECLARE v_id integer;
+BEGIN
+    PERFORM fn_exigir_permiso('crear_pedido');
+    INSERT INTO clientes (nombre, email, telefono, tipo)
+    VALUES (btrim(p_nombre), lower(btrim(p_email)), nullif(btrim(p_telefono), ''),
+            coalesce(p_tipo, 'particular'))
+    ON CONFLICT (email) DO UPDATE
+       SET nombre = EXCLUDED.nombre,
+           telefono = coalesce(EXCLUDED.telefono, clientes.telefono)
+    RETURNING id_cliente INTO v_id;
+    RETURN v_id;
+END ]]></definition>
+</function>
+
+<function name="fn_detalle_pedido"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<parameter name="referencia">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="fecha">
+		<type name="date" length="0"/>
+	</parameter>
+	<parameter name="cliente">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="estado">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="tipo">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="total">
+		<type name="numeric" length="0"/>
+	</parameter>
+	<parameter name="id_linea">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="modelo">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="talla">
+		<type name="smallint" length="0"/>
+	</parameter>
+	<parameter name="cantidad">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="precio_unitario">
+		<type name="numeric" length="0"/>
+	</parameter>
+	<parameter name="personalizacion">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="texto_suela">
+		<type name="text" length="0"/>
+	</parameter>
+	</return-type>
+	<parameter name="p_referencia" in="true">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('consultar_pedidos');
+    RETURN QUERY
+    SELECT p.referencia, p.fecha, c.nombre, p.estado, p.tipo, p.total,
+           l.id_linea, m.nombre, l.talla::smallint, l.cantidad, l.precio_unitario,
+           CASE WHEN l.color_cuerpo IS NOT NULL THEN
+                concat_ws(' / ', l.color_cuerpo, l.color_franja, l.color_puntera,
+                          l.color_talon, l.color_suela, l.color_cordones)
+                WHEN cc.nombre IS NOT NULL THEN 'Color de catálogo: ' || cc.nombre
+           END,
+           l.texto_suela::text
+      FROM pedidos p
+      JOIN clientes c USING (id_cliente)
+      LEFT JOIN lineas_pedido l ON l.id_pedido = p.id_pedido
+      LEFT JOIN modelos m ON m.id_modelo = l.id_modelo
+      LEFT JOIN colores_catalogo cc ON cc.id_color = l.id_color
+     WHERE p.referencia = p_referencia
+     ORDER BY l.talla, l.id_linea;
+END ]]></definition>
+</function>
+
+<function name="fn_analisis_modelos"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<parameter name="modelo">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="pedidos">
+		<type name="bigint" length="0"/>
+	</parameter>
+	<parameter name="pares">
+		<type name="bigint" length="0"/>
+	</parameter>
+	<parameter name="importe">
+		<type name="numeric" length="0"/>
+	</parameter>
+	</return-type>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('consultar_pedidos');
+    RETURN QUERY
+    SELECT m.nombre,
+           count(DISTINCT p.id_pedido),                       -- pedidos, no líneas
+           coalesce(sum(l.cantidad) FILTER (WHERE p.id_pedido IS NOT NULL), 0)::bigint,
+           coalesce(sum(l.cantidad * l.precio_unitario) FILTER (WHERE p.id_pedido IS NOT NULL), 0)
+      FROM modelos m
+      LEFT JOIN lineas_pedido l ON l.id_modelo = m.id_modelo
+      LEFT JOIN pedidos p ON p.id_pedido = l.id_pedido AND p.estado IN ('confirmado','entregado')
+     GROUP BY m.nombre
+     ORDER BY 3 DESC, 1;
+END ]]></definition>
+</function>
+
+<function name="fn_analisis_tallas"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<parameter name="talla">
+		<type name="smallint" length="0"/>
+	</parameter>
+	<parameter name="pares">
+		<type name="bigint" length="0"/>
+	</parameter>
+	</return-type>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('consultar_pedidos');
+    RETURN QUERY
+    SELECT t::smallint, coalesce(sum(l.cantidad) FILTER (WHERE p.id_pedido IS NOT NULL), 0)::bigint
+      FROM generate_series(38, 46) t
+      LEFT JOIN lineas_pedido l ON l.talla = t
+      LEFT JOIN pedidos p ON p.id_pedido = l.id_pedido AND p.estado IN ('confirmado','entregado')
+     GROUP BY t ORDER BY t;
+END ]]></definition>
+</function>
+
+<view name="v_reconciliacion" layers="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1280" y="1540"/>
+	<reference>
+		<expression><![CDATA[ SELECT 'pedidos_totales'::text AS indicador,
+    (count(*))::numeric AS valor
+   FROM pedidos
+UNION ALL
+ SELECT 'lineas_totales'::text AS indicador,
+    (count(*))::numeric AS valor
+   FROM lineas_pedido
+UNION ALL
+ SELECT 'pedidos_venta'::text AS indicador,
+    (count(*))::numeric AS valor
+   FROM pedidos
+  WHERE (pedidos.estado = ANY (ARRAY['confirmado'::text, 'entregado'::text]))
+UNION ALL
+ SELECT 'pares_vendidos'::text AS indicador,
+    (COALESCE(sum(l.cantidad), (0)::bigint))::numeric AS valor
+   FROM (lineas_pedido l
+     JOIN pedidos p USING (id_pedido))
+  WHERE (p.estado = ANY (ARRAY['confirmado'::text, 'entregado'::text]))
+UNION ALL
+ SELECT 'importe_ventas'::text AS indicador,
+    COALESCE(sum(pedidos.total), (0)::numeric) AS valor
+   FROM pedidos
+  WHERE (pedidos.estado = ANY (ARRAY['confirmado'::text, 'entregado'::text]))
+UNION ALL
+ SELECT 'clientes_con_venta'::text AS indicador,
+    (count(DISTINCT pedidos.id_cliente))::numeric AS valor
+   FROM pedidos
+  WHERE (pedidos.estado = ANY (ARRAY['confirmado'::text, 'entregado'::text]));]]></expression>
+	<column name="indicador">
+		<type name="text" length="0"/>
+	</column>
+	<column name="valor">
+		<type name="numeric" length="0"/>
+	</column>
+		<reftable name="public.pedidos"/>
+		<reftable name="public.lineas_pedido"/>
+	</reference>
+</view>
+
+<relationship name="rel_v_reconciliacion_pedidos" type="reltv" layers="0"
+	 custom-color="#3da60c"
+	 src-table="public.v_reconciliacion"
+	 dst-table="public.pedidos"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_v_reconciliacion_lineas_pedido" type="reltv" layers="0"
+	 custom-color="#1fa218"
+	 src-table="public.v_reconciliacion"
+	 dst-table="public.lineas_pedido"
+	 src-required="false" dst-required="false"/>
+
+<table name="pedidos_odoo" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2260" y="500"/>
+	<column name="id_pedido" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="pedido_odoo">
+		<type name="text" length="0"/>
+	</column>
+	<column name="id_odoo">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="estado" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="mensaje">
+		<type name="text" length="0"/>
+	</column>
+	<column name="actualizado" not-null="true" default-value="now()">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<constraint name="pedidos_odoo_estado_check" type="ck-constr" table="public.pedidos_odoo">
+			<expression><![CDATA[(estado = ANY (ARRAY['enviado'::text, 'error'::text]))]]></expression>
+	</constraint>
+	<constraint name="pedidos_odoo_pkey" type="pk-constr" table="public.pedidos_odoo">
+		<columns names="id_pedido" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<function name="fn_registrar_envio_odoo"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="void" length="0"/>
+	</return-type>
+	<parameter name="p_referencia">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_estado">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_pedido_odoo">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="p_id_odoo">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="p_mensaje">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition><![CDATA[BEGIN
+    PERFORM fn_exigir_permiso('confirmar_pedido');
+    INSERT INTO pedidos_odoo (id_pedido, pedido_odoo, id_odoo, estado, mensaje)
+    SELECT id_pedido, p_pedido_odoo, p_id_odoo, p_estado, left(p_mensaje, 300)
+      FROM pedidos WHERE referencia = p_referencia
+    ON CONFLICT (id_pedido) DO UPDATE
+       SET pedido_odoo = coalesce(EXCLUDED.pedido_odoo, pedidos_odoo.pedido_odoo),
+           id_odoo     = coalesce(EXCLUDED.id_odoo, pedidos_odoo.id_odoo),
+           estado      = EXCLUDED.estado,
+           mensaje     = EXCLUDED.mensaje,
+           actualizado = now();
+END ]]></definition>
+</function>
+
+<view name="v_pedidos_odoo" layers="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2280" y="1380"/>
+	<reference>
+		<expression><![CDATA[ SELECT p.referencia,
+    o.pedido_odoo,
+    o.estado,
+    o.mensaje,
+    o.actualizado
+   FROM (pedidos_odoo o
+     JOIN pedidos p USING (id_pedido));]]></expression>
+	<column name="referencia">
+		<type name="text" length="0"/>
+	</column>
+	<column name="pedido_odoo">
+		<type name="text" length="0"/>
+	</column>
+	<column name="estado">
+		<type name="text" length="0"/>
+	</column>
+	<column name="mensaje">
+		<type name="text" length="0"/>
+	</column>
+	<column name="actualizado">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+		<reftable name="public.pedidos"/>
+		<reftable name="public.pedidos_odoo"/>
+	</reference>
+</view>
+
+<relationship name="rel_v_pedidos_odoo_pedidos" type="reltv" layers="0"
+	 custom-color="#bcef98"
+	 src-table="public.v_pedidos_odoo"
+	 dst-table="public.pedidos"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_v_pedidos_odoo_pedidos_odoo" type="reltv" layers="0"
+	 custom-color="#5555ee"
+	 src-table="public.v_pedidos_odoo"
+	 dst-table="public.pedidos_odoo"
+	 src-required="false" dst-required="false"/>
+
+<sequence name="colores_catalogo_id_color_seq" cycle="false" start="1" increment="1" min-value="1" max-value="32767" cache="1">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="colores_catalogo" layers="0" collapse-mode="2" max-obj-count="15" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="660" y="1140"/>
+	<column name="id_color" not-null="true" sequence="public.colores_catalogo_id_color_seq">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="id_modelo" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="codigo" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="nombre" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="orden" not-null="true" default-value="1">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="color_cuerpo" not-null="true">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_franja" not-null="true">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_puntera" not-null="true">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_talon" not-null="true">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_suela" not-null="true">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_cordones" not-null="true">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="color_detalle" not-null="true">
+		<type name="public.color_t" length="0"/>
+	</column>
+	<column name="activo" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<constraint name="colores_catalogo_pkey" type="pk-constr" table="public.colores_catalogo">
+		<columns names="id_color" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="colores_catalogo_codigo_key" type="uq-constr" table="public.colores_catalogo">
+		<columns names="codigo" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<function name="fn_lineas_color_catalogo"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<type name="trigger" length="0"/>
+	</return-type>
+	<definition><![CDATA[BEGIN
+    IF NEW.id_color IS NOT NULL AND NOT EXISTS (
+        SELECT 1 FROM colores_catalogo c
+         WHERE c.id_color = NEW.id_color AND c.id_modelo = NEW.id_modelo) THEN
+        RAISE EXCEPTION 'Ese color de catálogo no corresponde al modelo de la línea';
+    END IF;
+    RETURN NEW;
+END ]]></definition>
+</function>
+
+<trigger name="t1b_lineas_color" firing-type="BEFORE" per-line="true" constraint="false"
+	 ins-event="true" del-event="false" upd-event="true" trunc-event="false"
+	 table="public.lineas_pedido">
+		<function signature="public.fn_lineas_color_catalogo()"/>
+</trigger>
+
+<index name="ux_linea_pedido" table="public.lineas_pedido"
+	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="id_pedido"/>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<column name="id_modelo"/>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<column name="talla"/>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<expression><![CDATA[COALESCE((id_color)::integer, 0)]]></expression>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<expression><![CDATA[COALESCE((color_cuerpo)::text, ''::text)]]></expression>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<expression><![CDATA[COALESCE((color_franja)::text, ''::text)]]></expression>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<expression><![CDATA[COALESCE((color_puntera)::text, ''::text)]]></expression>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<expression><![CDATA[COALESCE((color_talon)::text, ''::text)]]></expression>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<expression><![CDATA[COALESCE((color_suela)::text, ''::text)]]></expression>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<expression><![CDATA[COALESCE((color_cordones)::text, ''::text)]]></expression>
+		</idxelement>
+		<idxelement use-sorting="false">
+			<expression><![CDATA[COALESCE(texto_suela, ''::character varying)]]></expression>
+		</idxelement>
+</index>
+
+<function name="fn_pedido_para_odoo"
+		window-func="false"
+		returns-setof="true"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="STABLE"
+		security-type="SECURITY INVOKER"
+		parallel-type="PARALLEL UNSAFE"
+		execution-cost="100"
+		row-amount="1000">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<language name="plpgsql"/>
+	<return-type>
+	<parameter name="referencia">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="estado">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="tipo">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="cliente">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="email">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="telefono">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="tipo_cliente">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="modelo">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="talla">
+		<type name="smallint" length="0"/>
+	</parameter>
+	<parameter name="cantidad">
+		<type name="integer" length="0"/>
+	</parameter>
+	<parameter name="precio_unitario">
+		<type name="numeric" length="0"/>
+	</parameter>
+	<parameter name="personalizacion">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="texto_suela">
+		<type name="text" length="0"/>
+	</parameter>
+	<parameter name="color_catalogo">
+		<type name="text" length="0"/>
+	</parameter>
+	</return-type>
+	<parameter name="p_referencia" in="true">
+		<type name="text" length="0"/>
+	</parameter>
+	<definition><![CDATA[DECLARE v_estado text;
+BEGIN
+    PERFORM fn_exigir_permiso('confirmar_pedido');
+
+    SELECT p.estado INTO v_estado FROM pedidos p WHERE p.referencia = p_referencia;
+    IF v_estado IS NULL THEN
+        RAISE EXCEPTION 'No existe el pedido %', p_referencia;
+    END IF;
+    IF v_estado NOT IN ('confirmado', 'entregado') THEN
+        RAISE EXCEPTION 'El pedido % está %: solo se envían a Odoo los pedidos confirmados',
+                        p_referencia, v_estado;
+    END IF;
+
+    RETURN QUERY
+    SELECT p.referencia, p.estado, p.tipo,
+           c.nombre, c.email, c.telefono, c.tipo,
+           m.nombre, l.talla::smallint, l.cantidad, l.precio_unitario,
+           CASE WHEN l.color_cuerpo IS NULL THEN NULL ELSE
+                concat_ws(' / ', l.color_cuerpo, l.color_franja, l.color_puntera,
+                          l.color_talon, l.color_suela, l.color_cordones) END,
+           l.texto_suela::text,
+           cc.nombre
+      FROM pedidos p
+      JOIN clientes c USING (id_cliente)
+      JOIN lineas_pedido l ON l.id_pedido = p.id_pedido
+      JOIN modelos m ON m.id_modelo = l.id_modelo
+      LEFT JOIN colores_catalogo cc ON cc.id_color = l.id_color
+     WHERE p.referencia = p_referencia
+     ORDER BY l.talla, l.id_linea;
+END ]]></definition>
+</function>
+
+<constraint name="permisos_id_rol_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.roles" table="public.permisos">
+	<columns names="id_rol" ref-type="src-columns"/>
+	<columns names="id_rol" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="usuarios_id_rol_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.roles" table="public.usuarios">
+	<columns names="id_rol" ref-type="src-columns"/>
+	<columns names="id_rol" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="pedidos_id_cliente_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.clientes" table="public.pedidos">
+	<columns names="id_cliente" ref-type="src-columns"/>
+	<columns names="id_cliente" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="pedidos_creado_por_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuarios" table="public.pedidos">
+	<columns names="creado_por" ref-type="src-columns"/>
+	<columns names="id_usuario" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="lineas_pedido_id_pedido_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.pedidos" table="public.lineas_pedido">
+	<columns names="id_pedido" ref-type="src-columns"/>
+	<columns names="id_pedido" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="lineas_pedido_id_modelo_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.modelos" table="public.lineas_pedido">
+	<columns names="id_modelo" ref-type="src-columns"/>
+	<columns names="id_modelo" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="lineas_pedido_id_color_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.colores_catalogo" table="public.lineas_pedido">
+	<columns names="id_color" ref-type="src-columns"/>
+	<columns names="id_color" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="stock_id_modelo_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.modelos" table="public.stock">
+	<columns names="id_modelo" ref-type="src-columns"/>
+	<columns names="id_modelo" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="log_eventos_id_usuario_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuarios" table="public.log_eventos">
+	<columns names="id_usuario" ref-type="src-columns"/>
+	<columns names="id_usuario" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="pedidos_odoo_id_pedido_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.pedidos" table="public.pedidos_odoo">
+	<columns names="id_pedido" ref-type="src-columns"/>
+	<columns names="id_pedido" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="colores_catalogo_id_modelo_fkey" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.modelos" table="public.colores_catalogo">
+	<columns names="id_modelo" ref-type="src-columns"/>
+	<columns names="id_modelo" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_permisos_roles" type="relfk" layers="0"
+	 custom-color="#17c7ed"
+	 src-table="public.permisos"
+	 dst-table="public.roles" reference-fk="permisos_id_rol_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_usuarios_roles" type="relfk" layers="0"
+	 custom-color="#6e1da5"
+	 src-table="public.usuarios"
+	 dst-table="public.roles" reference-fk="usuarios_id_rol_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pedidos_clientes" type="relfk" layers="0"
+	 custom-color="#5fe8fa"
+	 src-table="public.pedidos"
+	 dst-table="public.clientes" reference-fk="pedidos_id_cliente_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pedidos_usuarios" type="relfk" layers="0"
+	 custom-color="#763e90"
+	 src-table="public.pedidos"
+	 dst-table="public.usuarios" reference-fk="pedidos_creado_por_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_lineas_pedido_pedidos" type="relfk" layers="0"
+	 custom-color="#8e1fcd"
+	 src-table="public.lineas_pedido"
+	 dst-table="public.pedidos" reference-fk="lineas_pedido_id_pedido_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_lineas_pedido_modelos" type="relfk" layers="0"
+	 custom-color="#a7ef15"
+	 src-table="public.lineas_pedido"
+	 dst-table="public.modelos" reference-fk="lineas_pedido_id_modelo_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_lineas_pedido_colores_catalogo" type="relfk" layers="0"
+	 custom-color="#5ab833"
+	 src-table="public.lineas_pedido"
+	 dst-table="public.colores_catalogo" reference-fk="lineas_pedido_id_color_fkey"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_stock_modelos" type="relfk" layers="0"
+	 custom-color="#770fc8"
+	 src-table="public.stock"
+	 dst-table="public.modelos" reference-fk="stock_id_modelo_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_log_eventos_usuarios" type="relfk" layers="0"
+	 custom-color="#3e026e"
+	 src-table="public.log_eventos"
+	 dst-table="public.usuarios" reference-fk="log_eventos_id_usuario_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_pedidos_odoo_pedidos" type="relfk" layers="0"
+	 custom-color="#001d28"
+	 src-table="public.pedidos_odoo"
+	 dst-table="public.pedidos" reference-fk="pedidos_odoo_id_pedido_fkey"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_colores_catalogo_modelos" type="relfk" layers="0"
+	 custom-color="#28e8c7"
+	 src-table="public.colores_catalogo"
+	 dst-table="public.modelos" reference-fk="colores_catalogo_id_modelo_fkey"
+	 src-required="false" dst-required="true"/>
+
+<permission>
+	<object name="public" type="schema"/>
+	<roles names="postgres"/>
+	<privileges create="true" usage="true"/>
+</permission>
+<permission>
+	<object name="public" type="schema"/>
+	<privileges create="true" usage="true"/>
+</permission>
+</dbmodel>

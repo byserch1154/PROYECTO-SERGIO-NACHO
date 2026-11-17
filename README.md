@@ -5,11 +5,9 @@ el cliente elige los colores y un texto para la suela.
 
 **Equipo:** Sergio Sierra y Nacho García.
 
-**Memoria técnica:** `SERGIO-SIERRA-NACHO-MEMORIA_TECNICA_SANTI.docx`, en esta misma carpeta.
+**Memoria técnica:** `SERGIO-SIERRA-NACHO-MEMORIA_TECNICA_SANTI.docx` (y su PDF), en esta misma carpeta.
 
-**Manual de demostración:** `docs/MANUAL_DEMO.md` · **Presentación:** `docs/PRESENTACION_SPEAKE.pdf`
-
-Acceso a Datos y Python tienen su propia memoria: `SERGIO-SIERRA-NACHO-MEMORIA_ACCESO_DATOS.docx` y `SERGIO-SIERRA-NACHO-MEMORIA_PYTHON.docx`.
+Acceso a Datos y Python tienen su propia memoria: `SERGIO-SIERRA-NACHO-MEMORIA_ACCESO_DATOS.docx` y `SERGIO-SIERRA-NACHO-MEMORIA_PYTHON.docx` (también en PDF).
 
 ## Qué mirar en cada asignatura
 
