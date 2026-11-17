@@ -28,6 +28,7 @@ def df01_pedidos_unicos(lineas):
         lineas.groupby("id_pedido")
         .agg(
             fecha=("fecha", "first"),
+            id_cliente=("id_cliente", "first"),
             cliente=("nombre", "first"),
             estado=("estado", "first"),
             tipo=("tipo", "first"),
@@ -99,7 +100,8 @@ def df05_custom_vs_estandar(pedidos):
 
 def df06_rfm(pedidos, clientes, fecha_corte):
     v = pedidos[pedidos["es_venta"]]
-    r = v.groupby("cliente").agg(
+    # Se agrupa por id_cliente y no por nombre: dos clientes pueden llamarse igual
+    r = v.groupby("id_cliente").agg(
         ultima=("fecha", "max"),
         frequency=("id_pedido", "nunique"),
         monetary=("ticket_pedido", "sum"),
@@ -107,7 +109,8 @@ def df06_rfm(pedidos, clientes, fecha_corte):
         intervalo_medio_dias=("fecha", lambda s: s.sort_values().diff().dt.days.mean()),
     )
     r["recency_dias"] = (fecha_corte - r["ultima"]).dt.days
-    r = clientes[["nombre"]].rename(columns={"nombre": "cliente"}).merge(r.reset_index(), on="cliente", how="left", validate="one_to_one")
+    r = clientes[["id_cliente", "nombre"]].rename(columns={"nombre": "cliente"}).merge(r.reset_index(), on="id_cliente", how="left", validate="one_to_one")
+    r = r.drop(columns="id_cliente")
     r["frequency"] = r["frequency"].fillna(0).astype(int)
     r["monetary"] = r["monetary"].fillna(0).round(2)
     alto = r.loc[r["frequency"] > 0, "monetary"].quantile(0.75) if (r["frequency"] > 0).any() else 0

@@ -18,7 +18,7 @@ Odoo encendida (y Tailscale conectado), pgAdmin abierto, `java/untitled` abierto
 | 8 | Ventas → el pedido con la referencia del cliente SO0xx | Odoo | Mismo pedido, con el 21 % de IVA |
 | 9 | Fabricación → órdenes con el origen de ese pedido | Odoo | Los Custom se fabrican bajo pedido (MTO) |
 | 10 | Enseñar SO024 (S00005): entrega validada y factura pagada | Odoo | Flujo completo CRM → venta → fabricación → entrega → factura |
-| 11 | Pulsar «Exportar CSV PSP/Python» y copiar los CSV | panel | Ficheros en `backend-express/data/export/` |
+| 11 | Pulsar «Exportar CSV PSP/Python». Copiar `ficha_fabricacion.csv` a `java/untitled/datos/` y los otros 6 CSV a `python/sneaker-data-lab/entrada_acc/` | panel y explorador | Ficheros en `backend-express/data/export/` |
 | 12 | Run sobre `Main` | IntelliJ | Padre + 3 hijos, códigos de salida, `salida/ficha_taller_SO0xx.txt` |
 | 13 | Run con `datos/pedido_erroneo.csv` y con `--retardo-ms 8000 --timeout 3` | IntelliJ | Error de validación y TIMEOUT controlados |
 | 14 | Mirar el dashboard | navegador | En el siguiente ciclo de 60 s cambian los KPIs con el pedido nuevo |
