@@ -11,6 +11,7 @@ def no_calculable(motivo):
     return pd.DataFrame([{"estado": "NO CALCULABLE", "motivo": motivo}])
 
 
+# filtros de fecha, modelo, talla, tipo, estado y cliente
 def filtrar(lineas, desde=None, hasta=None, modelos=None, tallas=None, tipos=None, estados=None, clientes=None):
     f = lineas
     if desde is not None:
@@ -23,6 +24,7 @@ def filtrar(lineas, desde=None, hasta=None, modelos=None, tallas=None, tipos=Non
     return f
 
 
+# de lineas a una fila por pedido (nunique para no contar doble)
 def df01_pedidos_unicos(lineas):
     p = (
         lineas.groupby("id_pedido")
@@ -43,6 +45,7 @@ def df01_pedidos_unicos(lineas):
     return p
 
 
+# ingresos por mes y variacion respecto al mes anterior
 def df02_ventas_periodo(lineas):
     v = lineas[lineas["es_venta"]]
     if v.empty:
@@ -60,6 +63,7 @@ def df02_ventas_periodo(lineas):
     return m.drop(columns="fecha")[["mes", "pedidos", "pares", "ingresos", "ticket_medio", "var_ingresos_pct", "media_3m_previos", "var_interanual_pct"]]
 
 
+# clasificacion ABC de modelos por ingresos (80% / 95%)
 def df03_abc(lineas):
     v = lineas[lineas["es_venta"]]
     if v.empty:
@@ -72,6 +76,7 @@ def df03_abc(lineas):
     return r
 
 
+# pares por modelo y talla, sirve para saber que fabricar
 def df04_modelo_talla(lineas):
     v = lineas[lineas["es_venta"]]
     if v.empty:
@@ -85,6 +90,7 @@ def df04_modelo_talla(lineas):
     return out.reset_index()
 
 
+# comparamos pedidos personalizados con los normales
 def df05_custom_vs_estandar(pedidos):
     if pedidos.empty:
         return no_calculable("No hay pedidos en el filtro")
@@ -98,6 +104,7 @@ def df05_custom_vs_estandar(pedidos):
     return r.reset_index()
 
 
+# RFM: hace cuanto compro, cuantas veces y cuanto gasto
 def df06_rfm(pedidos, clientes, fecha_corte):
     v = pedidos[pedidos["es_venta"]]
     # Se agrupa por id_cliente y no por nombre: dos clientes pueden llamarse igual
@@ -127,6 +134,7 @@ def df06_rfm(pedidos, clientes, fecha_corte):
     return r.drop(columns="ultima").sort_values("monetary", ascending=False)
 
 
+# clientes agrupados por el mes de su primera compra
 def df07_cohortes(pedidos):
     v = pedidos[pedidos["es_venta"]].copy()
     if v["cliente"].nunique() < 3 or v["fecha"].dt.to_period("M").nunique() < 2:
@@ -141,6 +149,7 @@ def df07_cohortes(pedidos):
     return ret.reset_index().assign(cohorte=lambda d: d["cohorte"].astype(str))
 
 
+# stock frente a la demanda de las ultimas 4 semanas
 def df08_stock_cobertura(lineas, stock, modelos, fecha_corte):
     desde = fecha_corte - pd.Timedelta(days=config.DIAS_DEMANDA)
     v = lineas[lineas["es_venta"] & (lineas["fecha"] > desde)]
@@ -162,6 +171,7 @@ def df09_calidad(resumen, incidencias):
     return r
 
 
+# valores raros con la regla del rango intercuartilico (IQR)
 def df10_anomalias(lineas):
     filas = []
     for col in ["cantidad", "precio_unitario"]:
@@ -184,10 +194,12 @@ def df10_anomalias(lineas):
     return pd.DataFrame(filas)
 
 
+# no tenemos coste en la base de datos, asi que no se puede calcular
 def df11_margen():
     return no_calculable("Coste no disponible: Acceso a Datos no exporta coste unitario")
 
 
+# comparamos nuestros totales con los que calcula SQL, tienen que coincidir
 def df12_reconciliacion(lineas, pedidos, sql):
     if sql is None:
         return no_calculable("Falta reconciliacion_sql.csv en la exportación")
@@ -207,6 +219,7 @@ def df12_reconciliacion(lineas, pedidos, sql):
     return r
 
 
+# indicadores principales del cuadro de mando
 def kpis(pedidos, lineas, stock):
     ventas = pedidos[pedidos["es_venta"]]
     vl = lineas[lineas["es_venta"]]
@@ -242,6 +255,7 @@ def kpis(pedidos, lineas, stock):
     return pd.DataFrame(filas, columns=["indicador", "valor", "formula"]).astype({"valor": str})
 
 
+# media, mediana, moda, desviacion, cuartiles...
 def descriptivos(pedidos):
     v = pedidos[pedidos["es_venta"]]
     filas = []
@@ -276,11 +290,14 @@ def demanda_modelo_mes(lineas):
     return largo
 
 
+# KMeans sobre el RFM; se prueba k de 2 a 5 y nos quedamos con el mejor silhouette
+# con los datos reales hay pocos clientes, por eso se usa con los sinteticos
 def clustering(rfm):
     datos = rfm[rfm["frequency"] > 0].copy()
     if len(datos) < config.MIN_CLIENTES_CLUSTER:
         motivo = f"Solo {len(datos)} clientes con compras (mínimo {config.MIN_CLIENTES_CLUSTER}): usar el histórico sintético"
         return no_calculable(motivo), no_calculable(motivo)
+    # escalamos porque los euros son mucho mas grandes que los dias o las veces
     x = StandardScaler().fit_transform(datos[["recency_dias", "frequency", "monetary"]])
     pruebas = []
     for k in [2, 3, 4, 5]:
@@ -302,6 +319,7 @@ def clustering(rfm):
     return comparacion, datos
 
 
+# llama a todos los calculos de arriba
 def calcular_todo(r, filtros=None):
     filtros = filtros or {}
     sin_filtro = not any(filtros.values())

@@ -9,6 +9,7 @@ def _calculable(df):
     return "estado" not in df.columns
 
 
+# grafico vacio cuando no hay datos
 def _vacio(titulo):
     fig, ax = plt.subplots(figsize=(7, 4))
     ax.text(0.5, 0.5, "Sin datos suficientes", ha="center", va="center")
@@ -17,6 +18,7 @@ def _vacio(titulo):
     return fig
 
 
+# cada funcion devuelve la figura y una frase explicandola
 def serie_mensual(res):
     df = res["df02_ventas_periodo"]
     titulo = "Ingresos por mes (€)"
@@ -146,6 +148,7 @@ FIGURAS = {
 }
 
 
+# guarda todos los png en outputs/graficos
 def guardar_todas(res, carpeta, etiqueta):
     carpeta.mkdir(parents=True, exist_ok=True)
     lecturas = {}

@@ -11,6 +11,7 @@ import graficos
 import informes
 import pipeline as pl
 
+# que tablas se guardan segun la tarea que se pida
 TAREAS = {
     "calidad": ["df09_calidad", "df12_reconciliacion"],
     "descriptivo": ["kpis", "df01_pedidos_unicos", "df02_ventas_periodo", "df03_modelos_abc", "df04_modelo_talla",
@@ -20,6 +21,7 @@ TAREAS = {
 }
 
 
+# parametros por consola: modo, filtros, carpeta de salida...
 def argumentos(argv):
     a = argparse.ArgumentParser(description="SPEAKE · análisis de datos por consola")
     a.add_argument("--modo", choices=["real", "sintetico"], default="real")
@@ -45,6 +47,7 @@ def main(argv=None):
     texto_filtros = {k: v for k, v in filtros.items() if v}
 
     try:
+# cargar, validar y unir
         r = pl.ejecutar(entrada)
     except pl.ErrorCarga as e:
         print(f"ERROR de carga: {e}")
@@ -57,14 +60,17 @@ def main(argv=None):
     r["resumen_calidad"].to_csv(salida / "resumen_calidad.csv", index=False, encoding="utf-8")
     print(r["resumen_calidad"].to_string(index=False))
 
+    # si hay errores bloqueantes no sacamos ningun calculo
     if not r["valido"]:
         print("\nDATOS INVÁLIDOS: hay incidencias bloqueantes. No se publican cálculos (ver incidencias.csv).")
         pl.registrar_log(origen, "datos inválidos", 0, r["segundos"], f"{len(r['incidencias'])} incidencias")
         return 1
 
+    # todos los dataframes de analisis
     res = an.calcular_todo(r, filtros)
     nombres = [n for t in TAREAS.values() for n in t] if args.tarea in ("todo", "informe") else TAREAS[args.tarea]
     ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # guardamos cada resultado en csv y apuntamos de donde sale (linaje)
     linaje = []
     for n in nombres:
         df = res[n]
@@ -76,6 +82,7 @@ def main(argv=None):
 
     if args.tarea in ("todo", "informe"):
         etiqueta = f"{origen} · corte {r['fecha_corte']:%Y-%m-%d} · {ahora}"
+        # graficos e informes en markdown
         lecturas = graficos.guardar_todas(res, salida / "graficos", etiqueta)
         (salida / "informe_ejecutivo.md").write_text(
             informes.ejecutivo(res, origen, r["fecha_corte"], texto_filtros), encoding="utf-8")

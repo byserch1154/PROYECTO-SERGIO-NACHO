@@ -20,6 +20,7 @@ def restablecer():
         ss[clave] = valor
 
 
+# filtros de la barra de la izquierda
 def filtros_laterales():
     st.sidebar.header("Filtros")
     try:
@@ -55,6 +56,7 @@ def descargar(res, nombre):
                        f"{nombre}.csv", "text/csv", key=f"dl_{nombre}")
 
 
+# vuelve a leer los csv; si los ficheros no han cambiado pone 'sin cambios'
 def ciclo():
     inicio = time.perf_counter()
     ss["ultima_comprobacion"] = datetime.now()
@@ -67,6 +69,7 @@ def ciclo():
         pl.registrar_log("ACC · REAL", "datos inválidos", 0, r["segundos"], f"{len(r['incidencias'])} incidencias")
         ss["incidencias_bloqueo"] = r["incidencias"]
         return "datos inválidos", "Hay incidencias bloqueantes: no se publican cálculos parciales"
+    # tamaño y fecha de cada fichero para saber si ha cambiado
     firma = r["manifiesto"][["fichero", "bytes", "modificado"]].to_dict("records")
     estado = "sin cambios" if ss.get("firma") == firma else "correcto"
     filtros = {k: ss.get(k) for k in CLAVES}
@@ -77,6 +80,7 @@ def ciclo():
     return estado, ""
 
 
+# se refresca solo cada 60 segundos
 @st.fragment(run_every=f"{config.REFRESCO_SEGUNDOS}s")
 def panel():
     st.button("Actualizar ahora")
@@ -94,11 +98,13 @@ def panel():
         f"filas válidas **{len(res['df_lineas_enriquecidas'])}** · "
         f"tiempo **{ss['segundos']} s** · estado :{color}[**{estado}**]"
     )
+    # si falla dejamos el ultimo resultado bueno y avisamos
     if estado in ("datos inválidos", "error de carga"):
         st.error(f"{mensaje}. Se muestra el último resultado válido: DESACTUALIZADO desde {valida:%Y-%m-%d %H:%M:%S}")
         if "incidencias_bloqueo" in ss and estado == "datos inválidos":
             st.dataframe(ss["incidencias_bloqueo"], hide_index=True)
 
+    # una pestaña por cada perfil
     vistas = st.tabs(["Dirección", "Producto y ventas", "Clientes", "Almacén", "Calidad y auditoría", "Laboratorio (SINTÉTICO)"])
     k = res["kpis"].set_index("indicador")["valor"]
     mensual = res["df02_ventas_periodo"]

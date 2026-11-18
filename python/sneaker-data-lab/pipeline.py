@@ -28,6 +28,7 @@ def manifiesto(directorio):
     return pd.DataFrame(filas)
 
 
+# lee los csv como texto y comprueba que estan los ficheros y las columnas
 def cargar(directorio):
     directorio = Path(directorio)
     if not directorio.is_dir():
@@ -49,6 +50,7 @@ def cargar(directorio):
     return tablas
 
 
+# pasa a numero y fecha; lo que no se puede convertir queda como nulo
 def convertir_tipos(t):
     num = lambda s: pd.to_numeric(s, errors="coerce")
     t["clientes"]["id_cliente"] = num(t["clientes"]["id_cliente"]).astype("Int64")
@@ -72,6 +74,7 @@ def convertir_tipos(t):
     return t
 
 
+# va apuntando cada fila con problema en la tabla de incidencias
 class Auditoria:
     def __init__(self):
         self.filas = []
@@ -92,6 +95,7 @@ class Auditoria:
         return pd.DataFrame(self.filas, columns=["tabla", "registro", "regla", "gravedad", "tratamiento"])
 
 
+# reglas de calidad: bloqueante = no se publica nada, recuperable = se quita esa fila
 def validar(tablas):
     t = convertir_tipos({k: v.copy() for k, v in tablas.items()})
     a = Auditoria()
@@ -105,6 +109,7 @@ def validar(tablas):
     a.marcar(p, p["id_pedido"].duplicated(keep=False), "pedidos", "R02 · id_pedido duplicado", "bloqueante", "no se publica", "id_pedido")
     a.marcar(lin, lin["id_linea"].duplicated(keep=False), "lineas_pedido", "R02 · id_linea duplicado", "bloqueante", "no se publica", "id_linea")
 
+    # registros que apuntan a algo que no existe (clave ajena rota)
     huerf_cli = p["id_cliente"].notna() & ~p["id_cliente"].isin(c["id_cliente"])
     a.marcar(p, huerf_cli, "pedidos", "R03 · cliente inexistente", "bloqueante", "no se publica", "id_pedido")
     huerf_ped = lin["id_pedido"].notna() & ~lin["id_pedido"].isin(p["id_pedido"])
@@ -131,6 +136,7 @@ def validar(tablas):
     fuera_s |= a.marcar(s, s.duplicated(["id_modelo", "talla"]), "stock", "R11 · variante modelo-talla duplicada", "recuperable", "se conserva la primera", "id_modelo")
     fuera_s |= a.marcar(s, ~s["talla"].isin(config.TALLAS), "stock", "R08 · talla no válida", "recuperable", "se excluye la variante", "id_modelo")
 
+    # nos quedamos con lo valido
     p_ok = p[~fuera_p]
     l_ok = lin[~fuera_l & lin["id_pedido"].isin(p_ok["id_pedido"])]
     ventas_sin_lineas = p_ok["estado"].isin(config.ESTADOS_VENTA) & ~p_ok["id_pedido"].isin(l_ok["id_pedido"])
@@ -161,6 +167,8 @@ def resumen_calidad(originales, limpias, entrada, incidencias):
     return pd.DataFrame(filas)
 
 
+# junta lineas + pedidos + clientes + modelos
+# validate many_to_one para que el merge no duplique filas
 def unir(t, fecha_corte):
     pedidos = t["pedidos"].merge(
         t["clientes"].rename(columns={"tipo": "tipo_cliente"}),
@@ -177,6 +185,7 @@ def unir(t, fecha_corte):
     if len(lineas) != len(t["lineas_pedido"]):
         raise ErrorCarga("El cruce de tablas ha multiplicado filas")
 
+    # columnas calculadas que usamos luego
     lineas["importe_linea"] = lineas["cantidad"] * lineas["precio_unitario"]
     lineas["es_venta"] = lineas["estado"].isin(config.ESTADOS_VENTA)
     lineas["anio"] = lineas["fecha"].dt.year
@@ -187,6 +196,7 @@ def unir(t, fecha_corte):
     return lineas
 
 
+# todo el proceso de carga: lo usan main.py y el dashboard
 def ejecutar(directorio=config.DIR_REAL):
     inicio = datetime.now()
     tablas = cargar(directorio)
@@ -208,6 +218,7 @@ def ejecutar(directorio=config.DIR_REAL):
     }
 
 
+# una linea en logs/ejecuciones.log por cada ejecucion
 def registrar_log(origen, estado, filas, segundos, detalle=""):
     config.DIR_LOGS.mkdir(exist_ok=True)
     linea = f"{datetime.now():%Y-%m-%d %H:%M:%S} | {origen} | estado={estado} | filas={filas} | {segundos}s | {detalle}\n"

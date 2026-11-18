@@ -1,11 +1,13 @@
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
+# carpetas: entrada_acc son los csv que saca la base de datos
 DIR_REAL = BASE / "entrada_acc"
 DIR_SINTETICO = BASE / "datos_sinteticos"
 DIR_SALIDA = BASE / "outputs"
 DIR_LOGS = BASE / "logs"
 
+# columnas minimas que tiene que traer cada csv
 ESQUEMA = {
     "clientes": ["id_cliente", "nombre", "tipo"],
     "modelos": ["id_modelo", "modelo", "categoria"],
@@ -16,10 +18,12 @@ ESQUEMA = {
 FICHERO_SQL = "reconciliacion_sql.csv"
 
 ESTADOS = ["pendiente", "confirmado", "entregado", "cancelado"]
+# solo cuentan como venta los confirmados y entregados
 ESTADOS_VENTA = ["confirmado", "entregado"]
 TIPOS = ["estandar", "custom"]
 TALLAS = list(range(38, 47))
 
+# umbrales que usamos en los calculos
 STOCK_MINIMO = 10
 DIAS_DEMANDA = 28
 ABC_A = 0.80

@@ -16,6 +16,7 @@ PESO_TALLAS = np.array([3, 6, 10, 15, 19, 17, 13, 10, 7], dtype=float)
 PESO_MES = np.array([0.7, 0.8, 1.0, 1.1, 1.2, 1.0, 0.8, 0.7, 1.3, 1.4, 1.2, 1.5])
 
 
+# datos inventados (semilla fija) para tener mas volumen que el real
 def generar(semilla=config.SEMILLA, n_pedidos=900, n_clientes=40, meses=18):
     rng = np.random.default_rng(semilla)
     tipos_cli = rng.choice(["particular", "club", "equipo"], n_clientes, p=[0.7, 0.2, 0.1])
@@ -73,6 +74,7 @@ def generar(semilla=config.SEMILLA, n_pedidos=900, n_clientes=40, meses=18):
     return {"clientes": clientes, "modelos": modelos, "pedidos": pedidos, "lineas_pedido": lineas, "stock": stock}
 
 
+# misma copia pero con errores metidos a proposito para probar la validacion
 def con_incidencias(datos):
     d = {k: v.astype(str) for k, v in datos.items()}
     d["pedidos"].loc[0, "fecha"] = "2025-13-45"

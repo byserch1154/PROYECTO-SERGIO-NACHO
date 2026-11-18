@@ -17,6 +17,7 @@ def _tabla(df, filas=10):
     return "\n".join([cab, sep, *cuerpo])
 
 
+# informe corto para direccion
 def ejecutivo(res, origen, fecha_corte, filtros):
     abc = res["df03_modelos_abc"]
     stock = res["df08_stock_cobertura"]
@@ -98,6 +99,7 @@ def ejecutivo(res, origen, fecha_corte, filtros):
     return "\n".join(partes)
 
 
+# informe con los detalles: calidad, reglas, conciliacion...
 def tecnico(res, r, origen, lecturas, filtros):
     partes = [
         "# Informe técnico · SPEAKE",
