@@ -29,3 +29,7 @@ odoo/
 
 # Copias locales
 Claude outputs/
+
+# Salidas regenerables del pipeline (se recrean con python main.py)
+SPEAKE_PYTHON/sneaker-data-lab/outputs/
+SPEAKE_PYTHON/sneaker-data-lab/logs/

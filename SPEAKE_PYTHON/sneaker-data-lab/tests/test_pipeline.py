@@ -5,12 +5,13 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
+# para poder importar los ficheros de la carpeta de arriba
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-import analiticas as an  # noqa: E402
-import config  # noqa: E402
-import generador_datos as gen  # noqa: E402
-import pipeline as pl  # noqa: E402
+import analiticas as an
+import config
+import generador_datos as gen
+import pipeline as pl
 
 
 @pytest.fixture

@@ -1,7 +1,6 @@
 import argparse
 import sys
 from datetime import datetime
-from pathlib import Path
 
 import pandas as pd
 
@@ -10,8 +9,9 @@ import config
 import graficos
 import informes
 import pipeline as pl
+from pathlib import Path
 
-# que tablas se guardan segun la tarea que se pida
+# que tablas se guardan en cada tarea
 TAREAS = {
     "calidad": ["df09_calidad", "df12_reconciliacion"],
     "descriptivo": ["kpis", "df01_pedidos_unicos", "df02_ventas_periodo", "df03_modelos_abc", "df04_modelo_talla",
@@ -21,7 +21,8 @@ TAREAS = {
 }
 
 
-# parametros por consola: modo, filtros, carpeta de salida...
+# opciones que se pueden pasar por consola
+# ejemplo: python main.py --modo sintetico --tarea calidad
 def argumentos(argv):
     a = argparse.ArgumentParser(description="SPEAKE · análisis de datos por consola")
     a.add_argument("--modo", choices=["real", "sintetico"], default="real")
@@ -39,18 +40,31 @@ def argumentos(argv):
 
 def main(argv=None):
     args = argumentos(argv)
-    origen = "ACC · REAL" if args.modo == "real" else "SINTÉTICO"
-    entrada = args.entrada or (config.DIR_REAL if args.modo == "real" else config.DIR_SINTETICO)
+
+    # real = csv de la base de datos, sintetico = datos inventados
+    if args.modo == "real":
+        origen = "ACC · REAL"
+        entrada = config.DIR_REAL
+    else:
+        origen = "SINTÉTICO"
+        entrada = config.DIR_SINTETICO
+    if args.entrada:
+        entrada = args.entrada
     salida = args.salida / args.modo
+
     filtros = {"desde": args.desde, "hasta": args.hasta, "modelos": args.modelo, "tallas": args.talla,
                "tipos": args.tipo, "estados": args.estado}
-    texto_filtros = {k: v for k, v in filtros.items() if v}
+    # solo los filtros que se han usado, para el log
+    filtros_usados = {}
+    for clave in filtros:
+        if filtros[clave]:
+            filtros_usados[clave] = filtros[clave]
 
+    # 1. cargar, validar y unir
     try:
-# cargar, validar y unir
         r = pl.ejecutar(entrada)
     except pl.ErrorCarga as e:
-        print(f"ERROR de carga: {e}")
+        print("ERROR de carga:", e)
         pl.registrar_log(origen, "error de carga", 0, 0, str(e))
         return 2
 
@@ -60,39 +74,50 @@ def main(argv=None):
     r["resumen_calidad"].to_csv(salida / "resumen_calidad.csv", index=False, encoding="utf-8")
     print(r["resumen_calidad"].to_string(index=False))
 
-    # si hay errores bloqueantes no sacamos ningun calculo
+    # si hay errores bloqueantes no se calcula nada
     if not r["valido"]:
         print("\nDATOS INVÁLIDOS: hay incidencias bloqueantes. No se publican cálculos (ver incidencias.csv).")
-        pl.registrar_log(origen, "datos inválidos", 0, r["segundos"], f"{len(r['incidencias'])} incidencias")
+        pl.registrar_log(origen, "datos inválidos", 0, r["segundos"], str(len(r["incidencias"])) + " incidencias")
         return 1
 
-    # todos los dataframes de analisis
+    # 2. calculos
     res = an.calcular_todo(r, filtros)
-    nombres = [n for t in TAREAS.values() for n in t] if args.tarea in ("todo", "informe") else TAREAS[args.tarea]
+
+    if args.tarea == "todo" or args.tarea == "informe":
+        nombres = TAREAS["calidad"] + TAREAS["descriptivo"] + TAREAS["segmentacion"]
+    else:
+        nombres = TAREAS[args.tarea]
+
+    # 3. guardar cada resultado en csv y apuntar de donde sale (linaje)
     ahora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    # guardamos cada resultado en csv y apuntamos de donde sale (linaje)
+    fecha_corte = r["fecha_corte"].strftime("%Y-%m-%d")
+    if filtros_usados:
+        texto_filtros = str(filtros_usados)
+    else:
+        texto_filtros = "ninguno"
+
     linaje = []
     for n in nombres:
         df = res[n]
-        df.to_csv(salida / f"{n}.csv", index=False, encoding="utf-8")
-        linaje.append({"archivo": f"{n}.csv", "funcion": f"analiticas.{n}", "origen": origen, "ejecucion": ahora,
-                       "fecha_corte": f"{r['fecha_corte']:%Y-%m-%d}", "filtros": str(texto_filtros or "ninguno"),
-                       "filas": len(df)})
+        df.to_csv(salida / (n + ".csv"), index=False, encoding="utf-8")
+        linaje.append({"archivo": n + ".csv", "funcion": "analiticas." + n, "origen": origen, "ejecucion": ahora,
+                       "fecha_corte": fecha_corte, "filtros": texto_filtros, "filas": len(df)})
     pd.DataFrame(linaje).to_csv(salida / "linaje.csv", index=False, encoding="utf-8")
 
-    if args.tarea in ("todo", "informe"):
-        etiqueta = f"{origen} · corte {r['fecha_corte']:%Y-%m-%d} · {ahora}"
-        # graficos e informes en markdown
+    # 4. graficos e informes
+    if args.tarea == "todo" or args.tarea == "informe":
+        etiqueta = origen + " · corte " + fecha_corte + " · " + ahora
         lecturas = graficos.guardar_todas(res, salida / "graficos", etiqueta)
-        (salida / "informe_ejecutivo.md").write_text(
-            informes.ejecutivo(res, origen, r["fecha_corte"], texto_filtros), encoding="utf-8")
-        (salida / "informe_tecnico.md").write_text(
-            informes.tecnico(res, r, origen, lecturas, texto_filtros), encoding="utf-8")
+        ejecutivo = informes.ejecutivo(res, origen, r["fecha_corte"], filtros_usados)
+        (salida / "informe_ejecutivo.md").write_text(ejecutivo, encoding="utf-8")
+        tecnico = informes.tecnico(res, r, origen, lecturas, filtros_usados)
+        (salida / "informe_tecnico.md").write_text(tecnico, encoding="utf-8")
 
-    print("\n" + res["kpis"][["indicador", "valor"]].to_string(index=False))
+    print()
+    print(res["kpis"][["indicador", "valor"]].to_string(index=False))
     filas = len(res["df_lineas_enriquecidas"])
-    pl.registrar_log(origen, "correcto", filas, r["segundos"], f"tarea={args.tarea} filtros={texto_filtros or 'ninguno'}")
-    print(f"\nResultados ({origen}) en {salida}")
+    pl.registrar_log(origen, "correcto", filas, r["segundos"], "tarea=" + args.tarea + " filtros=" + texto_filtros)
+    print("\nResultados (" + origen + ") en", salida)
     return 0
 
 
