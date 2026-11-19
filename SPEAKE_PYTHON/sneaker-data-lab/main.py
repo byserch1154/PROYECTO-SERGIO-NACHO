@@ -69,9 +69,9 @@ def main(argv=None):
         return 2
 
     salida.mkdir(parents=True, exist_ok=True)
-    r["manifiesto"].to_csv(salida / "manifiesto.csv", index=False, encoding="utf-8")
-    r["incidencias"].to_csv(salida / "incidencias.csv", index=False, encoding="utf-8")
-    r["resumen_calidad"].to_csv(salida / "resumen_calidad.csv", index=False, encoding="utf-8")
+    r["manifiesto"].to_csv(salida / "manifiesto.csv", index=False, sep=";", encoding="utf-8-sig")
+    r["incidencias"].to_csv(salida / "incidencias.csv", index=False, sep=";", encoding="utf-8-sig")
+    r["resumen_calidad"].to_csv(salida / "resumen_calidad.csv", index=False, sep=";", encoding="utf-8-sig")
     print(r["resumen_calidad"].to_string(index=False))
 
     # si hay errores bloqueantes no se calcula nada
@@ -99,10 +99,10 @@ def main(argv=None):
     linaje = []
     for n in nombres:
         df = res[n]
-        df.to_csv(salida / (n + ".csv"), index=False, encoding="utf-8")
+        df.to_csv(salida / (n + ".csv"), index=False, sep=";", encoding="utf-8-sig")
         linaje.append({"archivo": n + ".csv", "funcion": "analiticas." + n, "origen": origen, "ejecucion": ahora,
                        "fecha_corte": fecha_corte, "filtros": texto_filtros, "filas": len(df)})
-    pd.DataFrame(linaje).to_csv(salida / "linaje.csv", index=False, encoding="utf-8")
+    pd.DataFrame(linaje).to_csv(salida / "linaje.csv", index=False, sep=";", encoding="utf-8-sig")
 
     # 4. graficos e informes
     if args.tarea == "todo" or args.tarea == "informe":
